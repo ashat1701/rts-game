@@ -4,9 +4,10 @@ import threading
 import logging
 import contextlib
 import time
-
+import queue
 
 class Client:
+    action_queue = queue.Queue
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     input_thread = None
 
@@ -25,7 +26,7 @@ class Client:
                 raise ConnectionError("Disconnect from server")
             obj = pickle.loads(data)
             logging.debug("Object {} received".format(str(obj)))
-            # TODO: Integrate this action object to
+            self.action_queue.put(obj)
 
     def __init__(self, addr, port=8080):
         self.addr = addr
