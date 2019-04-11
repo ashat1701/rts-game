@@ -35,7 +35,7 @@ class Server:
                 self.connections[player_id] = None
                 break
             obj = pickle.loads(data)
-            self.action_queue.put(obj)
+            self.action_queue.put((self.players[host], obj))
             logging.debug("object receive from {}, addr {}, obj {}".format(str(self.players[host]), str(host), str(obj)))
 
     def send_obj_all_players(self, obj):
