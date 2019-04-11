@@ -73,6 +73,7 @@ def reconnecting_client(addr, port=8080):
         client.client_socket.close()
 
 
-logging.basicConfig(level=logging.DEBUG)
-with reconnecting_client("127.0.0.1") as our_client:
-    our_client.send_object([1,1,1,1,1,1])
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    with reconnecting_client("127.0.0.1") as our_client:
+        our_client.send_object([1,1,1,1,1,1])

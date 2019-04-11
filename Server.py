@@ -59,7 +59,7 @@ class Server:
             new_thread.start()  
 
     def send_obj_to_player(self, obj, player_id):
-        if player_id < len(self.connections and self.connections[player_id] is not None):
+        if player_id < len(self.connections) and self.connections[player_id] is not None:
             self.connections[player_id].send(pickle.dumps(obj))
             return True
         return False
@@ -89,5 +89,6 @@ def run():
         server.run()
 
 
-logging.basicConfig(level=logging.DEBUG)
-run()
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    run()
