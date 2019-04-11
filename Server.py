@@ -43,23 +43,29 @@ class Server:
             self.send_obj_to_player(obj, player_id)
 
     def run(self):
-        while True:
-            connection, addr = self.server_socket.accept()
-            new_thread = threading.Thread(target=self.handler, args=(connection, addr))
-            new_thread.daemon = True
-            self.activeConnections += 1
-            if addr[0] in self.players:
-                self.connections[self.players[addr[0]]] = connection
-                self.threads[self.players[addr[0]]] = new_thread
-            else:
-                self.connections.append(connection)
-                self.threads.append(new_thread)
-                self.players[addr[0]] = len(self.players)
-            logging.debug("player # {} connected".format(str(self.players[addr[0]])))
-            new_thread.start()  
+        try:
+            while True:
+                connection, addr = self.server_socket.accept()
+                new_thread = threading.Thread(target=self.handler, args=(connection, addr))
+                new_thread.daemon = True
+                self.activeConnections += 1
+                if addr[0] in self.players:
+                    self.connections[self.players[addr[0]]] = connection
+                    self.threads[self.players[addr[0]]] = new_thread
+                else:
+                    self.connections.append(connection)
+                    self.threads.append(new_thread)
+                    self.players[addr[0]] = len(self.players)
+                logging.debug("player # {} connected".format(str(self.players[addr[0]])))
+                new_thread.start()
+        finally:
+            for i in self.connections:
+                if i is not None:
+                    i.close()
+            self.server_socket.close()
 
     def send_obj_to_player(self, obj, player_id):
-        if player_id < len(self.connections and self.connections[player_id] is not None):
+        if player_id < len(self.connections) and self.connections[player_id] is not None:
             self.connections[player_id].send(pickle.dumps(obj))
             return True
         return False
@@ -89,5 +95,6 @@ def run():
         server.run()
 
 
-logging.basicConfig(level=logging.DEBUG)
-run()
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    run()

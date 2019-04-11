@@ -6,13 +6,14 @@ import contextlib
 import time
 import queue
 
+
 class Client:
     action_queue = queue.Queue()
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     input_thread = None
 
     def send_object(self, obj):
-        if self.input_thread.is_alive():
+        if self.input_thread is not None and self.input_thread.is_alive():
             self.client_socket.sendall(pickle.dumps(obj))
             return True
         else:
@@ -20,14 +21,17 @@ class Client:
 
     def handler(self):
         while True:
-            data = self.client_socket.recv(4096)
+            try:
+                data = self.client_socket.recv(4096)
+            except ConnectionError as e:
+                logging.error("Disconnect from server")
+                break
             if not data:
                 logging.error("Disconnect from server")
                 raise ConnectionError("Disconnect from server")
             obj = pickle.loads(data)
             logging.debug("Object {} received".format(str(obj)))
             self.action_queue.put(obj)
-
 
     def __init__(self, addr, port=8080):
         self.addr = addr
@@ -73,6 +77,7 @@ def reconnecting_client(addr, port=8080):
         client.client_socket.close()
 
 
-logging.basicConfig(level=logging.DEBUG)
-with reconnecting_client("127.0.0.1") as our_client:
-    our_client.send_object([1,1,1,1,1,1])
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    with reconnecting_client("127.0.0.1") as our_client:
+        our_client.send_object([1,1,1,1,1,1])
