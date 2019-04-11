@@ -3,13 +3,14 @@ import threading
 import sys
 import pickle
 import logging
-
+import queue
 
 class Server:
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
     players = {}
     threads = []
+    action_queue = queue.Queue()
     activeConnections = 0
 
     def __init__(self, port=8080):
@@ -34,7 +35,7 @@ class Server:
                 self.connections[player_id] = None
                 break
             obj = pickle.loads(data)
-            # TODO: Add action object to World Logic
+            self.action_queue.put(obj)
             logging.debug("object receive from {}, addr {}, obj {}".format(str(self.players[host]), str(host), str(obj)))
 
     def send_obj_all_players(self, obj):
