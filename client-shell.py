@@ -1,6 +1,10 @@
 import pygame
 import Client
+import logging
+import Action
+import time
 from queue import Queue
+
 
 pygame.init()
 
@@ -11,11 +15,21 @@ x = 250
 y = 250
 with Client.reconnecting_client(addr='127.0.0.1') as client:
     while running:
+        logging.basicConfig(level=logging.DEBUG)
         while not client.action_queue.empty():
             current_action = client.action_queue.get()
-            x = current_action[0]
-            y = current_action[1]
+            if type(current_action) == Action.PlayerMoveAction:
+                x = current_action.x
+                y = current_action.y
+            if type(current_action) == Action.DrawAction:
+                if current_action.type == "ENEMY":
+                    pygame.draw.rect(screen, (255, 0, 0), (current_action.x, current_action.y, 50, 50))
 
+            print(current_action)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        time.sleep(0.01)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             client.send_object("LEFT")
@@ -26,8 +40,8 @@ with Client.reconnecting_client(addr='127.0.0.1') as client:
         if keys[pygame.K_DOWN]:
             client.send_object("DOWN")
 
-        pygame.event.pump()
         screen.fill((0, 0, 0))
         pygame.draw.rect(screen, (0, 0, 255), (x, y, 50, 50))
         pygame.display.update()
+        pygame.event.pump()
     pygame.quit()

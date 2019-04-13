@@ -5,6 +5,7 @@ import pickle
 import logging
 import queue
 
+
 class Server:
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
