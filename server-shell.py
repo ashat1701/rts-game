@@ -36,21 +36,27 @@ class World:
 
         # Components
         self._position = {}
+        self._health = {}
+        self._damage = {}
         self._velocity = {}
         self._enemy = set()
 
         self.map = Map()
 
         self._current_id = -1
-        self.first_player = self.create_entity(position=(1, 1))
+        self.first_player = self.create_entity(position=(1, 1), health=100, damage=50)
         self.second_player = self.create_entity(position=(MAX_X - 2, MAX_Y - 2))
-        self.test_enemy = self.create_entity(position=(MAX_X // 2, MAX_Y // 2))
+        self.test_enemy = self.create_entity(position=(MAX_X // 2, MAX_Y // 2), health=100)
         self.add_enemy(self.test_enemy)
 
-    def create_entity(self, position=None) -> int:
+    def create_entity(self, position=None, health=None, damage=None) -> int:
         self._current_id += 1
         if position is not None:
             self._position[self._current_id] = position
+        if health is not None:
+            self._health[self._current_id] = health
+        if damage is not None:
+            self._damage[self._current_id] = damage
         return self._current_id
 
     def add_enemy(self, entity_id):
@@ -67,6 +73,15 @@ class World:
             self.map.set(x, y, 0)
             self._position[entity_id] = (x + dx, y + dy)
 
+    def get_attackable_entities(self, entity_id):
+        entities_id = []
+        for other_entity_id, entity_position in self._position.items():
+            if self._is_attackable(self._position[entity_id],
+                                self._position[other_entity_id]) and entity_id != other_entity_id:
+                entities_id.append(other_entity_id)
+        return entities_id
+
+    # TODO: A*
     def generate_npc_movement(self, npc_id):
         return random.randint(-1, 1), random.randint(-1, 1)
 
@@ -80,7 +95,25 @@ class World:
     def _is_visible(position1: tuple, position2: tuple) -> bool:
         return ((position1[0] - position2[0]) ** 2 + (position1[1] - position2[1]) ** 2) ** 0.5 < VISION_RANGE
 
-    def get_nearby_entities(self, entity_id) -> list:
+    @staticmethod
+    def _is_attackable(position1: tuple, position2: tuple) -> bool:
+        return ((position1[0] - position2[0]) ** 2 + (position1[1] - position2[1]) ** 2) ** 0.5 < ATTACK_RANGE
+
+    def attack(self, entity_id):
+        attackable_entities = self.get_attackable_entities(entity_id)
+        for other_entity_id in attackable_entities:
+            self._health[other_entity_id] -= self._damage[entity_id]
+            if self._health[other_entity_id] < 0:
+                self.delete_entity(other_entity_id)
+
+    def delete_entity(self, entity_id):
+        self._position.pop(entity_id, None)
+        self._health.pop(entity_id, None)
+        self._damage.pop(entity_id, None)
+        self._velocity.pop(entity_id, None)
+        self._enemy.remove(entity_id)
+
+    def get_visible_entities(self, entity_id) -> list:
         entities_id = []
         for other_entity_id, entity_position in self._position.items():
             if self._is_visible(self._position[entity_id],
@@ -107,15 +140,16 @@ class World:
                 self.move(player_id, 1, 0)
                 self.server.send_obj_to_player(Action.PlayerMoveAction(*self.get_position(self.first_player)),
                                                self.first_player)
+            if current_action == "ATTACK":
+                self.attack(player_id)
 
         self.move_all_npc()
 
     def send_information(self):
-        visible_entities = self.get_nearby_entities(self.first_player)
+        visible_entities = self.get_visible_entities(self.first_player)
         for visible_entity in visible_entities:
             if visible_entity in self._enemy:
                 self.server.send_obj_to_player(Action.DrawAction(*self.get_position(visible_entity), "ENEMY"), self.first_player)
-
 
 
 if __name__ == '__main__':
