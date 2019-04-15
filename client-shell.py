@@ -33,13 +33,13 @@ with Client.reconnecting_client(addr='127.0.0.1') as client:
                 running = False
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            client.send_object("LEFT")
+            client.send_object("MOVE_LEFT")
         if keys[pygame.K_RIGHT]:
-            client.send_object("RIGHT")
+            client.send_object("MOVE_RIGHT")
         if keys[pygame.K_UP]:
-            client.send_object("UP")
+            client.send_object("MOVE_UP")
         if keys[pygame.K_DOWN]:
-            client.send_object("DOWN")
+            client.send_object("MOVE_DOWN")
         if keys[pygame.K_SPACE]:
             client.send_object("ATTACK")
         pygame.draw.rect(screen, (0, 0, 255), (x, y, 50, 50))

@@ -39,17 +39,21 @@ class World:
         self._health = {}
         self._damage = {}
         self._velocity = {}
+        self._direction = {}
         self._enemy = set()
+        self._projectiles = set()
 
         self.map = Map()
 
         self._current_id = -1
-        self.first_player = self.create_entity(position=(1, 1), health=100, damage=50)
+        self.first_player = self.create_entity(position=(1, 1), health=100, damage=50, velocity=(1, 1))
         self.second_player = self.create_entity(position=(MAX_X - 2, MAX_Y - 2))
         self.test_enemy = self.create_entity(position=(MAX_X // 2, MAX_Y // 2), health=100)
         self.add_enemy(self.test_enemy)
 
-    def create_entity(self, position=None, health=None, damage=None) -> int:
+        self.player_moving = False
+
+    def create_entity(self, position=None, health=None, damage=None, velocity=None, direction=None) -> int:
         self._current_id += 1
         if position is not None:
             self._position[self._current_id] = position
@@ -57,6 +61,10 @@ class World:
             self._health[self._current_id] = health
         if damage is not None:
             self._damage[self._current_id] = damage
+        if velocity is not None:
+            self._velocity[self._current_id] = velocity
+        if direction is not None:
+            self._direction[self._current_id] = direction
         return self._current_id
 
     def add_enemy(self, entity_id):
@@ -65,12 +73,21 @@ class World:
     def get_position(self, entity_id):
         return self._position[entity_id]
 
+    # TODO: hit registration (hitbox intersection)
     def move(self, entity_id, dx, dy):
         x = self._position[entity_id][0]
         y = self._position[entity_id][1]
-        if self.map.get(x + dx, y + dy) == 0:
-            self.map.set(x + dx, y + dy, 2)
-            self.map.set(x, y, 0)
+        self._direction[entity_id] = (dx // abs(dx) if dx != 0 else 0, dy // abs(dy) if dy != 0 else 0)
+        if entity_id in self._projectiles:
+            if self.map.get(x + dx, y + dy) == WALL:
+                self.delete_entity(entity_id)
+            elif self.map.get(x + dx, y + dy) != FREE_SPACE:
+                hit_entity = self.map.get(x + dx, y + dy)
+                self._health[hit_entity] -= self._damage[entity_id]
+                self.delete_entity(entity_id)
+        if self.map.get(x + dx, y + dy) == FREE_SPACE:
+            self.map.set(x + dx, y + dy, entity_id)
+            self.map.set(x, y, FREE_SPACE)
             self._position[entity_id] = (x + dx, y + dy)
 
     def get_attackable_entities(self, entity_id):
@@ -89,6 +106,9 @@ class World:
         for enemy in self._enemy:
             change_x, change_y = self.generate_npc_movement(enemy)
             self.move(enemy, change_x, change_y)
+        for projectile in self._projectiles:
+            change_x, change_y = self._direction[projectile][0] * self._velocity[projectile], self._direction[projectile][1] * self._velocity[projectile]
+            self.move(projectile, change_x, change_y)
 
     # TODO: analyze walls
     @staticmethod
@@ -105,6 +125,10 @@ class World:
             self._health[other_entity_id] -= self._damage[entity_id]
             if self._health[other_entity_id] < 0:
                 self.delete_entity(other_entity_id)
+
+    def shoot(self, entity_id):
+        self.create_entity(position=self._position[entity_id], damage=PROJECTILE_DAMAGE, velocity=PROJECTILE_SPEED,
+                           direction=self._direction[entity_id])
 
     def delete_entity(self, entity_id):
         self._position.pop(entity_id, None)
@@ -124,32 +148,40 @@ class World:
     def update(self):
         while not self.server.action_queue.empty():
             player_id, current_action = self.server.action_queue.get()
-            if current_action == "UP":
-                self.move(player_id, 0, -1)
-                self.server.send_obj_to_player(Action.PlayerMoveAction(*self.get_position(self.first_player)),
-                                               self.first_player)
-            if current_action == "DOWN":
-                self.move(player_id, 0, 1)
-                self.server.send_obj_to_player(Action.PlayerMoveAction(*self.get_position(self.first_player)),
-                                               self.first_player)
-            if current_action == "LEFT":
-                self.move(player_id, -1, 0)
-                self.server.send_obj_to_player(Action.PlayerMoveAction(*self.get_position(self.first_player)),
-                                               self.first_player)
-            if current_action == "RIGHT":
-                self.move(player_id, 1, 0)
-                self.server.send_obj_to_player(Action.PlayerMoveAction(*self.get_position(self.first_player)),
-                                               self.first_player)
+            if current_action == "STOP":
+                self.player_moving = False
+            if current_action.starts_with("MOVE"):
+                self.player_moving = True
+                if current_action == "MOVE_UP":
+                    self._direction[self.first_player] = (0, 1)
+                if current_action == "MOVE_DOWN":
+                    self._direction[self.first_player] = (0, -1)
+                if current_action == "MOVE_LEFT":
+                    self._direction[self.first_player] = (-1, 0)
+                if current_action == "MOVE_RIGHT":
+                    self._direction[self.first_player] = (1, 0)
             if current_action == "ATTACK":
                 self.attack(player_id)
+            if self.player_moving is True:
+                self.move(self.first_player, self._direction[self.first_player][0] * self._velocity[self.first_player],
+                          self._direction[self.first_player][1] * self._velocity[self.first_player])
 
         self.move_all_npc()
 
     def send_information(self):
+        entities_to_draw = []
+        if self.player_moving is True:
+            self.server.send_obj_to_player(Action.PlayerMoveAction(*self.get_position(self.first_player)),
+                                           self.first_player)
         visible_entities = self.get_visible_entities(self.first_player)
         for visible_entity in visible_entities:
             if visible_entity in self._enemy:
-                self.server.send_obj_to_player(Action.DrawAction(*self.get_position(visible_entity), "ENEMY"), self.first_player)
+                entities_to_draw.append({'x': self._position[visible_entity][0], 'y': self._position[visible_entity][1],
+                                         'type': "ENEMY"})
+            elif visible_entity in self._projectiles:
+                entities_to_draw.append({'x': self._position[visible_entity][0], 'y': self._position[visible_entity][1],
+                                         'type': "PROJECTILE"})
+        self.server.send_obj_to_player(entities_to_draw, self.first_player)
 
 
 if __name__ == '__main__':
