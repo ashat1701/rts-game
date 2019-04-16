@@ -4,7 +4,7 @@ import Server
 import logging
 import time
 import random
-import Action
+from ActionBuilder import ActionBuilder
 
 # 0 - first player
 # 1 - second player
@@ -35,6 +35,8 @@ class World:
         self.action_queue = queue.Queue()
 
         # Components
+        # TODO: Create classes for different entities. All components should be inside an entity.
+        # TODO: We need only dict that matches id to Entity object and sets for types (enemy, projectile ...)
         self._position = {}
         self._health = {}
         self._damage = {}
@@ -127,7 +129,7 @@ class World:
                 self.delete_entity(other_entity_id)
 
     def shoot(self, entity_id):
-        self.create_entity(position=self._position[entity_id], damage=PROJECTILE_DAMAGE, velocity=PROJECTILE_SPEED,
+        self.create_entity(position=self._position[entity_id], damage=PROJECTILE_DAMAGE, velocity=PROJECTILE_VELOCITY,
                            direction=self._direction[entity_id])
 
     def delete_entity(self, entity_id):
@@ -170,17 +172,18 @@ class World:
 
     def send_information(self):
         entities_to_draw = []
+
         if self.player_moving is True:
-            self.server.send_obj_to_player(Action.PlayerMoveAction(*self.get_position(self.first_player)),
-                                           self.first_player)
+            entities_to_draw.append(ActionBuilder().set_x(self._position[self.first_player][0])
+                                    .set_y(self._position[self.first_player][1]).set_type("PLAYER").get_action())
         visible_entities = self.get_visible_entities(self.first_player)
         for visible_entity in visible_entities:
             if visible_entity in self._enemy:
-                entities_to_draw.append({'x': self._position[visible_entity][0], 'y': self._position[visible_entity][1],
-                                         'type': "ENEMY"})
+                entities_to_draw.append(ActionBuilder().set_x(self._position[visible_entity][0])
+                                        .set_y(self._position[visible_entity][1]).set_type("ENEMY").get_action())
             elif visible_entity in self._projectiles:
-                entities_to_draw.append({'x': self._position[visible_entity][0], 'y': self._position[visible_entity][1],
-                                         'type': "PROJECTILE"})
+                entities_to_draw.append(ActionBuilder().set_x(self._position[visible_entity][0])
+                                        .set_y(self._position[visible_entity][1]).set_type("PROJECTILE").get_action())
         self.server.send_obj_to_player(entities_to_draw, self.first_player)
 
 
