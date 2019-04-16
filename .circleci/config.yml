@@ -16,7 +16,7 @@ jobs:
   buildServerShell:
     docker:
       - image: circleci/python:3.6.4
-     steps:
+    steps:
       - checkout
       - run: python3 -m py_compile server-shell.py
    buildClientShell:
