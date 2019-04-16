@@ -17,8 +17,18 @@ class App:
     def update(self):
         while not self.server.action_queue.empty():
             player_id, current_action = self.server.action_queue.get()
-            if current_action == "MOVE_LEFT":
-                self.logic.move(World.get_first_player_id(), (1, 0))
+            if current_action.startswith("MOVE"):
+                World.first_player_moving = True
+                if current_action == "MOVE_LEFT":
+                    self.logic.move(World.get_first_player_id(), (-1, 0))
+                if current_action == "MOVE_RIGHT":
+                    self.logic.move(World.get_first_player_id(), (1, 0))
+                if current_action == "MOVE_UP":
+                    self.logic.move(World.get_first_player_id(), (0, -1))
+                if current_action == "MOVE_DOWN":
+                    self.logic.move(World.get_first_player_id(), (0, 1))
+            if current_action == "STOP":
+                World.first_player_moving = False
 
         self.logic.move_all_unplayable_entities()
 
@@ -32,9 +42,14 @@ class App:
                 entities_to_draw.append(ActionBuilder().set_x(World.get_position(visible_entity)[0])
                                         .set_y(World.get_position(visible_entity)[1]).set_type("PROJECTILE").get_action())
             if visible_entity == World.get_first_player_id():
-                entities_to_draw.append(ActionBuilder().set_x(World.get_position(World.get_first_player_id())[0])
-                                        .set_y(World.get_position(World.get_first_player_id())[1]).set_type("PLAYER1")
-                                        .get_action())
+                if World.first_player_moving:
+                    entities_to_draw.append(ActionBuilder().set_x(World.get_position(World.get_first_player_id())[0])
+                                            .set_y(World.get_position(World.get_first_player_id())[1]).set_type("PLAYER1")
+                                            .get_action())
+                else:
+                    entities_to_draw.append(ActionBuilder().set_x(World.get_position(World.get_first_player_id())[0])
+                                            .set_y(World.get_position(World.get_first_player_id())[1]).set_type("PLAYER1")
+                                            .get_action())
         self.server.send_obj_to_player(entities_to_draw, World.get_first_player_id())
 
 
