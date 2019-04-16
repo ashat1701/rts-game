@@ -28,7 +28,7 @@ class Client:
                 break
             if not data:
                 logging.error("Disconnect from server")
-                raise ConnectionError("Disconnect from server")
+                break
             obj = pickle.loads(data)
             logging.debug("Object {} received".format(str(obj)))
             self.action_queue.put(obj)
@@ -48,7 +48,14 @@ def reconnect_client_thread(client):
     while True:
         if client.input_thread is None:
             logging.debug("Starting client")
-            client.run()
+            try:
+                client.run()
+            except (OSError, ConnectionError) as e:
+                logging.error("Couldn't connect to server - {}".format(e))
+                time.sleep(1)
+            except Exception as e:
+                logging.error("Undefined exception - {}".format(e))
+                time.sleep(1)
         else:
             if client.input_thread.is_alive():
                 time.sleep(1)
@@ -56,8 +63,11 @@ def reconnect_client_thread(client):
                 logging.warning("client_thread fallen - try to reconnect")
                 try:
                     client.run()
-                except OSError as e:
+                except (OSError, ConnectionError) as e:
                     logging.error("Couldn't connect to server - {}".format(e))
+                    time.sleep(1)
+                except Exception as e:
+                    logging.error("Undefined exception - {}".format(e))
                     time.sleep(1)
 
 
@@ -70,7 +80,7 @@ def reconnecting_client(addr, port=8080):
     while True:
         if client.input_thread is not None:
             break
-    time.sleep(0.1)
+        time.sleep(0.1)
     try:
         yield client
     finally:

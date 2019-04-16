@@ -136,7 +136,7 @@ class World:
         self._damage.pop(entity_id, None)
         self._velocity.pop(entity_id, None)
         self._enemy.remove(entity_id)
-
+ 
     def get_visible_entities(self, entity_id) -> list:
         entities_id = []
         for other_entity_id, entity_position in self._position.items():

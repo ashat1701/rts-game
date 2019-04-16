@@ -26,6 +26,7 @@ class Server:
                 player_id = self.players[addr[0]]
                 self.activeConnections -= 1
                 logging.debug("player # {} - disconnected".format(player_id))
+                self.connections[player_id].close()
                 self.connections[player_id] = None
                 break
             host = addr[0]
@@ -33,6 +34,7 @@ class Server:
                 player_id = self.players[host]
                 self.activeConnections -= 1
                 logging.debug("player # {} - disconnected".format(player_id))
+                self.connections[player_id].close()
                 self.connections[player_id] = None
                 break
             obj = pickle.loads(data)
