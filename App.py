@@ -27,8 +27,13 @@ class App:
                     self.logic.move(World.get_first_player_id(), (0, -1))
                 if current_action == "MOVE_DOWN":
                     self.logic.move(World.get_first_player_id(), (0, 1))
+
+                self.logic.animation_system.\
+                    reset_animation(World.get_first_player_id(), 'walk')
             if current_action == "STOP":
                 World.first_player_moving = False
+                self.logic.animation_system. \
+                    reset_animation(World.get_first_player_id(), 'idle')
 
         self.logic.move_all_unplayable_entities()
 
@@ -42,14 +47,10 @@ class App:
                 entities_to_draw.append(ActionBuilder().set_x(World.get_position(visible_entity)[0])
                                         .set_y(World.get_position(visible_entity)[1]).set_type("PROJECTILE").get_action())
             if visible_entity == World.get_first_player_id():
-                if World.first_player_moving:
-                    entities_to_draw.append(ActionBuilder().set_x(World.get_position(World.get_first_player_id())[0])
-                                            .set_y(World.get_position(World.get_first_player_id())[1]).set_type("PLAYER1")
-                                            .get_action())
-                else:
-                    entities_to_draw.append(ActionBuilder().set_x(World.get_position(World.get_first_player_id())[0])
-                                            .set_y(World.get_position(World.get_first_player_id())[1]).set_type("PLAYER1")
-                                            .get_action())
+                entities_to_draw.append(ActionBuilder().set_x(World.get_position(World.get_first_player_id())[0])
+                                        .set_y(World.get_position(World.get_first_player_id())[1]).set_type("PLAYER1")
+                                        .set_animation_state(*self.logic.animation_system.get_animation_state(0))
+                                        .get_action())
         self.server.send_obj_to_player(entities_to_draw, World.get_first_player_id())
 
 

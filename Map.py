@@ -5,10 +5,10 @@ class Map:
     def __init__(self):
         self._tile = [[0] * MAX_X for _ in range(MAX_Y)]
         for i in range(MAX_Y):
-            self.set(0, i, WALL)
+            #self.set(0, i, WALL)
             self.set(MAX_X - 1, i, WALL)
         for i in range(MAX_X):
-            self.set(i, 0, WALL)
+            #self.set(i, 0, WALL)
             self.set(i, MAX_Y - 1, WALL)
 
     #  tile_type{0 - free space; 1 - wall}

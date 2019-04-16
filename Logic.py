@@ -1,6 +1,7 @@
 from SpawnSystem import SpawnSystem
 from GeometrySystem import GeometrySystem
 from DamageSystem import DamageSystem
+from Animation import AnimationSystem
 from WorldState import World
 import Entity
 from constants import FREE_SPACE, WALL
@@ -11,6 +12,7 @@ class Logic:
         self.spawn_system = SpawnSystem()
         self.geometry_system = GeometrySystem()
         self.damage_system = DamageSystem()
+        self.animation_system = AnimationSystem()
 
     def move(self, entity_id, direction=None):
         x, y = World.get_position(entity_id)
@@ -22,6 +24,7 @@ class Logic:
             self.damage_system.deal_damage(entity_id, World.map.get(x + dx, y + dy))
             World.delete_entity(entity_id)
         if World.map.get(x + dx, y + dy) == FREE_SPACE:
+            print("ХУЙ")
             self.geometry_system.move(entity_id)
         if World.map.get(x + dx, y + dy) == WALL:  # if we intersect the wall, we need to move as close as we can
             # move until he reach the wall

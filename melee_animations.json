@@ -1,0 +1,26 @@
+[
+  {
+    "name": "idle",
+    "folder": "./Sprites/Player/Axe/Defence0/",
+    "sprites": [
+      "Player_Idle_Axe_Defence0_0.png",
+       "Player_Idle_Axe_Defence0_1.png",
+       "Player_Idle_Axe_Defence0_2.png",
+       "Player_Idle_Axe_Defence0_3.png"
+    ],
+    "duration": 200,
+    "play_once": false
+  },
+  {
+    "name": "walk",
+    "folder": "./Sprites/Player/Axe/Defence0/",
+    "sprites": [
+      "Player_Walk_Axe_Defence0_0.png",
+       "Player_Walk_Axe_Defence0_1.png",
+       "Player_Walk_Axe_Defence0_2.png",
+       "Player_Walk_Axe_Defence0_3.png"
+    ],
+    "duration": 200,
+    "play_once": false
+  }
+]

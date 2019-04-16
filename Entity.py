@@ -1,3 +1,6 @@
+from utilities import cls_init, parse_animation_config
+
+
 class Entity:
     def __init__(self):
         self._position = None
@@ -81,9 +84,15 @@ class Projectile(MovableEntity):
         return self._damage
 
 
+@cls_init
 class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
+
+    @classmethod
+    def cls_init(cls):
+        cls.animations = parse_animation_config('./melee_animations.json')
+        cls.default_animation = 'walk'
 
     def attack(self):
         pass

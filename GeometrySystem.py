@@ -5,7 +5,7 @@ from random import randint
 
 class GeometrySystem:
     def move(self, entity_id):
-        entity = World.movable_entities[entity_id]
+        entity = World.entity[entity_id]
         World.map.set(*entity.get_position(), FREE_SPACE)
         entity.move()
         World.map.set(*entity.get_position(), entity_id)

@@ -17,22 +17,16 @@ class ActionBuilder:
         self._action[2] = type_
         return self
 
-    def set_animation(self, name):
+    def set_animation_state(self, name, frame):
         self._action[3] = name
-        return self
-
-    def set_frame(self, frame):
         self._action[4] = frame
         return self
 
     def get_action(self):
         return self._action
 
-    def get_animation(self):
-        return self._action[3]
-
-    def get_frame(self):
-        return self._action[4]
+    def get_animation_state(self):
+        return self._action[3], self._action[4]
 
     def get_x(self):
         return self._action[0]
