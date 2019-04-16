@@ -16,6 +16,7 @@ class Logic:
         x, y = World.get_position(entity_id)
         if direction is None:
             direction = World.get_direction(entity_id)
+        World.set_direction(entity_id, direction)
         dx, dy = [i * World.get_velocity(entity_id) for i in direction]
         if isinstance(World.entity[entity_id], Entity.Projectile) and World.map.get(x + dx, y + dy) > 0:  # if projectile hit some entity
             self.damage_system.deal_damage(entity_id, World.map.get(x + dx, y + dy))
@@ -29,5 +30,3 @@ class Logic:
     def move_all_unplayable_entities(self):
         for entity in World.movable_entities:
             self.move(entity)
-
-print(1)
