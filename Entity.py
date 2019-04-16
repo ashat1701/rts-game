@@ -1,14 +1,42 @@
 class Entity:
-    def __init__(self, position, id):
-        self._position = position
+    def __init__(self):
+        self._position = None
+        self._id = None
+
+    def set_id(self, id):
         self._id = id
+        return self
+
+    def set_position(self, position):
+        self._position = position
+        return self
+
+    def get_position(self):
+        return self._position
+
+    def get_id(self):
+        return self._id
 
 
 class MoveableEntity(Entity):
-    def __init__(self, position, id, velocity, direction):
-        super().__init__(position, id)
+    def __init__(self):
+        super().__init__()
+        self._velocity = None
+        self._direction = None
+
+    def set_velocity(self, velocity):
         self._velocity = velocity
+        return self
+
+    def set_direction(self, direction):
         self._direction = direction
+        return self
+
+    def get_velocity(self):
+        return self._velocity
+
+    def get_direction(self):
+        return self._direction
 
     def move(self, direction):
         self._direction = direction
@@ -18,19 +46,53 @@ class MoveableEntity(Entity):
 
 
 class Enemy(MoveableEntity):
-    def __init__(self, position, id, velocity, direction, health, damage):
-        super().__init__(position, id, velocity, direction)
+    def __init__(self):
+        super().__init__()
+        self._health = None
+        self._damage = None
+
+    def set_health(self, health):
         self._health = health
+        return self
+
+    def set_damage(self, damage):
         self._damage = damage
+        return self
+
+    def get_health(self):
+        return self._health
+
+    def get_damage(self):
+        return self._damage
 
     def attack(self):
         raise NotImplementedError
 
 
 class Projectile(MoveableEntity):
-    def __init__(self, position, id, velocity, direction):
-        super().__init__(position, id, velocity, direction)
+    def __init__(self):
+        super().__init__()
+        self._damage = None
+
+    def set_damage(self, damage):
+        self._damage = damage
+        return self
+
+    def get_damage(self):
+        return self._damage
 
 
 class MeleeEnemy(Enemy):
-    pass
+    def __init__(self):
+        super().__init__()
+
+    def attack(self):
+        pass
+
+
+class RangedEnemy(Enemy):
+    def __init__(self):
+        super().__init__()
+
+    def attack(self):
+        pass

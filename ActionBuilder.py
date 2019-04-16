@@ -6,12 +6,15 @@ class ActionBuilder:
 
     def set_x(self, x):
         self._action[0] = x
+        return self
 
     def set_y(self, y):
         self._action[1] = y
+        return self
 
     def set_type(self, type):
         self._action[2] = type
+        return self
 
     def get_x(self):
         return self._action[0]
