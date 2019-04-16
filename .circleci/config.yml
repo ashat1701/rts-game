@@ -6,6 +6,7 @@ jobs:
       - image: circleci/python:3.6.4
     steps:
       - checkout
+      - run: python3 Server.py
       - run: python3 Client.py
   test:
     docker:
