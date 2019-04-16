@@ -13,7 +13,7 @@ jobs:
     steps:
       - checkout
       - run: python3 -m py_compile Server.py
-  build-shell-server:
+  build-app:
     docker:
       - image: circleci/python:3.6.4
     steps:
