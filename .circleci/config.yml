@@ -32,5 +32,4 @@ workflows:
         jobs:
           - build-client
           - build-server
-          - build-server-shell
-          - build-client-shell
+
