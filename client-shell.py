@@ -1,7 +1,7 @@
 import pygame
 import Client
 import logging
-import Action
+import ActionBuilder
 import time
 from queue import Queue
 
@@ -20,10 +20,10 @@ with Client.reconnecting_client(addr='127.0.0.1') as client:
         logging.basicConfig(level=logging.DEBUG)
         while not client.action_queue.empty():
             current_action = client.action_queue.get()
-            if type(current_action) == Action.PlayerMoveAction:
+            if type(current_action) == ActionBuilder.PlayerMoveAction:
                 x = current_action.x
                 y = current_action.y
-            if type(current_action) == Action.DrawAction:
+            if type(current_action) == ActionBuilder.DrawAction:
                 if current_action.type == "ENEMY":
                     pygame.draw.rect(screen, (255, 0, 0), (current_action.x, current_action.y, 50, 50))
 
