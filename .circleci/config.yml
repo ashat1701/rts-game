@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/python3
+    steps:
+      - checkout
+      - run: python3 Client.py
+  test:
+    docker:
+      - image: circleci/python3
+    steps:
+      - checkout
+      - run: python3 tests/client_test.py
+
+
+workflows:
+    "Start client":
+        jobs:
+          - build
+          - test
