@@ -13,10 +13,16 @@ jobs:
     steps:
       - checkout
       - run: python3 -m py_compile Server.py
-
+  build-shell:
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout
+      - run: python3 -m py_compile server-shell.py
+   
 workflows:
     "Build All":
         jobs:
           - build-client
           - build-server
-
+          - build-shell
