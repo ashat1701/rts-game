@@ -1,25 +1,25 @@
 version: 2.1
 
 jobs:
-  buildClient:
+  build-client:
     docker:
       - image: circleci/python:3.6.4
     steps:
       - checkout
       - run: python3 -m py_compile Client.py
-  buildServer:
+  build-server:
     docker:
       - image: circleci/python:3.6.4
     steps:
       - checkout
       - run: python3 -m py_compile Server.py
-  buildServerShell:
+  build-server-shell:
     docker:
       - image: circleci/python:3.6.4
     steps:
       - checkout
       - run: python3 -m py_compile server-shell.py
-   buildClientShell:
+   build-client-shell:
     docker:
       - image : circleci/python:3.6.4
     steps:
@@ -30,7 +30,7 @@ jobs:
 workflows:
     "Build All":
         jobs:
-          - buildClient
-          - buildServer
-          - buildServerShell
-          - buildClientShell
+          - build-client
+          - build-server
+          - build-server-shell
+          - build-client-shell
