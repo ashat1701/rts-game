@@ -18,7 +18,7 @@ class Entity:
         return self._id
 
 
-class MoveableEntity(Entity):
+class MovableEntity(Entity):
     def __init__(self):
         super().__init__()
         self._velocity = None
@@ -38,14 +38,13 @@ class MoveableEntity(Entity):
     def get_direction(self):
         return self._direction
 
-    def move(self, direction):
-        self._direction = direction
+    def move(self):
         dx = self._direction[0] * self._velocity
         dy = self._direction[1] * self._velocity
         self._position = (self._position[0] + dx, self._position[1] + dy)
 
 
-class Enemy(MoveableEntity):
+class Enemy(MovableEntity):
     def __init__(self):
         super().__init__()
         self._health = None
@@ -69,7 +68,7 @@ class Enemy(MoveableEntity):
         raise NotImplementedError
 
 
-class Projectile(MoveableEntity):
+class Projectile(MovableEntity):
     def __init__(self):
         super().__init__()
         self._damage = None

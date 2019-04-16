@@ -4,8 +4,7 @@ from random import randint
 from constants import *
 
 
-
-class Spawner:
+class SpawnSystem:
     def __init__(self):
         self._current_id = -1
         self._enemy_types = []
@@ -22,6 +21,7 @@ class Spawner:
         entity = enemy_type().set_damage(damage).set_velocity(ENEMY_VELOCITY)\
             .set_damage(damage).set_direction(direction).set_position(position).set_health(health).set.set_id(self._current_id)
         World.entity[self._current_id] = entity
+        World.movable_entities.add(self._current_id)
         World.enemies.add(self._current_id)
 
     def create_player(self):

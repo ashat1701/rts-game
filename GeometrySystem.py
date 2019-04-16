@@ -3,14 +3,12 @@ from constants import *
 from random import randint
 
 
-class Geometry:
-    # TODO: hit registration (hitbox intersection)
+class GeometrySystem:
     def move(self, entity_id):
-        x, y = World.get_position(entity_id)
-        dx, dy = [i * World.get_velocity(entity_id) for i in World.get_direction(entity_id)]
-        World.map.set(x + dx, y + dy, entity_id)
-        World.map.set(x, y, FREE_SPACE)
-        World.set_position[entity_id] = (x + dx, y + dy)
+        entity = World.movable_entities[entity_id]
+        World.map.set(*entity.get_position(), FREE_SPACE)
+        entity.move()
+        World.map.set(*entity.get_position(), entity_id)
 
     @staticmethod
     def _is_visible(position1: tuple, position2: tuple) -> bool:
@@ -30,12 +28,3 @@ class Geometry:
     # TODO: A*
     def generate_npc_movement(self, npc_id):
         return randint(-1, 1), randint(-1, 1)
-
-    # May be World.moveable_entities?
-    def move_all_npc(self):
-        for entity_id in World.entity.keys():
-            self.move(entity_id)
-
-a = {1: '1'}
-
-print(1 in a)
