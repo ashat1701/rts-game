@@ -1,10 +1,8 @@
 import pygame
-import Client
 import logging
-import ActionBuilder
+import Client
+from src.Server import ActionBuilder
 import time
-from queue import Queue
-
 
 pygame.init()
 

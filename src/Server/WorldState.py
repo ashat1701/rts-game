@@ -1,4 +1,4 @@
-import Map
+from src import Map
 
 
 class WorldState:

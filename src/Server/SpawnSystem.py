@@ -1,8 +1,8 @@
-import Entity
-from WorldState import World
+from src import Entity
+from src.Server.WorldState import World
 from random import randint
-from constants import *
-from Entity import MeleeEnemy
+from src.utility.constants import *
+from src.Entity import MeleeEnemy
 
 
 class SpawnSystem:

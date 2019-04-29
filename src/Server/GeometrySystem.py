@@ -1,5 +1,5 @@
-from WorldState import World
-from constants import *
+from src.Server.WorldState import World
+from src.utility.constants import *
 from random import randint
 
 

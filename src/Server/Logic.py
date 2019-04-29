@@ -1,10 +1,10 @@
-from SpawnSystem import SpawnSystem
-from GeometrySystem import GeometrySystem
-from DamageSystem import DamageSystem
-from Animation import AnimationSystem
-from WorldState import World
-import Entity
-from constants import FREE_SPACE, WALL
+from src.Server.SpawnSystem import SpawnSystem
+from src.Server.GeometrySystem import GeometrySystem
+from src.Server.DamageSystem import DamageSystem
+from src.Server.Animation import AnimationSystem
+from src.Server.WorldState import World
+import src.Entity
+from src.utility.constants import FREE_SPACE, WALL
 
 
 class Logic:
@@ -20,7 +20,7 @@ class Logic:
             direction = World.get_direction(entity_id)
         World.set_direction(entity_id, direction)
         dx, dy = [i * World.get_velocity(entity_id) for i in direction]
-        if isinstance(World.entity[entity_id], Entity.Projectile) and World.map.get(x + dx, y + dy) > 0:  # if projectile hit some entity
+        if isinstance(World.entity[entity_id], src.Entity.Projectile) and World.map.get(x + dx, y + dy) > 0:  # if projectile hit some entity
             self.damage_system.deal_damage(entity_id, World.map.get(x + dx, y + dy))
             World.delete_entity(entity_id)
         if World.map.get(x + dx, y + dy) == FREE_SPACE:

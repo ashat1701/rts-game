@@ -1,10 +1,10 @@
 import Server
 import logging
 import queue
-import Logic
+from src.Server import Logic
 import time
-from WorldState import World
-from ActionBuilder import ActionBuilder
+from src.Server.WorldState import World
+from src.Server.ActionBuilder import ActionBuilder
 
 
 class App:

@@ -1,6 +1,5 @@
-from constants import *
 import time
-from WorldState import World
+from src.Server.WorldState import World
 
 
 class Animation:
