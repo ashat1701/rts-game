@@ -1,7 +1,7 @@
 import pygame
 import logging
-import src.Client.Client as Client
-from src.Server import ActionBuilder
+from .Client import Client
+from ..Server import ActionBuilder
 import time
 
 pygame.init()

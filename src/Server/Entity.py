@@ -1,4 +1,4 @@
-from src.utility.utilities import cls_init, parse_animation_config
+from ..utility.utilities import cls_init, parse_animation_config
 
 
 class Entity:

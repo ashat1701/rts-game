@@ -1,8 +1,8 @@
-from src import Entity
-from src.Server.WorldState import World
+from .Entity import Enemy
+from .WorldState import World
 from random import randint
-from src.utility.constants import *
-from src.Entity import MeleeEnemy
+from ..utility.constants import *
+from .Entity import MeleeEnemy
 
 
 class SpawnSystem:
@@ -14,7 +14,7 @@ class SpawnSystem:
         self.create_player()
 
 
-    def add_enemy_type(self, enemy_type: Entity.Enemy):
+    def add_enemy_type(self, enemy_type: Enemy):
         self._enemy_types.append(enemy_type)
 
     def create_enemy(self, position=None):

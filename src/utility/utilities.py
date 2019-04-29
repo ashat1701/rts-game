@@ -1,6 +1,7 @@
 import json
 from src.Server.Animation import Animation
 
+
 def cls_init(cls):
     cls.cls_init()
     return cls
