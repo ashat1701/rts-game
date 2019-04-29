@@ -1,8 +1,9 @@
 import time
+import json
 from src.Server.WorldState import World
 
 
-class Animation:
+class StaticAnimation:
     def __init__(self, duration: int, frame_num: int, play_once: bool):
         self.duration = duration
         self.frame_num = frame_num
@@ -59,9 +60,20 @@ class AnimationSystem:
         self.animation_states[id_] = PlayableAnimationState(entity.animations)
         self.animation_states[id_].reset_animation(entity.default_animation)
 
-
     def get_animation_state(self, id_):
         if id_ not in self.animation_states:
             self.add_entity(id_)
 
         return self.animation_states[id_].get_animation_state()
+
+    @staticmethod
+    def parse_config(filename: str):
+        with open(filename) as f:
+            config = json.load(f)
+
+        animations = {anim['name']: StaticAnimation(anim['duration'],
+                                                    len(anim['sprites']),
+                                                    anim['play_once'])
+                      for anim in config}
+
+        return animations
