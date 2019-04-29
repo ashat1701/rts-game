@@ -1,7 +1,7 @@
 [
   {
     "name": "idle",
-    "folder": "./Sprites/Player/Axe/Defence0/",
+    "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
     "sprites": [
       "Player_Idle_Axe_Defence0_0.png",
        "Player_Idle_Axe_Defence0_1.png",
@@ -13,7 +13,7 @@
   },
   {
     "name": "walk",
-    "folder": "./Sprites/Player/Axe/Defence0/",
+    "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
     "sprites": [
       "Player_Walk_Axe_Defence0_0.png",
        "Player_Walk_Axe_Defence0_1.png",

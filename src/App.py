@@ -18,7 +18,6 @@ class App:
         while not self.server.action_queue.empty():
             player_id, current_action = self.server.action_queue.get()
             if current_action.startswith("MOVE"):
-                World.first_player_moving = True
                 if current_action == "MOVE_LEFT":
                     self.logic.move(World.get_first_player_id(), (-1, 0))
                 if current_action == "MOVE_RIGHT":
@@ -28,8 +27,12 @@ class App:
                 if current_action == "MOVE_DOWN":
                     self.logic.move(World.get_first_player_id(), (0, 1))
 
-                self.logic.animation_system.\
-                    reset_animation(World.get_first_player_id(), 'walk')
+
+                # TODO Animation swaps and resets must be inside animation system!!!
+                if not World.first_player_moving:
+                    World.first_player_moving = True
+                    self.logic.animation_system.\
+                        reset_animation(World.get_first_player_id(), 'walk')
             if current_action == "STOP":
                 World.first_player_moving = False
                 self.logic.animation_system. \

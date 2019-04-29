@@ -1,24 +1,20 @@
 import pygame
-import Client
+from src.Client.Client import reconnecting_client
 import logging
-import Action
 import time
-from client_config import *
-import os
-from resources import SpriteSheet, Sprite
 from queue import Queue
-from entities import MeleeSprite
+from src.Client.EntitySprite import MeleeSprite
 
 
-class Frontend:
-    def __init__(self):
-        os.environ['SDL_VIDEO_CENTERED'] = '1'
-        pygame.init()
-        pygame.display.set_caption(SCREEN_TITLE)
-        pygame.mouse.set_visible(False)
-        self.fullscreen = False
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
-                                              pygame.HWSURFACE | pygame.DOUBLEBUF)
+# class Frontend:
+#     def __init__(self):
+#         os.environ['SDL_VIDEO_CENTERED'] = '1'
+#         pygame.init()
+#         pygame.display.set_caption(SCREEN_TITLE)
+#         pygame.mouse.set_visible(False)
+#         self.fullscreen = False
+#         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
+#                                               pygame.HWSURFACE | pygame.DOUBLEBUF)
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -80,15 +76,17 @@ entities = {}
 #     screen.blit(player.get_sprite(), (player.x, player.y))
 #     pygame.display.update()
 player = MeleeSprite(0, 0, 'idle', frame=0)
-with Client.reconnecting_client(addr='127.0.0.1') as client:
+clock = pygame.time.Clock()
+with reconnecting_client(addr='127.0.0.1') as client:
     while running:
+        clock.tick(20)
         screen.fill((0, 0, 0))
         time.sleep(0.01)
         logging.basicConfig(level=logging.DEBUG)
         while not client.action_queue.empty():
             current_action = client.action_queue.get()[0]
-            player.set_cords(current_action[0], current_action[1])
-            player.set_sprite(current_action[3], current_action[4])
+            player.set_position(current_action[0], current_action[1])
+            player.set_animation(current_action[3], current_action[4])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

@@ -1,7 +1,7 @@
 import pygame
 import logging
 import os
-from client_config import *
+from src.utility.client_config import *
 import json
 
 
@@ -58,40 +58,3 @@ class SpriteSheet(object):
         x = column * (self.size + self.margin)
         y = row * (self.size + self.margin)
         return x, y
-
-
-class Sprite:
-    def __init__(self, spritesheet: SpriteSheet, row: int, column: int):
-        self.image = spritesheet.get_sprite(row, column)
-
-    def get_sprite(self) -> pygame.Surface:
-        return self.image
-
-
-class Animation:
-    def __init__(self, filenames, scale=SCALE_FACTOR):
-        images = [pygame.image.load(f) for f in filenames]
-        self.images = [pygame.transform.scale(img, (
-        img.get_height() * scale, img.get_width() * scale))
-                       for img in images]
-
-    def __getitem__(self, item: int) -> pygame.Surface:
-        return self.images[item]
-
-    def __len__(self):
-        return len(self.images)
-
-
-def parse_animation_config(filename: str):
-    with open(filename) as f:
-        config = json.load(f)
-    print(config[0]['folder'])
-    animations = {
-    anim['name']: Animation(get_paths(anim['folder'], anim['sprites']))
-    for anim in config}
-
-    return animations
-
-
-def get_paths(folder, filenames):
-    return [os.path.join(folder, f) for f in filenames]
