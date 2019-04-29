@@ -1,4 +1,4 @@
-import Server
+import src.Server.Server as Server
 import logging
 import queue
 from src.Server import Logic
