@@ -1,4 +1,5 @@
-from ..utility.utilities import cls_init, parse_animation_config
+from src.Server.Animation import parse_config
+from src.utility.utilities import cls_init
 
 
 class Entity:
@@ -91,8 +92,9 @@ class MeleeEnemy(Enemy):
 
     @classmethod
     def cls_init(cls):
-        cls.animations = parse_animation_config('./melee_animations.json')
-        cls.default_animation = 'walk'
+        cls.animations = parse_config(
+            './utility/animations/melee_animations.json')
+        cls.default_animation = 'idle'
 
     def attack(self):
         pass

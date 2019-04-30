@@ -1,5 +1,7 @@
 import json
-from src.Server.Animation import Animation
+from src.Server.Animation import StaticAnimation
+import os
+
 
 
 def cls_init(cls):
@@ -7,13 +9,5 @@ def cls_init(cls):
     return cls
 
 
-def parse_animation_config(filename: str):
-    with open(filename) as f:
-        config = json.load(f)
-
-    animations = {anim['name']: Animation(anim['duration'],
-                                          len(anim['sprites']),
-                                          anim['play_once'])
-                  for anim in config}
-
-    return animations
+def join_paths(folder, filenames):
+    return [os.path.join(folder, f) for f in filenames]
