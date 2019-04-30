@@ -24,7 +24,6 @@ class Logic:
             self.damage_system.deal_damage(entity_id, World.map.get(x + dx, y + dy))
             World.delete_entity(entity_id)
         if World.map.get(x + dx, y + dy) == FREE_SPACE:
-            print("ХУЙ")
             self.geometry_system.move(entity_id)
         if World.map.get(x + dx, y + dy) == WALL:  # if we intersect the wall, we need to move as close as we can
             # move until he reach the wall
