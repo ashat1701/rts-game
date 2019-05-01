@@ -169,6 +169,12 @@ class Map:
 
                     if self.level[row + 1][col + 1] == STONE:
                         self.level[row + 1][col + 1] = WALL
+        self._tile = [[] for i in range(self.height * MAP_SCALE)]
+        for i in range(self.height):
+            for j in range(self.width):
+                text = self.level[i][j]
+                for k in range(MAP_SCALE):
+                    self._tile[i * MAP_SCALE + k] += [text] * MAP_SCALE
 
     #  tile_type{0 - free space; 1 - wall}
     def set(self, x, y, tile_type):
@@ -189,7 +195,7 @@ class Map:
 
 if __name__ == "__main__":
     map = Map(height=60, width=60, max_rooms=7, max_room_len=8, min_room_len=8, random_connections=3)
-    for i in map.level:
+    for i in map._tile:
         for j in i:
             if (j == -1):
                 print("#", end="")
