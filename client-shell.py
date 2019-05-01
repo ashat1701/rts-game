@@ -1,8 +1,10 @@
 import pygame
+pygame.init()
+screen = pygame.display.set_mode((500, 500))
+
 from src.Client.Client import reconnecting_client
 import logging
 import time
-from queue import Queue
 from src.Client.EntitySprite import MeleeSprite
 
 
@@ -18,9 +20,7 @@ from src.Client.EntitySprite import MeleeSprite
 
 
 logging.basicConfig(level=logging.DEBUG)
-pygame.init()
 
-screen = pygame.display.set_mode((500, 500))
 
 running = True
 x = 250
