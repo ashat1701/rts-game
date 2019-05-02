@@ -1,6 +1,7 @@
 from src.Server.WorldState import World
 from src.utility.constants import *
 from random import randint
+from math import sin, cos
 
 
 class GeometrySystem:
@@ -10,6 +11,38 @@ class GeometrySystem:
     #     World.map.set(*entity.get_position(), FREE_SPACE)
     #     entity.move()
     #     World.map.set(*entity.get_position(), entity_id)
+    
+    def get_visible_tiles(self, entity_id):
+        # Обновлять glare для правильного игрока
+        glare_map = None
+        visible_tiles = []
+        if entity_id == World.first_player_id:
+            glare_map = World.first_player_glare
+        if entity_id == World.second_player_id:
+            glare_map = World.second_player_id
+
+        for i in range(360):
+            deg = i * 3.1415 / 180
+            x0 = World.get_box(entity_id).centerx / MAP_SCALE
+            y0 = World.get_box(entity_id).centery / MAP_SCALE
+            x = round(cos(deg) * VISION_RANGE) + World.get_box(entity_id).centerx // MAP_SCALE
+            y = round(sin(deg) * VISION_RANGE) + World.get_box(entity_id).centery // MAP_SCALE
+
+            diag_dist = max(abs(x - x0), abs(y - y0))
+
+            for j in range(diag_dist):
+                tx = round(x0 + (j / diag_dist) * (x - x0))
+                ty = round(y0 + (j / diag_dist) * (y - y0))
+
+                if (tx < 0 or tx >= World.map.width) or (ty < 0 or ty >= World.map.height):
+                    break
+                if World.map.level[tx][ty] == WALL:
+                    visible_tiles.append((tx, ty))
+                    break
+                visible_tiles.append((tx, ty))
+                if glare_map is not None:
+                    glare_map[tx][ty] = 1
+        return visible_tiles
 
     # TODO: нормальная система зрения
     @staticmethod
