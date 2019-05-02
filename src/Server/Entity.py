@@ -119,7 +119,7 @@ class MeleeEnemy(Enemy):
         super().__init__()
 
     dirname = os.path.dirname(__file__)
-    animations, directions_binds = parse_config(
+    animations, direction_binds = parse_config(
         os.path.join(dirname, '../utility/animations/melee_animations.json'))
     default_animation = 'idle'
 

@@ -12,8 +12,6 @@ class WorldState:
         self.second_player_glare = deepcopy(self.map.level)
         self.first_player_id = 0
         self.second_player_id = 1
-        self.first_player_moving = False
-        self.second_player_moving = False
 
     def get_first_player_id(self):
         return self.first_player_id

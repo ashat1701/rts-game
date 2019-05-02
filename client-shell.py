@@ -90,17 +90,25 @@ with reconnecting_client(addr='127.0.0.1') as client:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            client.send_object("MOVE_LEFT")
-        if keys[pygame.K_RIGHT]:
-            client.send_object("MOVE_RIGHT")
-        if keys[pygame.K_UP]:
-            client.send_object("MOVE_UP")
-        if keys[pygame.K_DOWN]:
-            client.send_object("MOVE_DOWN")
-        if keys[pygame.K_SPACE]:
-            client.send_object("STOP")
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    client.send_object("MOVE_RIGHT")
+                elif event.key == pygame.K_LEFT:
+                    client.send_object("MOVE_LEFT")
+                elif event.key == pygame.K_DOWN:
+                    client.send_object("MOVE_DOWN")
+                elif event.key == pygame.K_UP:
+                    client.send_object("MOVE_UP")
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    client.send_object("STOP_MOVE_RIGHT")
+                elif event.key == pygame.K_LEFT:
+                    client.send_object("STOP_MOVE_LEFT")
+                elif event.key == pygame.K_DOWN:
+                    client.send_object("STOP_MOVE_DOWN")
+                elif event.key == pygame.K_UP:
+                    client.send_object("STOP_MOVE_UP")
+
         screen.blit(player.get_sprite(), (player.x, player.y))
         pygame.display.update()
         pygame.event.pump()

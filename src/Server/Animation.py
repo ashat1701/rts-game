@@ -12,11 +12,12 @@ class StaticAnimation:
 
 
 class AnimationSet:
-    def __init__(self, animations):
+    def __init__(self, animations, direction_binds):
         self._possible_animations = animations
         self._cur_animation_name = None
         self._cur_frame_start = None
         self._cur_frame = None
+        self._direction_binds = direction_binds
 
     def get_state(self):
         time_delta = int(time.time() * 1000) - self._cur_frame_start
@@ -45,35 +46,49 @@ class AnimationSet:
     def cur_animation(self):
         return self._possible_animations[self._cur_animation_name]
 
+    def get_move_animation(self, direction):
+        if self._direction_binds is None:
+            raise RuntimeError("Direction binds for this animation set were"
+                               "not specified in config")
+        return self._direction_binds[direction]
+
 
 class AnimationSystem:
     def __init__(self):
-        self.anim_sets = {}
+        self._anim_sets = {}
 
     def reset_animation(self, id_, animation_name):
-        if id_ not in self.anim_sets:
+        if id_ not in self._anim_sets:
             self.add_entity(id_)
 
-        self.anim_sets[id_].reset_animation(animation_name)
+        self._anim_sets[id_].reset_animation(animation_name)
 
     def continue_or_reset(self, id_, animation_name):
-        if id_ not in self.anim_sets:
+        if id_ not in self._anim_sets:
             self.add_entity(id_)
 
-        if self.anim_sets[id_].get_state()[0] != animation_name:
+        if self._anim_sets[id_].get_state()[0] != animation_name:
             self.reset_animation(id_, animation_name)
 
     def add_entity(self, id_):
         logging.info("AnimationSystem: Added entity {}".format(id_))
         entity = World.entity[id_]
-        self.anim_sets[id_] = AnimationSet(entity.animations)
-        self.anim_sets[id_].reset_animation(entity.default_animation)
+        self._anim_sets[id_] = AnimationSet(entity.animations,
+                                            entity.direction_binds)
+        self._anim_sets[id_].reset_animation(entity.default_animation)
 
     def get_animation_state(self, id_):
-        if id_ not in self.anim_sets:
+        if id_ not in self._anim_sets:
             self.add_entity(id_)
 
-        return self.anim_sets[id_].get_state()
+        return self._anim_sets[id_].get_state()
+
+    def continue_or_reset_move_animation(self, id_, direction):
+        required_anim = self.get_move_animation(id_, direction)
+        self.continue_or_reset(id_, required_anim)
+
+    def get_move_animation(self, id_, direction):
+        return self._anim_sets[id_].get_move_animation(direction)
 
 
 def parse_config(filename: str):

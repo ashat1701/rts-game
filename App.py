@@ -22,19 +22,31 @@ class App:
 
     def send_information(self):
         entities_to_draw = []
-        for visible_entity in self.logic.geometry_system.get_visible_entities(World.get_first_player_id()):
+        for visible_entity in self.logic.geometry_system.get_visible_entities(
+                World.get_first_player_id()):
             if visible_entity in World.enemies:
-                entities_to_draw.append(ActionBuilder().set_x(World.get_position(visible_entity)[0])
-                                        .set_y(World.get_position(visible_entity)[1]).set_type("ENEMY").get_action())
+                entities_to_draw.append(ActionBuilder().set_x(
+                    World.get_position(visible_entity)[0])
+                                        .set_y(
+                    World.get_position(visible_entity)[1]).set_type(
+                    "ENEMY").get_action())
             if visible_entity in World.projectiles:
-                entities_to_draw.append(ActionBuilder().set_x(World.get_position(visible_entity)[0])
-                                        .set_y(World.get_position(visible_entity)[1]).set_type("PROJECTILE").get_action())
+                entities_to_draw.append(ActionBuilder().set_x(
+                    World.get_position(visible_entity)[0])
+                                        .set_y(
+                    World.get_position(visible_entity)[1]).set_type(
+                    "PROJECTILE").get_action())
             if visible_entity == World.get_first_player_id():
-                entities_to_draw.append(ActionBuilder().set_x(World.get_position(World.get_first_player_id())[0])
-                                        .set_y(World.get_position(World.get_first_player_id())[1]).set_type("PLAYER1")
-                                        .set_animation_state(*self.logic.animation_system.get_animation_state(0))
+                entities_to_draw.append(ActionBuilder().set_x(
+                    World.get_position(World.get_first_player_id())[0])
+                                        .set_y(
+                    World.get_position(World.get_first_player_id())[
+                        1]).set_type("PLAYER1")
+                                        .set_animation_state(
+                    *self.logic.animation_system.get_animation_state(0))
                                         .get_action())
-        self.server.send_obj_to_player(entities_to_draw, World.get_first_player_id())
+        self.server.send_obj_to_player(entities_to_draw,
+                                       World.get_first_player_id())
 
     def analyze_action(self, action):
         player_id, current_action = action
@@ -60,15 +72,10 @@ class App:
                 new_direction = (World.get_direction(player_id)[0], 0)
             World.set_direction(player_id, new_direction)
 
-            # TODO Animation swaps and resets must be inside animation system!!!
-        if not World.first_player_moving:
-            World.first_player_moving = True
-            self.logic.animation_system. \
-                reset_animation(World.get_first_player_id(), 'walk')
-        if current_action == "STOP":
-            World.first_player_moving = False
-            self.logic.animation_system. \
-                reset_animation(World.get_first_player_id(), 'idle')
+        self.logic.animation_system.continue_or_reset_move_animation(
+            player_id,
+            World.get_direction(player_id)
+        )
 
 
 if __name__ == '__main__':
