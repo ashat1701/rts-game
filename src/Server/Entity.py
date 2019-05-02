@@ -85,17 +85,15 @@ class Projectile(MovableEntity):
         return self._damage
 
 
-@cls_init
+# TODO MAKE LOADING ANIMATIONS MORE ROBUST
 class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
 
-    @classmethod
-    def cls_init(cls):
-        dirname = os.path.dirname(__file__)
-        cls.animations = parse_config(
-            os.path.join(dirname, '../utility/animations/melee_animations.json'))
-        cls.default_animation = 'idle'
+    dirname = os.path.dirname(__file__)
+    animations, directions_binds = parse_config(
+        os.path.join(dirname, '../utility/animations/melee_animations.json'))
+    default_animation = 'idle'
 
     def attack(self):
         pass

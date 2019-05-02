@@ -80,9 +80,41 @@ def parse_config(filename: str):
     with open(filename) as f:
         config = json.load(f)
 
-    animations = {anim['name']: StaticAnimation(anim['frame_duration'],
-                                                len(anim['sprites']),
-                                                anim['play_once'])
-                  for anim in config}
+    animations = _parse_animations(config)
+    direction_binds = _parse_direction_binds(config)
+    return animations, direction_binds
+
+
+def _parse_animations(config_obj):
+    animations = {}
+    for anim in config_obj:
+        if anim['name'] in animations:
+            raise RuntimeError("Animation {} is specified twice")
+
+        static_anim = StaticAnimation(anim['frame_duration'],
+                                      len(anim['sprites']),
+                                      anim['play_once'])
+        animations[anim['name']] = static_anim
 
     return animations
+
+
+def _parse_direction_binds(config_obj):
+    binds = {}
+    for anim, direction in _iter_all_binds(config_obj):
+        if direction in binds:
+            raise RuntimeError("Animation to direction {} was binded twice"
+                               .format(direction))
+        binds[direction] = anim['name']
+
+    if len(binds) != 9 and len(binds) != 0:
+        raise RuntimeError("Animation has at least one direction bind in "
+                           "which case all of them are required")
+
+    return binds if len(binds) != 0 else None
+
+
+def _iter_all_binds(config_obj):
+    for anim in config_obj:
+        for direction in anim.get('direction_binds', []):
+            yield anim, tuple(direction)
