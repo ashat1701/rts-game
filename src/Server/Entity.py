@@ -6,6 +6,7 @@ class Entity:
     def __init__(self):
         self._position = None
         self._id = None
+        self.box = None # box - это хитбокс (pygame.rect для готовой геометрии)
 
     def set_id(self, id):
         self._id = id
@@ -20,6 +21,13 @@ class Entity:
 
     def get_id(self):
         return self._id
+
+    def set_box(self, box):
+        self.box = box
+        return self
+
+    def get_box(self):
+        return self.box
 
 
 class MovableEntity(Entity):
@@ -45,7 +53,7 @@ class MovableEntity(Entity):
     def move(self):
         dx = self._direction[0] * self._velocity
         dy = self._direction[1] * self._velocity
-        self._position = (self._position[0] + dx, self._position[1] + dy)
+        self.box.move_ip(dx, dy)
 
 
 class Enemy(MovableEntity):
@@ -53,14 +61,30 @@ class Enemy(MovableEntity):
         super().__init__()
         self._health = None
         self._damage = None
+        self._attack_reload = None
+        self._last_attack = None
 
     def set_health(self, health):
         self._health = health
         return self
 
+    def set_last_attack(self, last_attack):
+        self._last_attack = last_attack
+        return self
+
+    def get_last_attack(self):
+        return self._last_attack
+
+    def set_attack_reload(self, attack_reload):
+        self._attack_reload = attack_reload
+        return self
+
     def set_damage(self, damage):
         self._damage = damage
         return self
+
+    def get_attack_reload(self):
+        return self._attack_reload
 
     def get_health(self):
         return self._health
@@ -76,6 +100,7 @@ class Projectile(MovableEntity):
     def __init__(self):
         super().__init__()
         self._damage = None
+        self._health = 0
 
     def set_damage(self, damage):
         self._damage = damage
@@ -83,6 +108,9 @@ class Projectile(MovableEntity):
 
     def get_damage(self):
         return self._damage
+
+    def get_health(self):
+        return self._health
 
 
 # TODO MAKE LOADING ANIMATIONS MORE ROBUST

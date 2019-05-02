@@ -3,7 +3,6 @@ import random
 
 
 class Map:
-
     def room_overlapping(self, room, room_list):
         x = room[0]
         y = room[1]

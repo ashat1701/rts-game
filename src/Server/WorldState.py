@@ -1,5 +1,5 @@
 from src import Map
-
+from copy import deepcopy
 
 class WorldState:
     def __init__(self):
@@ -8,6 +8,8 @@ class WorldState:
         self.enemies = set()
         self.projectiles = set()
         self.map = Map.Map(width=100, height=100, max_rooms=10, min_room_len=5, max_room_len=10, random_connections=5)
+        self.first_player_glare = deepcopy(self.map.level)
+        self.second_player_glare = deepcopy(self.map.level)
         self.first_player_id = 0
         self.second_player_id = 1
         self.first_player_moving = False
@@ -33,6 +35,24 @@ class WorldState:
 
     def get_health(self, entity_id):
         return self.entity[entity_id].get_health()
+
+    def get_box(self, entity_id):
+        return self.entity[entity_id].get_box()
+
+    def get_last_attack(self, entity_id):
+        return self.entity[entity_id].get_last_attack()
+
+    def get_attack_reload(self, entity_id):
+        return self.entity[entity_id].get_attack_reload()
+
+    def set_last_attack(self, entity_id, last_attack):
+        self.entity[entity_id].set_last_attack(last_attack)
+
+    def set_attack_reload(self, entity_id, attack_reload):
+        self.entity[entity_id].set_attack_reload(attack_reload)
+
+    def set_box(self, entity_id, box):
+        self.entity[entity_id].set_box(box)
 
     def set_position(self, entity_id, position):
         self.entity[entity_id].set_position(position)
