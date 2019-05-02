@@ -8,8 +8,8 @@ from src.Server.ActionBuilder import ActionBuilder
 
 
 class App:
-    def __init__(self):
-        self.server = Server.SafeServer()
+    def __init__(self, server):
+        self.server = server
         self.server.start_as_daemon()
         self.action_queue = queue.Queue()
         self.logic = Logic.Logic()
@@ -17,6 +17,7 @@ class App:
     def update(self):
         while not self.server.action_queue.empty():
             player_id, current_action = self.server.action_queue.get()
+            logging.debug("action {}".format(current_action))
             if current_action.startswith("MOVE"):
                 if current_action == "MOVE_LEFT":
                     self.logic.move(World.get_first_player_id(), (-1, 0))
@@ -65,9 +66,10 @@ class App:
 
 
 if __name__ == '__main__':
-    App = App()
-    while True:
-        time.sleep(0.01)
-        logging.basicConfig(level=logging.DEBUG)
-        App.update()
-        App.send_information()
+    with Server.SafeServer() as server:
+        App = App(server)
+        logging.basicConfig(level=logging.INFO)
+        while True:
+            time.sleep(0.01)
+            App.update()
+            App.send_information()

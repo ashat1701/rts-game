@@ -11,10 +11,11 @@ class Client:
     action_queue = queue.Queue()
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     input_thread = None
+    current_id = None
 
     def send_object(self, obj):
-        if self.input_thread is not None and self.input_thread.is_alive():
-            self.client_socket.sendall(pickle.dumps(obj))
+        if (self.input_thread is not None and self.input_thread.is_alive()) or self.current_id is None:
+            self.client_socket.sendall(pickle.dumps((self.current_id, obj)))
             return True
         else:
             return False
@@ -30,7 +31,6 @@ class Client:
                 logging.error("Disconnect from server")
                 break
             obj = pickle.loads(data)
-            logging.debug("Object {} received".format(str(obj)))
             self.action_queue.put(obj)
 
     def __init__(self, addr, port=8080):
@@ -39,9 +39,28 @@ class Client:
 
     def run(self):
         self.client_socket.connect((self.addr, self.port))
+        logging.debug("connected")
+        if self.current_id is None:
+            self.get_new_id_()
+        else:
+            self.get_reconnect_id()
         self.input_thread = threading.Thread(target=self.handler)
         self.input_thread.daemon = True
         self.input_thread.start()
+
+    def get_new_id_(self):
+        action = "ACTION_GET_ID"
+        self.send_object(action)
+        id_bytes = self.client_socket.recv(4096)
+        id = pickle.loads(id_bytes)
+        self.current_id = id
+
+    def get_reconnect_id(self):
+        action = "ACTION_RECONNECT:" + str(self.current_id)
+        self.send_object(action)
+        id_bytes = self.client_socket.recv(4096)
+        id = pickle.loads(id_bytes)
+        self.current_id = id
 
 
 def reconnect_client_thread(client):
@@ -90,4 +109,6 @@ def reconnecting_client(addr, port=8080):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     with reconnecting_client("127.0.0.1") as our_client:
+        while True:
+            pass
         our_client.send_object([1,1,1,1,1,1])

@@ -9,7 +9,6 @@ import queue
 class Server:
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
-    players = {}
     threads = []
     action_queue = queue.Queue()
     activeConnections = 0
@@ -18,28 +17,25 @@ class Server:
         self.server_socket.bind(('', port))
         self.server_socket.listen(1)
 
-    def handler(self, connection, addr):
+    def handler(self, connection, player_id):
         while True:
             try:
                 data = connection.recv(4096)
             except ConnectionError as exc:
-                player_id = self.players[addr[0]]
                 self.activeConnections -= 1
-                logging.debug("player # {} - disconnected".format(player_id))
+                logging.info("player # {} - disconnected".format(player_id))
                 self.connections[player_id].close()
                 self.connections[player_id] = None
                 break
-            host = addr[0]
             if not data:
-                player_id = self.players[host]
                 self.activeConnections -= 1
-                logging.debug("player # {} - disconnected".format(player_id))
+                logging.info("player # {} - disconnected".format(player_id))
                 self.connections[player_id].close()
                 self.connections[player_id] = None
                 break
             obj = pickle.loads(data)
-            self.action_queue.put((self.players[host], obj))
-            logging.debug("object receive from {}, addr {}, obj {}".format(str(self.players[host]), str(host), str(obj)))
+            logging.debug("received1 - {}".format(obj))
+            self.action_queue.put((player_id, obj[1]))
 
     def send_obj_all_players(self, obj):
         for player_id in range(len(self.connections)):
@@ -49,18 +45,28 @@ class Server:
         try:
             while True:
                 connection, addr = self.server_socket.accept()
-                new_thread = threading.Thread(target=self.handler, args=(connection, addr))
-                new_thread.daemon = True
+                data = connection.recv(4096)
+                query = pickle.loads(data)[1]
+                logging.debug("received - {}".format(query))
                 self.activeConnections += 1
-                if addr[0] in self.players:
-                    self.connections[self.players[addr[0]]] = connection
-                    self.threads[self.players[addr[0]]] = new_thread
-                else:
+                if query == "ACTION_GET_ID":
+                    new_thread = threading.Thread(target=self.handler, args=(connection, len(self.connections)))
                     self.connections.append(connection)
+                    new_thread.daemon = True
                     self.threads.append(new_thread)
-                    self.players[addr[0]] = len(self.players)
-                logging.debug("player # {} connected".format(str(self.players[addr[0]])))
-                new_thread.start()
+                    self.send_obj_to_player(len(self.connections) - 1, len(self.connections) - 1)
+                    logging.info("player # {} connected".format(len(self.connections) - 1))
+                    self.action_queue.put((len(self.connections) - 1, "PLAYER_CONNECTED"))
+                    new_thread.start()
+                else:
+                    str, client_id = query.split(':')
+                    client_id = int(client_id)
+                    self.connections[client_id] = connection
+                    new_thread = threading.Thread(target=self.handler, args=(connection, client_id))
+                    new_thread.daemon = True
+                    self.threads[client_id] = new_thread
+                    logging.info("player # {} reconnected".format(client_id))
+                    new_thread.start()
         finally:
             for i in self.connections:
                 if i is not None:
@@ -86,11 +92,13 @@ class SafeServer(Server):
         self.thread.daemon = True
         self.thread.start()
 
-    def __exit__(self, exc_type, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         for conn in self.connections:
             if conn is not None:
                 conn.close()
         self.server_socket.close()
+        if exc_val:
+            raise
 
 
 def run():
