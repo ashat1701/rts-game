@@ -34,6 +34,24 @@ class WorldState:
     def get_health(self, entity_id):
         return self.entity[entity_id].get_health()
 
+    def get_box(self, entity_id):
+        return self.entity[entity_id].get_box()
+
+    def get_last_attack(self, entity_id):
+        return self.entity[entity_id].get_last_attack()
+
+    def get_attack_reload(self, entity_id):
+        return self.entity[entity_id].get_attack_reload()
+
+    def set_last_attack(self, entity_id, last_attack):
+        self.entity[entity_id].set_last_attack(last_attack)
+
+    def set_attack_reload(self, entity_id, attack_reload):
+        self.entity[entity_id].set_attack_reload(attack_reload)
+
+    def set_box(self, entity_id, box):
+        self.entity[entity_id].set_box(box)
+
     def set_position(self, entity_id, position):
         self.entity[entity_id].set_position(position)
 
