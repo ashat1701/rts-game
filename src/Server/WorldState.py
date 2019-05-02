@@ -1,5 +1,5 @@
 from src import Map
-
+from copy import deepcopy
 
 class WorldState:
     def __init__(self):
@@ -8,6 +8,8 @@ class WorldState:
         self.enemies = set()
         self.projectiles = set()
         self.map = Map.Map(width=100, height=100, max_rooms=10, min_room_len=5, max_room_len=10, random_connections=5)
+        self.first_player_glare = deepcopy(self.map.level)
+        self.second_player_glare = deepcopy(self.map.level)
         self.first_player_id = 0
         self.second_player_id = 1
         self.first_player_moving = False
