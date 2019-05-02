@@ -3,7 +3,7 @@ from .WorldState import World
 from random import randint
 from ..utility.constants import *
 from .Entity import MeleeEnemy
-
+from pygame import Rect
 
 class SpawnSystem:
     def __init__(self):
@@ -31,9 +31,10 @@ class SpawnSystem:
         World.enemies.add(self._current_id)
 
     # TODO: поддержка второго игрока
-    def create_player(self):
+    def create_player(self): # Саша проверь
         World.entity[0] = MeleeEnemy().set_damage(10).set_velocity(10)\
-            .set_damage(0).set_direction((0, 0)).set_position((0, 0)).set_health(10).set_id(self._current_id)
+            .set_damage(0).set_direction((0, 0)).set_position((0, 0)).set_health(10).set_id(self._current_id).\
+            set_box(Rect(0,0,MAP_SCALE, MAP_SCALE))
 
     # TODO: система вещей?
     def create_item(self):

@@ -78,6 +78,8 @@ class GeometrySystem:
         return box1.colliderect(box2)
 
     @staticmethod
-    def collide_with_wall(box):
-        return not (World.map.get(box.top) != WALL and World.map.get(box.bottom) != WALL\
-        and World.map.get(box.left) != WALL and World.map.get(box.right) != WALL)
+    def collide_with_wall(box): # Саша проверь
+        non_passable_textures = {WALL, STONE}
+        return World.map.get(*box.topleft) in non_passable_textures or World.map.get(*box.topright) \
+            in non_passable_textures or World.map.get(*box.bottomleft) in non_passable_textures or \
+               World.map.get(*box.bottomright) in non_passable_textures

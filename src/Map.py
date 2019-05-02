@@ -180,6 +180,9 @@ class Map:
         self._tile[x][y] = tile_type
 
     def get(self, x, y):
+        # Саша проверь
+        x = int(x)
+        y = int(y)
         return self._tile[x][y]
 
     def corridor_between_points(self, x1, y1, x2, y2, param=2):
