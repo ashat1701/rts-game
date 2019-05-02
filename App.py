@@ -40,14 +40,17 @@ class App:
         player_id, current_action = action
         if current_action.startswith("MOVE"):
             if current_action == "MOVE_LEFT":
-                new_direction = (-1, World.get_direction(player_id)[1])
+                self.logic.move(World.get_first_player_id(), (-1, 0))
+                self.logic.animation_system.continue_or_reset(0, 'walk_left')
             if current_action == "MOVE_RIGHT":
-                new_direction = (1, World.get_direction(player_id)[1])
+                self.logic.move(World.get_first_player_id(), (1, 0))
+                self.logic.animation_system.continue_or_reset(0, 'walk_right')
             if current_action == "MOVE_UP":
-                new_direction = (World.get_direction(player_id)[0], 1)
+                self.logic.move(World.get_first_player_id(), (0, -1))
+                self.logic.animation_system.continue_or_reset(0, 'walk_up')
             if current_action == "MOVE_DOWN":
-                new_direction = (World.get_direction(player_id)[0], -1)
-            World.set_direction(player_id, new_direction)
+                self.logic.move(World.get_first_player_id(), (0, 1))
+                self.logic.animation_system.continue_or_reset(0, 'walk_down')
 
         if current_action.startswith("STOP"):
             if current_action == "STOP_MOVE_LEFT":
@@ -58,13 +61,8 @@ class App:
                 new_direction = (World.get_direction(player_id)[0], 0)
             if current_action == "STOP_MOVE_DOWN":
                 new_direction = (World.get_direction(player_id)[0], 0)
-            World.set_direction(player_id, new_direction)
 
             # TODO Animation swaps and resets must be inside animation system!!!
-        if not World.first_player_moving:
-            World.first_player_moving = True
-            self.logic.animation_system. \
-                reset_animation(World.get_first_player_id(), 'walk')
         if current_action == "STOP":
             World.first_player_moving = False
             self.logic.animation_system. \
