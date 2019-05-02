@@ -16,29 +16,9 @@ class App:
 
     def update(self):
         while not self.server.action_queue.empty():
-            player_id, current_action = self.server.action_queue.get()
-            if current_action.startswith("MOVE"):
-                if current_action == "MOVE_LEFT":
-                    self.logic.move(World.get_first_player_id(), (-1, 0))
-                if current_action == "MOVE_RIGHT":
-                    self.logic.move(World.get_first_player_id(), (1, 0))
-                if current_action == "MOVE_UP":
-                    self.logic.move(World.get_first_player_id(), (0, -1))
-                if current_action == "MOVE_DOWN":
-                    self.logic.move(World.get_first_player_id(), (0, 1))
-
-
-                # TODO Animation swaps and resets must be inside animation system!!!
-                if not World.first_player_moving:
-                    World.first_player_moving = True
-                    self.logic.animation_system.\
-                        reset_animation(World.get_first_player_id(), 'walk')
-            if current_action == "STOP":
-                World.first_player_moving = False
-                self.logic.animation_system. \
-                    reset_animation(World.get_first_player_id(), 'idle')
-
-        self.logic.move_all_unplayable_entities()
+            self.analyze_action(self.server.action_queue.get())
+        self.logic.all_npc_start_attack()
+        self.logic.move_all_entities()
 
     def send_information(self):
         entities_to_draw = []
@@ -55,6 +35,40 @@ class App:
                                         .set_animation_state(*self.logic.animation_system.get_animation_state(0))
                                         .get_action())
         self.server.send_obj_to_player(entities_to_draw, World.get_first_player_id())
+
+    def analyze_action(self, action):
+        player_id, current_action = action
+        if current_action.startswith("MOVE"):
+            if current_action == "MOVE_LEFT":
+                new_direction = (-1, World.get_direction(player_id)[1])
+            if current_action == "MOVE_RIGHT":
+                new_direction = (1, World.get_direction(player_id)[1])
+            if current_action == "MOVE_UP":
+                new_direction = (World.get_direction(player_id)[0], 1)
+            if current_action == "MOVE_DOWN":
+                new_direction = (World.get_direction(player_id)[0], -1)
+            World.set_direction(player_id, new_direction)
+
+        if current_action.startswith("STOP"):
+            if current_action == "STOP_MOVE_LEFT":
+                new_direction = (0, World.get_direction(player_id)[1])
+            if current_action == "STOP_MOVE_RIGHT":
+                new_direction = (0, World.get_direction(player_id)[1])
+            if current_action == "STOP_MOVE_UP":
+                new_direction = (World.get_direction(player_id)[0], 0)
+            if current_action == "STOP_MOVE_DOWN":
+                new_direction = (World.get_direction(player_id)[0], 0)
+            World.set_direction(player_id, new_direction)
+
+            # TODO Animation swaps and resets must be inside animation system!!!
+        if not World.first_player_moving:
+            World.first_player_moving = True
+            self.logic.animation_system. \
+                reset_animation(World.get_first_player_id(), 'walk')
+        if current_action == "STOP":
+            World.first_player_moving = False
+            self.logic.animation_system. \
+                reset_animation(World.get_first_player_id(), 'idle')
 
 
 if __name__ == '__main__':
