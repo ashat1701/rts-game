@@ -11,9 +11,9 @@ class SpawnSystem:
         self._current_id = -1
         self._enemy_types = []
 
-        # TODO make player spawner
-        self.create_player()
-
+    def generate_players(self):
+        self.create_player(World.get_first_player_id())
+        self.create_player(World.get_second_player_id())
     def add_enemy_type(self, enemy_type: Enemy):
         self._enemy_types.append(enemy_type)
 

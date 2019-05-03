@@ -38,6 +38,8 @@ class App:
 
     def analyze_action(self, action):
         player_id, current_action = action
+        if current_action == "PLAYER_CONNECTED":
+            self.logic.spawn_system.create_player(player_id)
         if current_action.startswith("MOVE"):
             if current_action == "MOVE_LEFT":
                 self.logic.move(World.get_first_player_id(), (-1, 0))

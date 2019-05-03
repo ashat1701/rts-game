@@ -113,8 +113,6 @@ class Projectile(MovableEntity):
     def get_health(self):
         return self._health
 
-
-@cls_init
 class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
