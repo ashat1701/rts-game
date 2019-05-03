@@ -1,6 +1,7 @@
 from src.Server.Animation import parse_config
 from src.utility.utilities import cls_init
 import os
+from ..utility.constants import *
 
 class Entity:
     def __init__(self):
@@ -117,14 +118,7 @@ class Projectile(MovableEntity):
 class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
-
-    @classmethod
-    def cls_init(cls):
-        dirname = os.path.dirname(__file__)
-        cls.animations = parse_config(
-            os.path.join(dirname, '../utility/animations/melee_animations.json'))
-        cls.default_animation = 'idle'
-
+    # Убрал анимацию врагов. Асхат
     def attack(self):
         pass
 
@@ -135,3 +129,17 @@ class RangedEnemy(Enemy):
 
     def attack(self):
         pass
+
+@cls_init
+class PlayerEntity(MovableEntity):
+    def __init__(self):
+        super().__init__()
+        self._damage = PLAYER_START_DAMAGE
+        self._health = PLAYER_HEALTH
+
+    @classmethod
+    def cls_init(cls):
+        dirname = os.path.dirname(__file__)
+        cls.animations = parse_config(
+            os.path.join(dirname, '../utility/animations/melee_animations.json'))
+        cls.default_animation = 'idle'

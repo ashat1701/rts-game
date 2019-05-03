@@ -1,6 +1,7 @@
 from src import Map
 from copy import deepcopy
 
+
 class WorldState:
     def __init__(self):
         self.entity = {}

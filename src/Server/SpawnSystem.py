@@ -1,9 +1,10 @@
-from .Entity import Enemy
+from .Entity import Enemy, PlayerEntity
 from .WorldState import World
 from random import randint
 from ..utility.constants import *
 from .Entity import MeleeEnemy
 from pygame import Rect
+from .GeometrySystem import GeometrySystem
 
 class SpawnSystem:
     def __init__(self):
@@ -31,10 +32,11 @@ class SpawnSystem:
         World.enemies.add(self._current_id)
 
     # TODO: поддержка второго игрока
-    def create_player(self): # Саша проверь
-        World.entity[0] = MeleeEnemy().set_damage(10).set_velocity(10)\
-            .set_damage(0).set_direction((0, 0)).set_position((0, 0)).set_health(10).set_id(self._current_id).\
-            set_box(Rect(0,0,MAP_SCALE, MAP_SCALE))
+    def create_player(self, player_id): # Саша проверь кажется что position не нужен
+        player_box = generate_random_free_box(Rect(0, 0, MAP_SCALE, MAP_SCALE))
+        World.entity[player_id] = PlayerEntity().set_damage(10).set_velocity(10)\
+            .set_direction((0, 0)).set_position((0, 0)).set_health(10).set_id(self._current_id).\
+            set_box(player_box)
 
     # TODO: система вещей?
     def create_item(self):
@@ -51,3 +53,20 @@ def generate_enemy_damage():
 
 def generate_enemy_health():
     return 0
+
+
+def generate_random_free_box(box):
+    x, y = 0, 0
+    while(1):
+        x = randint(0, MAP_SCALE * World.map.width - 1)
+        y = randint(0, MAP_SCALE * World.map.height - 1)
+        new_box = box.move(x, y)
+        if (not GeometrySystem.collide_with_wall(new_box)):
+            intersect_flag = False
+            for ent in World.entity:
+                ent_box = ent.get_box()
+                if (GeometrySystem.collide(ent_box, new_box)):
+                    intersect_flag = True
+                    break
+            if not intersect_flag:
+                return new_box

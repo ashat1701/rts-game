@@ -3,7 +3,6 @@ from src.Server.Animation import StaticAnimation
 import os
 
 
-
 def cls_init(cls):
     cls.cls_init()
     return cls
