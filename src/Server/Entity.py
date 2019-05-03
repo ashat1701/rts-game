@@ -141,3 +141,17 @@ class PlayerEntity(MovableEntity):
         cls.animations = parse_config(
             os.path.join(dirname, '../utility/animations/melee_animations.json'))
         cls.default_animation = 'idle'
+
+    def set_damage(self, damage):
+        self._damage = damage
+        return self
+
+    def get_damage(self):
+        return self._damage
+
+    def get_health(self):
+        return self._health
+
+    def set_health(self, health):
+        self._health = health
+        return self

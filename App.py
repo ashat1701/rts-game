@@ -74,7 +74,7 @@ class App:
 if __name__ == '__main__':
     with Server.SafeServer() as server:
         App = App(server)
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.DEBUG)
         while True:
             time.sleep(0.01)
             App.update()

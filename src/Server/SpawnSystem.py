@@ -5,7 +5,7 @@ from ..utility.constants import *
 from .Entity import MeleeEnemy
 from pygame import Rect
 from .GeometrySystem import GeometrySystem
-
+import logging
 class SpawnSystem:
     def __init__(self):
         self._current_id = -1
@@ -63,7 +63,8 @@ def generate_random_free_box(box):
         new_box = box.move(x, y)
         if (not GeometrySystem.collide_with_wall(new_box)):
             intersect_flag = False
-            for ent in World.entity:
+            logging.debug("Enteties - {}".format(World.entity))
+            for id, ent in World.entity.items():
                 ent_box = ent.get_box()
                 if (GeometrySystem.collide(ent_box, new_box)):
                     intersect_flag = True
