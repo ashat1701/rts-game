@@ -5,6 +5,7 @@ import logging
 import contextlib
 import time
 import queue
+from src.utility.constants import PORT
 
 
 class Client:
@@ -33,7 +34,7 @@ class Client:
             obj = pickle.loads(data)
             self.action_queue.put(obj)
 
-    def __init__(self, addr, port=8080):
+    def __init__(self, addr, port=PORT):
         self.addr = addr
         self.port = port
 

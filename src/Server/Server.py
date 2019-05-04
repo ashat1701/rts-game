@@ -4,6 +4,7 @@ import sys
 import pickle
 import logging
 import queue
+from src.utility.constants import PORT
 
 
 class Server:
@@ -13,7 +14,7 @@ class Server:
     action_queue = queue.Queue()
     activeConnections = 0
 
-    def __init__(self, port=8080):
+    def __init__(self, port=PORT):
         self.server_socket.bind(('', port))
         self.server_socket.listen(1)
 
@@ -98,7 +99,8 @@ class SafeServer(Server):
                 conn.close()
         self.server_socket.close()
         if exc_val:
-            raise
+            pass
+            # raise
 
 
 def run():

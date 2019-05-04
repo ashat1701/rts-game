@@ -113,6 +113,8 @@ class Projectile(MovableEntity):
     def get_health(self):
         return self._health
 
+
+# TODO MAKE LOADING ANIMATIONS MORE ROBUST
 class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
