@@ -73,11 +73,12 @@ class App:
             if current_action == "STOP_MOVE_DOWN":
                 new_direction = (World.get_direction(player_id)[0], 0)
             World.set_direction(player_id, new_direction)
-
-        self.logic.animation_system.continue_or_reset_move_animation(
-            player_id,
-            World.get_direction(player_id)
-        )
+            #Костыль
+        if current_action != "PLAYER_CONNECTED":
+            self.logic.animation_system.continue_or_reset_move_animation(
+                player_id,
+                World.get_direction(player_id)
+            )
 
 
 if __name__ == '__main__':

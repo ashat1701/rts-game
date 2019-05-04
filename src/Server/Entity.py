@@ -118,7 +118,12 @@ class Projectile(MovableEntity):
 class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
-    # Убрал анимацию врагов. Асхат
+
+    dirname = os.path.dirname(__file__)
+    animations, direction_binds = parse_config(
+        os.path.join(dirname, '../utility/animations/melee_animations.json'))
+    default_animation = 'idle'
+
     def attack(self):
         pass
 
@@ -126,23 +131,24 @@ class MeleeEnemy(Enemy):
 class RangedEnemy(Enemy):
     def __init__(self):
         super().__init__()
+    dirname = os.path.dirname(__file__)
+    animations, direction_binds = parse_config(
+        os.path.join(dirname, '../utility/animations/melee_animations.json'))
+    default_animation = 'idle'
 
     def attack(self):
         pass
 
-@cls_init
 class PlayerEntity(MovableEntity):
     def __init__(self):
         super().__init__()
         self._damage = PLAYER_START_DAMAGE
         self._health = PLAYER_HEALTH
 
-    @classmethod
-    def cls_init(cls):
-        dirname = os.path.dirname(__file__)
-        cls.animations = parse_config(
-            os.path.join(dirname, '../utility/animations/melee_animations.json'))
-        cls.default_animation = 'idle'
+    dirname = os.path.dirname(__file__)
+    animations, direction_binds = parse_config(
+        os.path.join(dirname, '../utility/animations/melee_animations.json'))
+    default_animation = 'idle'
 
     def set_damage(self, damage):
         self._damage = damage

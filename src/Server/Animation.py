@@ -88,6 +88,7 @@ class AnimationSystem:
         self.continue_or_reset(id_, required_anim)
 
     def get_move_animation(self, id_, direction):
+        logging.debug("id - {} direction - {}".format(id_, direction))
         return self._anim_sets[id_].get_move_animation(direction)
 
 
