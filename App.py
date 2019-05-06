@@ -5,6 +5,7 @@ from src.Server import Logic
 import time
 from src.Server.WorldState import World
 from src.Server.ActionBuilder import ActionBuilder
+from src.Server.Visitor import Visitor
 
 
 class App:
@@ -22,38 +23,9 @@ class App:
 
     def send_information_to_player(self, player_id):
         entities_to_draw = []
-        for visible_entity in self.logic.geometry_system.get_visible_entities(player_id):
-            if visible_entity in World.enemies:
-                entities_to_draw.append(ActionBuilder().set_x(
-                    World.get_position(visible_entity)[0])
-                                        .set_y(
-                    World.get_position(visible_entity)[1]).set_type(
-                    "ENEMY").get_action())
-            if visible_entity in World.projectiles:
-                entities_to_draw.append(ActionBuilder().set_x(
-                    World.get_position(visible_entity)[0])
-                                        .set_y(
-                    World.get_position(visible_entity)[1]).set_type(
-                    "PROJECTILE").get_action())
-            if visible_entity == World.get_first_player_id():
-                entities_to_draw.append(ActionBuilder().set_x(
-                    World.get_position(World.get_first_player_id())[0])
-                                        .set_y(
-                    World.get_position(World.get_first_player_id())[
-                        1]).set_type("PLAYER1")
-                                        .set_animation_state(
-                    *self.logic.animation_system.get_animation_state(World.get_first_player_id()))
-                                        .get_action())
-
-            if visible_entity == World.get_second_player_id():
-                entities_to_draw.append(ActionBuilder().set_x(
-                    World.get_position(World.get_second_player_id())[0])
-                                        .set_y(
-                    World.get_position(World.get_second_player_id())[
-                        1]).set_type("PLAYER2")
-                                        .set_animation_state(
-                    *self.logic.animation_system.get_animation_state(World.get_second_player_id()))
-                                        .get_action())
+        visitor = Visitor()
+        for visible_entity_id in self.logic.geometry_system.get_visible_entities(player_id):
+            entities_to_draw.append(World.entity[visible_entity_id].accept(visitor))
 
         self.server.send_obj_to_player(entities_to_draw, player_id)
 

@@ -1,5 +1,5 @@
 import json
-from src.Server.Animation import StaticAnimation
+from src.Server.AnimationSystem import StaticAnimation
 import os
 
 
