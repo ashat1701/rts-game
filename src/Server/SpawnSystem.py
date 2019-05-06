@@ -60,12 +60,12 @@ def generate_random_free_box(box):
         x = randint(0, MAP_SCALE * World.map.width - 1)
         y = randint(0, MAP_SCALE * World.map.height - 1)
         new_box = box.move(x, y)
-        if (not GeometrySystem.collide_with_wall(new_box)):
+        if not GeometrySystem.collide_with_wall(new_box):
             intersect_flag = False
             logging.debug("Enteties - {}".format(World.entity))
             for id, ent in World.entity.items():
                 ent_box = ent.get_box()
-                if (GeometrySystem.collide(ent_box, new_box)):
+                if GeometrySystem.collide(ent_box, new_box):
                     intersect_flag = True
                     break
             if not intersect_flag:
