@@ -2,13 +2,16 @@ import pygame
 from src.Client.Animation import Animation, parse_config
 from src.utility.utilities import cls_init
 from typing import Tuple
+from src.Client.UI.Widget import Widget
+from src.utility.utilities import Vector
 
 
-class EntitySprite:
+class EntitySprite(Widget):
     animations = {}
     default = None
 
     def __init__(self, x: float, y: float, anim_name: str, frame: int = 0):
+        super().__init__()
         self.x = x
         self.y = y
         self.cur_animation_name = anim_name
@@ -34,8 +37,13 @@ class EntitySprite:
         self.x = new_x
         self.y = new_y
 
-    def get_position(self) -> Tuple[float, float]:
-        return self.x, self.y
+    def get_position(self):
+        return Vector(self.x, self.y)
+
+    def draw(self, surface: pygame.Surface, abs_position: Vector):
+        super().draw(surface, abs_position)
+
+        surface.blit(self.get_sprite(), abs_position)
 
 
 @cls_init
