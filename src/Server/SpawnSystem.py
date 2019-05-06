@@ -7,6 +7,7 @@ from pygame import Rect
 from .GeometrySystem import GeometrySystem
 import logging
 
+
 class MonsterSpawner:
     def __init__(self):
         self._monster_factories = []
@@ -17,6 +18,7 @@ class MonsterSpawner:
 
     def add_monster_factory(self, factory):
         self._monster_factories.append(factory)
+
 
 class SpawnSystem:
     def __init__(self):

@@ -1,18 +1,13 @@
 class ActionBuilder:
     def __init__(self, action_dict=None):
         if action_dict is None:
-            self._action = {}
+            self._action = {'box': None, 1: None, 2: None, 3: None, 4: None}
         else:
             self._action = action_dict
 
-    def set_x(self, x):
-        self._action[0] = x
+    def set_box(self, box):
+        self._action['box'] = box
         return self
-
-    def set_y(self, y):
-        self._action[1] = y
-        return self
-
     def set_type(self, type_):
         self._action[2] = type_
         return self
@@ -23,7 +18,7 @@ class ActionBuilder:
         return self
 
     def get_action(self):
-        return self._action
+
 
     def get_animation_state(self):
         return self._action[3], self._action[4]
