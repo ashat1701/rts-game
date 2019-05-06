@@ -1,6 +1,6 @@
 import pygame
 pygame.init()
-screen = pygame.display.set_mode((500, 500))
+screen = pygame.display.set_mode((1000, 1000))
 
 from src.Client.Client import reconnecting_client
 import logging
@@ -109,7 +109,7 @@ with reconnecting_client(addr='127.0.0.1') as client:
                 elif event.key == pygame.K_UP:
                     client.send_object("STOP_MOVE_UP")
 
-        screen.blit(player.get_sprite(), (player.x, player.y))
+        screen.blit(player.get_sprite(), (player.x, pygame.display.get_surface().get_size()[1] - player.y))
         pygame.display.update()
         pygame.event.pump()
     pygame.quit()

@@ -20,10 +20,9 @@ class App:
         self.logic.all_npc_start_attack()
         self.logic.move_all_entities()
 
-    def send_information(self):
+    def send_information_to_player(self, player_id):
         entities_to_draw = []
-        for visible_entity in self.logic.geometry_system.get_visible_entities(
-                World.get_first_player_id()):
+        for visible_entity in self.logic.geometry_system.get_visible_entities(player_id):
             if visible_entity in World.enemies:
                 entities_to_draw.append(ActionBuilder().set_x(
                     World.get_position(visible_entity)[0])
@@ -43,10 +42,20 @@ class App:
                     World.get_position(World.get_first_player_id())[
                         1]).set_type("PLAYER1")
                                         .set_animation_state(
-                    *self.logic.animation_system.get_animation_state(0))
+                    *self.logic.animation_system.get_animation_state(World.get_first_player_id()))
                                         .get_action())
-        self.server.send_obj_to_player(entities_to_draw,
-                                       World.get_first_player_id())
+
+            if visible_entity == World.get_second_player_id():
+                entities_to_draw.append(ActionBuilder().set_x(
+                    World.get_position(World.get_second_player_id())[0])
+                                        .set_y(
+                    World.get_position(World.get_second_player_id())[
+                        1]).set_type("PLAYER2")
+                                        .set_animation_state(
+                    *self.logic.animation_system.get_animation_state(World.get_second_player_id()))
+                                        .get_action())
+
+        self.server.send_obj_to_player(entities_to_draw, player_id)
 
     def analyze_action(self, action):
         player_id, current_action = action
@@ -88,4 +97,5 @@ if __name__ == '__main__':
         while True:
             time.sleep(0.01)
             App.update()
-            App.send_information()
+            App.send_information_to_player(World.get_first_player_id())
+            App.send_information_to_player(World.get_second_player_id())

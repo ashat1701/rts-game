@@ -144,7 +144,19 @@ class PlayerEntity(MovableEntity):
         super().__init__()
         self._damage = PLAYER_START_DAMAGE
         self._health = PLAYER_HEALTH
+        self._attack_reload = None
+        self._last_attack = None
 
+    def set_last_attack(self, last_attack):
+        self._last_attack = last_attack
+        return self
+
+    def get_last_attack(self):
+        return self._last_attack
+
+    def set_attack_reload(self, attack_reload):
+        self._attack_reload = attack_reload
+        return self
     dirname = os.path.dirname(__file__)
     animations, direction_binds = parse_config(
         os.path.join(dirname, '../utility/animations/melee_animations.json'))
