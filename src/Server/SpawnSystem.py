@@ -1,5 +1,5 @@
 from .Entity import Enemy, PlayerEntity
-from .WorldState import World
+from .WorldState import world
 from random import randint
 from .EnemyFactory import MeleeEnemyFactory
 from ..utility.constants import *
@@ -27,8 +27,8 @@ class SpawnSystem:
         self.monster_spawner = MonsterSpawner()
 
     def generate_players(self):
-        self.create_player(World.get_first_player_id())
-        self.create_player(World.get_second_player_id())
+        self.create_player(world.get_first_player_id())
+        self.create_player(world.get_second_player_id())
 
     def create_enemy(self, position=None):
         entity = self.monster_spawner.spawn_monster()  # Создание
@@ -36,16 +36,16 @@ class SpawnSystem:
         entity.set_box(entity_box)
 
         # Добавление во всевозможные хранилища
-        World.entity[entity._id] = entity
-        World.movable_entities.add(entity._id)
-        World.enemies.add(entity._id)
+        world.entity[entity._id] = entity
+        world.movable_entities.add(entity._id)
+        world.enemies.add(entity._id)
 
     def create_player(self, player_id):
-        player_box = generate_random_free_box(Rect(0, 0, MAP_SCALE / 2, MAP_SCALE / 2))
-        World.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY) \
-            .set_direction((0, 0)).set_health(PLAYER_HEALTH).set_id(len(World.entity)). \
+        player_box = generate_random_free_box(Rect(0, 0, MAP_SCALE, MAP_SCALE))
+        world.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY)\
+            .set_direction((0, 0)).set_health(10).set_id(len(world.entity)).\
             set_box(player_box).set_position((player_box.centerx, player_box.centery))
-        World.movable_entities.add(player_id)
+        world.movable_entities.add(player_id)
 
     # TODO: система вещей?
     def create_item(self):
@@ -54,14 +54,14 @@ class SpawnSystem:
 
 def generate_random_free_box(box):
     x, y = 0, 0
-    while (True):
-        x = randint(0, MAP_SCALE * World.map.width - 1)
-        y = randint(0, MAP_SCALE * World.map.height - 1)
+    while(True):
+        x = randint(0, MAP_SCALE * world.map.width - 1)
+        y = randint(0, MAP_SCALE * world.map.height - 1)
         new_box = box.move(x, y)
         if not GeometrySystem.collide_with_wall(new_box):
             intersect_flag = False
-            logging.debug("Enteties - {}".format(World.entity))
-            for id, ent in World.entity.items():
+            logging.debug("Enteties - {}".format(world.entity))
+            for id, ent in world.entity.items():
                 ent_box = ent.get_box()
                 if GeometrySystem.collide(ent_box, new_box):
                     intersect_flag = True

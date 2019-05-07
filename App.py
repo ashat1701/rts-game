@@ -3,7 +3,7 @@ import logging
 import queue
 from src.Server import Logic
 import time
-from src.Server.WorldState import World
+from src.Server.WorldState import world
 from src.Server.ActionBuilder import ActionBuilder
 from src.Server.Visitor import Visitor
 
@@ -45,30 +45,30 @@ class App:
 
         if current_action.startswith("MOVE"):
             if current_action == "MOVE_LEFT":
-                new_direction = (-1, World.get_direction(player_id)[1])
+                new_direction = (-1, world.get_direction(player_id)[1])
             if current_action == "MOVE_RIGHT":
-                new_direction = (1, World.get_direction(player_id)[1])
+                new_direction = (1, world.get_direction(player_id)[1])
             if current_action == "MOVE_UP":
-                new_direction = (World.get_direction(player_id)[0], 1)
+                new_direction = (world.get_direction(player_id)[0], 1)
             if current_action == "MOVE_DOWN":
-                new_direction = (World.get_direction(player_id)[0], -1)
-            World.set_direction(player_id, new_direction)
+                new_direction = (world.get_direction(player_id)[0], -1)
+            world.set_direction(player_id, new_direction)
 
         if current_action.startswith("STOP"):
             if current_action == "STOP_MOVE_LEFT":
-                new_direction = (0, World.get_direction(player_id)[1])
+                new_direction = (0, world.get_direction(player_id)[1])
             if current_action == "STOP_MOVE_RIGHT":
-                new_direction = (0, World.get_direction(player_id)[1])
+                new_direction = (0, world.get_direction(player_id)[1])
             if current_action == "STOP_MOVE_UP":
-                new_direction = (World.get_direction(player_id)[0], 0)
+                new_direction = (world.get_direction(player_id)[0], 0)
             if current_action == "STOP_MOVE_DOWN":
-                new_direction = (World.get_direction(player_id)[0], 0)
-            World.set_direction(player_id, new_direction)
-            # Костыль
+                new_direction = (world.get_direction(player_id)[0], 0)
+            world.set_direction(player_id, new_direction)
+            #Костыль
         if current_action != "PLAYER_CONNECTED":
             self.logic.animation_system.continue_or_reset_move_animation(
                 player_id,
-                World.get_direction(player_id)
+                world.get_direction(player_id)
             )
 
 

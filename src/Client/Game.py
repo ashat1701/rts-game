@@ -10,8 +10,7 @@ class Game:
         self.screen = pygame.display.set_mode((500, 500))
 
         EntitySpriteManager.load_entity_config('src/utility/animations/'
-                                               'melee_animations.json',
-                                               'player')
+                                               'melee_animations.json')
 
         from src.Client.MainWindow import MainWindow
         self.active_window = MainWindow((500, 500))

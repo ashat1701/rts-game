@@ -1,7 +1,8 @@
-import time
 import json
 import logging
-from src.Server.WorldState import World
+import time
+
+from src.Server.WorldState import world
 
 
 class StaticAnimation:
@@ -12,11 +13,12 @@ class StaticAnimation:
 
 
 class AnimationSet:
-    def __init__(self, animations, direction_binds):
+    def __init__(self, animations, direction_binds, anim):
         self._possible_animations = animations
         self._cur_animation_name = None
         self._cur_frame_start = None
         self._cur_frame = None
+        self.reset_animation(anim)
         self._direction_binds = direction_binds
 
     def get_state(self):
@@ -53,9 +55,25 @@ class AnimationSet:
         return self._direction_binds[direction]
 
 
+class AnimationSetFactory:
+    def __init__(self):
+        self._set_inits = {}
+
+    def register(self, entity_type, animations, binds, default_animation):
+        if entity_type in self._set_inits:
+            raise RuntimeError("{} Already registered for animation set"
+                               "factory".format(entity_type))
+        self._set_inits[entity_type] = (animations, binds, default_animation)
+
+    def get_animation_set(self, entity_type):
+        animation_set = AnimationSet(*self._set_inits[entity_type])
+        return animation_set
+
+
 class AnimationSystem:
     def __init__(self):
         self._anim_sets = {}
+        self.factory = AnimationSetFactory()
 
     def reset_animation(self, id_, animation_name):
         if id_ not in self._anim_sets:
@@ -72,10 +90,9 @@ class AnimationSystem:
 
     def add_entity(self, id_):
         logging.info("AnimationSystem: Added entity {}".format(id_))
-        entity = World.entity[id_]
-        self._anim_sets[id_] = AnimationSet(entity.animations,
-                                            entity.direction_binds)
-        self._anim_sets[id_].reset_animation(entity.default_animation)
+        entity_type = world.entity[id_].type
+
+        self._anim_sets[id_] = self.factory.get_animation_set(entity_type)
 
     def get_animation_state(self, id_):
         if id_ not in self._anim_sets:
@@ -91,11 +108,18 @@ class AnimationSystem:
         logging.debug("id - {} direction - {}".format(id_, direction))
         return self._anim_sets[id_].get_move_animation(direction)
 
+    def load_entity_config(self, file):
+        with open(file) as f:
+            config = json.load(f)
 
-def parse_config(filename: str):
-    with open(filename) as f:
-        config = json.load(f)
+        animations, binds = parse_animation_descriptions(config['animations'])
+        self.factory.register(config['entity_type'],
+                              animations,
+                              binds,
+                              config['default'])
 
+
+def parse_animation_descriptions(config):
     animations = _parse_animations(config)
     direction_binds = _parse_direction_binds(config)
     return animations, direction_binds

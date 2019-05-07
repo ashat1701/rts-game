@@ -1,4 +1,4 @@
-from src.Server.AnimationSystem import parse_config
+from src.Server.AnimationSystem import parse_animation_descriptions
 from src.utility.utilities import cls_init
 import os
 from ..utility.constants import *
@@ -7,7 +7,7 @@ from ..utility.constants import *
 class Entity:
     def __init__(self):
         self._id = None
-        self.box = None # box - это хитбокс (pygame.rect для готовой геометрии)
+        self.box = None  # box - это хитбокс (pygame.rect для готовой геометрии)
 
     def accept(self, visitor):
         raise NotImplementedError
@@ -125,14 +125,8 @@ class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
 
-
     def accept(self, visitor):
         visitor.visit_melee_enemy(self)
-
-    dirname = os.path.dirname(__file__)
-    animations, direction_binds = parse_config(
-        os.path.join(dirname, '../utility/animations/melee_animations.json'))
-    default_animation = 'idle'
 
     def attack(self):
         pass
@@ -145,13 +139,9 @@ class RangedEnemy(Enemy):
     def accept(self, visitor):
         visitor.visit_ranged_enemy(self)
 
-    dirname = os.path.dirname(__file__)
-    animations, direction_binds = parse_config(
-        os.path.join(dirname, '../utility/animations/melee_animations.json'))
-    default_animation = 'idle'
-
     def attack(self):
         pass
+
 
 class PlayerEntity(MovableEntity):
     def __init__(self):
@@ -162,7 +152,8 @@ class PlayerEntity(MovableEntity):
         self._last_attack = None
 
     def accept(self, visitor):
-        visitor.visit_player(self) # Надо ещё передать инфу о том, какой это Player. (может их айди будут в константах?)
+        visitor.visit_player(
+            self)  # Надо ещё передать инфу о том, какой это Player. (может их айди будут в константах?)
 
     def set_last_attack(self, last_attack):
         self._last_attack = last_attack
@@ -174,11 +165,6 @@ class PlayerEntity(MovableEntity):
     def set_attack_reload(self, attack_reload):
         self._attack_reload = attack_reload
         return self
-
-    dirname = os.path.dirname(__file__)
-    animations, direction_binds = parse_config(
-        os.path.join(dirname, '../utility/animations/melee_animations.json'))
-    default_animation = 'idle'
 
     def set_damage(self, damage):
         self._damage = damage
