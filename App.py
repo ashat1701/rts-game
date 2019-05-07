@@ -15,7 +15,7 @@ class App:
         self.logic = Logic.Logic()
 
     def get_all_entity_information(self, entity_id, visitor):
-        return World.entity[entity_id].accept(visitor). \
+        return world.entity[entity_id].accept(visitor). \
             set_animation_state(self.logic.animation_system.get_animation_state(entity_id)).get_action()
 
     def send_world_state_to_player(self, player_id):
@@ -26,7 +26,7 @@ class App:
         self.server.send_obj_to_player(entities_to_draw, player_id)
 
     def send_map_to_player(self, player_id):
-        self.server.send_obj_to_player(World.map._tile, player_id)
+        self.server.send_obj_to_player(world.map._tile, player_id)
 
     def update(self):
         while not self.server.action_queue.empty():
@@ -34,8 +34,8 @@ class App:
         self.logic.all_npc_start_attack()
         self.logic.move_all_entities()
 
-        App.send_world_state_to_player(World.get_first_player_id())
-        App.send_world_state_to_player(World.get_second_player_id())
+        App.send_world_state_to_player(world.get_first_player_id())
+        App.send_world_state_to_player(world.get_second_player_id())
 
     def analyze_action(self, action):
         player_id, current_action = action
@@ -94,7 +94,7 @@ def start_game(game_mode="Singleplayer"):
                 connected_players[current_action[0]] = True
 
         new_app = App(server)
-        server.send_obj_all_players(("MAP", World.map._tile))
+        server.send_obj_all_players(("MAP", world.map._tile))
 
         game_loop = GameLoop(new_app)
 
