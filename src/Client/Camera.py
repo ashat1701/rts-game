@@ -3,7 +3,7 @@ from typing import Union
 
 import pygame
 
-from src.Client.UI.EntitySprite import EntitySprite
+from src.Client.EntitySprite import EntitySprite
 from src.Client.UI.Widget import Widget
 from src.utility.utilities import Vector
 

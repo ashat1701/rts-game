@@ -11,6 +11,7 @@ def cls_init(cls):
 def join_paths(folder, filenames):
     return [os.path.join(folder, f) for f in filenames]
 
+
 class Vector(tuple):
     def __new__(cls, x, y):
         return super().__new__(cls, (x, y))
@@ -36,3 +37,8 @@ class Vector(tuple):
     @property
     def y(self):
         return self[1]
+
+
+def load_sprites(files):
+    import pygame
+    return [pygame.image.load(file) for file in files]
