@@ -1,10 +1,9 @@
 from .SpawnSystem import SpawnSystem
 from .GeometrySystem import GeometrySystem
 from .DamageSystem import DamageSystem
-from .Animation import AnimationSystem
+from .AnimationSystem import AnimationSystem
 from .WorldState import World
 from .Entity import Projectile
-from src.utility.constants import FREE_SPACE, WALL
 from time import time
 
 

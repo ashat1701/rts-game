@@ -1,38 +1,25 @@
 class ActionBuilder:
-    def __init__(self, action_dict=None):
-        if action_dict is None:
-            self._action = {}
-        else:
-            self._action = action_dict
-
-    def set_x(self, x):
-        self._action[0] = x
-        return self
-
-    def set_y(self, y):
-        self._action[1] = y
+    def __init__(self):
+        self._action = {'box': None, 'type': None, 'animation_name': None, 'frame': None}
+        # TODO: изменить box на одну координату (левого верхнего угла)
+    def set_box(self, box):
+        self._action['box'] = box
         return self
 
     def set_type(self, type_):
-        self._action[2] = type_
+        self._action['type'] = type_
         return self
 
     def set_animation_state(self, name, frame):
-        self._action[3] = name
-        self._action[4] = frame
+        self._action['animation_name'] = name
+        self._action['frame'] = frame
         return self
 
     def get_action(self):
-        return self._action
+        return tuple(self._action.values())
 
     def get_animation_state(self):
-        return self._action[3], self._action[4]
-
-    def get_x(self):
-        return self._action[0]
-
-    def get_y(self):
-        return self._action[1]
+        return self._action['animation_name'], self._action['frame']
 
     def get_type(self):
-        return self._action[2]
+        return self._action['type']

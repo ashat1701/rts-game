@@ -186,7 +186,7 @@ class Map:
         return self._tile[x][y]
 
     def corridor_between_points(self, x1, y1, x2, y2, param=2):
-        if x1 == x2 and y1 == y2 or x1 == x2 or y1 == y2: # Прямой
+        if x1 == x2 and y1 == y2 or x1 == x2 or y1 == y2:  # Прямой
             return [(x1, y1), (x2, y2)]
         else:
             if param == 1:

@@ -1,13 +1,16 @@
-from src.Server.Animation import parse_config
+from src.Server.AnimationSystem import parse_config
 from src.utility.utilities import cls_init
 import os
 from ..utility.constants import *
 
+
 class Entity:
     def __init__(self):
-        self._position = None
         self._id = None
         self.box = None # box - это хитбокс (pygame.rect для готовой геометрии)
+
+    def accept(self, visitor):
+        raise NotImplementedError
 
     def set_id(self, id):
         self._id = id
@@ -103,6 +106,9 @@ class Projectile(MovableEntity):
         self._damage = None
         self._health = 0
 
+    def accept(self, visitor):
+        visitor.visit_projectile(self)
+
     def set_damage(self, damage):
         self._damage = damage
         return self
@@ -119,6 +125,10 @@ class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
 
+
+    def accept(self, visitor):
+        visitor.visit_melee_enemy(self)
+
     dirname = os.path.dirname(__file__)
     animations, direction_binds = parse_config(
         os.path.join(dirname, '../utility/animations/melee_animations.json'))
@@ -131,6 +141,10 @@ class MeleeEnemy(Enemy):
 class RangedEnemy(Enemy):
     def __init__(self):
         super().__init__()
+
+    def accept(self, visitor):
+        visitor.visit_ranged_enemy(self)
+
     dirname = os.path.dirname(__file__)
     animations, direction_binds = parse_config(
         os.path.join(dirname, '../utility/animations/melee_animations.json'))
@@ -144,6 +158,22 @@ class PlayerEntity(MovableEntity):
         super().__init__()
         self._damage = PLAYER_START_DAMAGE
         self._health = PLAYER_HEALTH
+        self._attack_reload = None
+        self._last_attack = None
+
+    def accept(self, visitor):
+        visitor.visit_player(self) # Надо ещё передать инфу о том, какой это Player. (может их айди будут в константах?)
+
+    def set_last_attack(self, last_attack):
+        self._last_attack = last_attack
+        return self
+
+    def get_last_attack(self):
+        return self._last_attack
+
+    def set_attack_reload(self, attack_reload):
+        self._attack_reload = attack_reload
+        return self
 
     dirname = os.path.dirname(__file__)
     animations, direction_binds = parse_config(
