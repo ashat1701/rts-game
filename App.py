@@ -94,7 +94,7 @@ def start_game(game_mode="Singleplayer"):
                 connected_players[current_action[0]] = True
 
         new_app = App(server)
-        server.send_obj_all_players(("MAP", world.map._tile))
+        server.send_obj_all_players(["MAP", world.map._tile])
 
         game_loop = GameLoop(new_app)
 
