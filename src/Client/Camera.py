@@ -13,12 +13,12 @@ class Camera(Widget):
         super().__init__()
         self.world_position = world_camera_position
         self.size = size
-        self.sprites = {}
+        self.sprites = []
 
     def draw(self, surface: pygame.Surface,
              abs_position: Union[Vector, tuple]):
-        for sprite in self.sprites.values():
-            rel_pos = sprite.get_position() - self.world_position
+        for sprite in self.sprites:
+            rel_pos = sprite.position - self.world_position
             abs_child_pos = abs_position + rel_pos
 
             sprite.draw(surface, abs_child_pos)
