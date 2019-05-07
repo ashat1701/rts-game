@@ -1,7 +1,7 @@
 class ActionBuilder:
     def __init__(self):
         self._action = {'box': None, 'type': None, 'animation_name': None, 'frame': None}
-
+        # TODO: изменить box на одну координату (левого верхнего угла)
     def set_box(self, box):
         self._action['box'] = box
         return self

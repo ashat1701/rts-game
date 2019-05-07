@@ -19,7 +19,7 @@ class Master(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Host, Connect):
+        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Connect):
             page_name = Frame.__name__
             frame = Frame(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -36,6 +36,16 @@ class Master(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+    #TODO
+    def single_player_start(self):
+        pass
+
+    def start_server(self):
+        pass
+
+    def connect(self, ip: tk.StringVar):
+        pass
+
 
 class MainMenu(tk.Frame):
 
@@ -46,7 +56,8 @@ class MainMenu(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         singleplayer_button = tk.Button(self, text="Single Player",
-                                        command=lambda: controller.show_frame("Loading"))
+                                        command=lambda: [controller.show_frame("Loading"),
+                                                         controller.single_player_start()])
         multiplayer_button = tk.Button(self, text="Multi Player",
                                        command=lambda: controller.show_frame("MultiPlayer"))
         settings_button = tk.Button(self, text="Settings",
@@ -56,18 +67,18 @@ class MainMenu(tk.Frame):
         settings_button.pack()
 
 
-
 class MultiPlayer(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         host_game_button = tk.Button(self, text="Host Game",
-                                     command=lambda: controller.show_frame("Host"))
+                                     command=lambda: [controller.show_frame("Loading"),
+                                                      controller.start_server()])
         connect_button = tk.Button(self, text="Connect",
-                                   command=lambda : controller.show_frame("Connect"))
+                                   command=lambda: controller.show_frame("Connect"))
         back_button = tk.Button(self, text="Back",
-                           command=lambda: controller.show_frame("MainMenu"))
+                                command=lambda: controller.show_frame("MainMenu"))
         host_game_button.pack()
         connect_button.pack()
         back_button.pack()
@@ -81,6 +92,10 @@ class Loading(tk.Frame):
         label = tk.Label(self, text="Loading ...", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
+        cancel_button = tk.Button(self, text="Cancel",
+                                  command=lambda: controller.show_frame("MainMenu"))
+        cancel_button.pack()
+
 
 class Settings(tk.Frame):
 
@@ -91,20 +106,28 @@ class Settings(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         back_button = tk.Button(self, text="Back",
-                           command=lambda: controller.show_frame("MainMenu"))
+                                command=lambda: controller.show_frame("MainMenu"))
         back_button.pack()
 
 
-class Host(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-
-
-
 class Connect(tk.Frame):
-
     def __init__(self, parent, controller):
+        ip = tk.StringVar()
         tk.Frame.__init__(self, parent)
+
+        label = tk.Label(self, text="Connect", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+        ip_entry = tk.Entry(self, textvariable=ip)
+        ip_entry.pack()
+
+        connect_button = tk.Button(self, text="Connect",
+                                   command=lambda: [controller.show_frame("Loading"),
+                                                    controller.connect(ip)])
+        back_button = tk.Button(self, text="Back",
+                                command=lambda: controller.show_frame("MainMenu"))
+        connect_button.pack()
+        back_button.pack()
 
 
 if __name__ == "__main__":

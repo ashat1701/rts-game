@@ -4,7 +4,6 @@ from .DamageSystem import DamageSystem
 from .AnimationSystem import AnimationSystem
 from .WorldState import World
 from .Entity import Projectile
-from src.utility.constants import FREE_SPACE, WALL
 from time import time
 
 
