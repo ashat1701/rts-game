@@ -19,13 +19,11 @@ class Animation:
         return len(self.images)
 
 
-def parse_config(filename: str):
-    with open(filename) as f:
-        config = json.load(f)
+def parse_descriptions(descriptions):
     animations = {
         row['name']: Animation(join_paths(row['folder'], row['sprites']),
                                transforms=get_transforms(row))
-        for row in config}
+        for row in descriptions}
 
     return animations
 

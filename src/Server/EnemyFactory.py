@@ -1,4 +1,4 @@
-from .WorldState import World
+from .WorldState import world
 from pygame import Rect
 from random import randint
 from .Entity import MeleeEnemy
@@ -18,7 +18,7 @@ class MeleeEnemyFactory(EnemyFactory):
         super().__init__()
 
     def generate_enemy(self):
-        current_id = len(World.entity)
+        current_id = len(world.entity)
         box = generate_box_size()
         damage = generate_enemy_damage()
         health = generate_enemy_health()

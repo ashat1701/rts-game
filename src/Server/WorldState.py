@@ -74,4 +74,4 @@ class WorldState:
         self.projectiles.discard(entity_id)
 
 
-World = WorldState()
+world = WorldState()
