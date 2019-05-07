@@ -1,4 +1,4 @@
-from src import Map
+from src.Server import Map
 from copy import deepcopy
 from ..utility.constants import *
 

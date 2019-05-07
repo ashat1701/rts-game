@@ -39,7 +39,7 @@ class Map:
         h2 = sorted_room[1][3]
         x2_2 = x2 + w2 - 1
         y2_2 = y2 + h2 - 1
-        if x1 < (x2 + w2) and x2 < (x1 + w1): # Если комнаты накладываются по x
+        if x1 < (x2 + w2) and x2 < (x1 + w1):  # Если комнаты накладываются по x
             jx1 = random.randint(x2, x1_2)
             jx2 = jx1
             tmp_y = [y1, y2, y1_2, y2_2]
@@ -48,7 +48,7 @@ class Map:
             jy2 = tmp_y[2] - 1
             corridors = self.corridor_between_points(jx1, jy1, jx2, jy2)
             self.corridor_list.append(corridors)
-        elif y1 < (y2 + h2) and y2 < (y1 + h1): # Аналогично по y
+        elif y1 < (y2 + h2) and y2 < (y1 + h1):  # Аналогично по y
             if y2 > y1:
                 jy1 = random.randint(y2, y1_2)
                 jy2 = jy1
@@ -61,8 +61,8 @@ class Map:
             jx2 = tmp_x[2] - 1
             corridors = self.corridor_between_points(jx1, jy1, jx2, jy2)
             self.corridor_list.append(corridors)
-        else: # Буква Г
-            join = random.randint(0, 1) # Выбираем сторону в которую повернута буква Г
+        else:  # Буква Г
+            join = random.randint(0, 1)  # Выбираем сторону в которую повернута буква Г
             if join == 0:  # Неправильная буква Г - вправо-вверх
                 if y2 > y1:
                     jx1 = x1_2 + 1
@@ -78,7 +78,7 @@ class Map:
                     jy2 = random.randint(y2, y2_2)
                     corridors = self.corridor_between_points(jx1, jy1, jx2, jy2, 1)
                     self.corridor_list.append(corridors)
-            else: # Правильная буква Г - вверх вправо
+            else:  # Правильная буква Г - вверх вправо
                 if y2 > y1:
                     jx1 = random.randint(x1, x1_2)
                     jy1 = y1_2 + 1
@@ -126,12 +126,12 @@ class Map:
             room_2 = self.room_list[random.randint(0, len(self.room_list) - 1)]
             self.join_rooms(room_1, room_2)
 
-        for room_num, room in enumerate(self.room_list): #Комнаты
+        for room_num, room in enumerate(self.room_list):  # Комнаты
             for b in range(room[2]):
                 for c in range(room[3]):
                     self.level[room[1] + c][room[0] + b] = FLOOR
 
-        for corridor in self.corridor_list: #Корридоры|
+        for corridor in self.corridor_list:  # Корридоры|
             x1, y1 = corridor[0]
             x2, y2 = corridor[1]
             for width in range(abs(x1 - x2) + 1):
@@ -168,7 +168,7 @@ class Map:
 
                     if self.level[row + 1][col + 1] == STONE:
                         self.level[row + 1][col + 1] = WALL
-        self._tile = [[] for i in range(self.height * MAP_SCALE)]
+        self._tile = [[] for _ in range(self.height * MAP_SCALE)]
         for i in range(self.height):
             for j in range(self.width):
                 text = self.level[i][j]

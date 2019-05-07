@@ -40,12 +40,10 @@ class SpawnSystem:
         World.movable_entities.add(entity._id)
         World.enemies.add(entity._id)
 
-
-    # TODO: поддержка второго игрока
     def create_player(self, player_id):
-        player_box = generate_random_free_box(Rect(0, 0, MAP_SCALE, MAP_SCALE))
-        World.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY)\
-            .set_direction((0, 0)).set_health(10).set_id(len(World.entity)).\
+        player_box = generate_random_free_box(Rect(0, 0, MAP_SCALE / 2, MAP_SCALE / 2))
+        World.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY) \
+            .set_direction((0, 0)).set_health(PLAYER_HEALTH).set_id(len(World.entity)). \
             set_box(player_box).set_position((player_box.centerx, player_box.centery))
         World.movable_entities.add(player_id)
 
@@ -56,7 +54,7 @@ class SpawnSystem:
 
 def generate_random_free_box(box):
     x, y = 0, 0
-    while(True):
+    while (True):
         x = randint(0, MAP_SCALE * World.map.width - 1)
         y = randint(0, MAP_SCALE * World.map.height - 1)
         new_box = box.move(x, y)

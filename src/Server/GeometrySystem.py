@@ -68,7 +68,7 @@ class GeometrySystem:
                 entities_id.append(other_entity_id)
         return entities_id
 
-    # TODO: A*
+    # TODO
     def generate_npc_movement(self, npc_id):
         return randint(-1, 1), randint(-1, 1)
 
