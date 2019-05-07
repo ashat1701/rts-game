@@ -1,6 +1,7 @@
 import pygame
 
 from src.Client.Client import reconnecting_client
+from src.Client.EntitySprite import EntitySpriteManager
 
 
 class Game:
@@ -8,7 +9,11 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((500, 500))
 
-        from src.Client.UI.MainWindow import MainWindow
+        EntitySpriteManager.load_entity_config('src/utility/animations/'
+                                               'melee_animations.json',
+                                               'player')
+
+        from src.Client.MainWindow import MainWindow
         self.active_window = MainWindow((500, 500))
         self.running = True
         self.clock = pygame.time.Clock()
@@ -23,7 +28,6 @@ class Game:
                     current_action = client.action_queue.get()
                     self.active_window.accept_action(current_action)
                 for event in pygame.event.get():
-                    print("ss")
                     if event.type == pygame.QUIT:
                         self.running = False
                     else:

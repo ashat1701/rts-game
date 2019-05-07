@@ -1,7 +1,7 @@
 import pygame
 
-from src.Client.UI.Camera import Camera
-from src.Client.UI.EntitySprite import EntitySprite
+from src.Client.Camera import Camera
+from src.Client.EntitySprite import EntitySprite
 from src.Client.UI.Window import Window
 from src.utility.utilities import Vector
 
