@@ -1,7 +1,7 @@
 import json
 
 import pygame
-
+import os
 from src.Client.UI.Widget import Widget
 from src.utility.utilities import Vector
 from src.utility.utilities import load_sprites, join_paths
@@ -41,7 +41,8 @@ class EntitySpriteManager:
 
     @classmethod
     def load_entity_config(cls, filename):
-        with open("../../" + filename) as file:
+
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../.." + filename)) as file:
             config = json.load(file)
 
         cls.register_animations(config['entity_type'],

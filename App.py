@@ -33,8 +33,8 @@ class App:
         self.logic.all_npc_start_attack()
         self.logic.move_all_entities()
 
-        self.send_world_state_to_player(world.get_first_player_id()) # Add second player
-        #self.send_world_state_to_player(world.get_second_player_id())
+        self.send_world_state_to_player(world.get_first_player_id())  # Add second player
+        # self.send_world_state_to_player(world.get_second_player_id())
 
     def analyze_action(self, action):
         player_id, current_action = action
@@ -62,11 +62,10 @@ class App:
             if current_action == "STOP_MOVE_DOWN":
                 new_direction = (world.get_direction(player_id)[0], 0)
             world.set_direction(player_id, new_direction)
-            # Костыль
-            self.logic.animation_system.continue_or_reset_move_animation(
-                player_id,
-                world.get_direction(player_id)
-            )
+        self.logic.animation_system.continue_or_reset_move_animation(
+            player_id,
+            world.get_direction(player_id)
+        )
 
 
 class GameLoop:
@@ -95,7 +94,7 @@ def start_game(game_mode="Singleplayer"):
         new_app = App(server)
         for id in range(len(connected_players)):
             new_app.logic.spawn_system.create_player(id)
-            new_app.logic.animation_system.get_animation_state(id) # Create in animation set
+            new_app.logic.animation_system.get_animation_state(id)  # Create in animation set
         server.send_obj_all_players(["MAP", world.map.level])
 
         game_loop = GameLoop(new_app)

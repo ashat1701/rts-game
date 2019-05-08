@@ -2,12 +2,13 @@ import pygame
 import json
 from src.utility.client_config import *
 from src.utility.utilities import join_paths
+
 class Animation:
     def __init__(self, filenames, scale=SCALE_FACTOR, transforms=None):
         if transforms is None:
             transforms = Transforms([Scale(scale)])
 
-        images = [pygame.image.load("../../" + f) for f in filenames]
+        images = [pygame.image.load(f) for f in filenames]
         self.images = [transforms(img).convert_alpha() for img in images]
 
     def __getitem__(self, item: int) -> pygame.Surface:

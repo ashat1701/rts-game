@@ -99,8 +99,7 @@ class SafeServer(Server):
                 conn.close()
         self.server_socket.close()
         if exc_val:
-            pass
-            # raise
+            raise
 
 
 def run():
