@@ -5,13 +5,7 @@ from math import sin, cos
 
 
 class GeometrySystem:
-    # @staticmethod
-    # def move(entity_id):
-    #     entity = World.entity[entity_id]
-    #     World.map.set(*entity.get_position(), FREE_SPACE)
-    #     entity.move()
-    #     World.map.set(*entity.get_position(), entity_id)
-    
+
     def get_visible_tiles(self, entity_id):
         # Обновлять glare для правильного игрока
         glare_map = None
@@ -23,10 +17,10 @@ class GeometrySystem:
 
         for i in range(360):
             deg = i * 3.1415 / 180
-            x0 = world.get_box(entity_id).centerx / MAP_SCALE
-            y0 = world.get_box(entity_id).centery / MAP_SCALE
-            x = round(cos(deg) * VISION_RANGE) + world.get_box(entity_id).centerx // MAP_SCALE
-            y = round(sin(deg) * VISION_RANGE) + world.get_box(entity_id).centery // MAP_SCALE
+            x0 = world.get_box(entity_id).centerx
+            y0 = world.get_box(entity_id).centery
+            x = round(cos(deg) * VISION_RANGE) + world.get_box(entity_id).centerx
+            y = round(sin(deg) * VISION_RANGE) + world.get_box(entity_id).centery
 
             diag_dist = max(abs(x - x0), abs(y - y0))
 
@@ -34,7 +28,7 @@ class GeometrySystem:
                 tx = round(x0 + (j / diag_dist) * (x - x0))
                 ty = round(y0 + (j / diag_dist) * (y - y0))
 
-                if (tx < 0 or tx >= world.map.width) or (ty < 0 or ty >= world.map.height):
+                if (tx < 0 or tx >= world.map.width * MAP_SCALE) or (ty < 0 or ty >= world.map.height * MAP_SCALE):
                     break
                 if world.map.level[tx][ty] == WALL:
                     visible_tiles.append((tx, ty))

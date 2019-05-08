@@ -1,6 +1,7 @@
 import src.Server.Server as Server
 import logging
 import queue
+import os
 from src.Server import Logic
 import time
 from src.Server.WorldState import world
@@ -102,6 +103,6 @@ def start_game(game_mode="Singleplayer"):
         game_loop.run()
 
 
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    start_game()
+logging.basicConfig(level=logging.DEBUG)
+os.path.dirname(os.path.abspath(__file__))
+start_game()

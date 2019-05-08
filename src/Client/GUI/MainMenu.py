@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import font as tkfont
+from os import system, chdir
+import threading
+import time
 
 
 class Master(tk.Tk):
@@ -19,7 +22,7 @@ class Master(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Connect):
+        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Connect, Playing, WaitingForPlayer):
             page_name = Frame.__name__
             frame = Frame(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -36,15 +39,33 @@ class Master(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
-    #TODO
     def single_player_start(self):
-        pass
+        chdir("../../../")
+        server_thread = threading.Thread(target=start_server)
+        server_thread.daemon = True
+        server_thread.start()
 
-    def start_server(self):
-        pass
+        client_thread = threading.Thread(target=start_client)
+        client_thread.daemon = True
+        client_thread.start()
+
+        self.withdraw()
+        self.show_frame("Playing")
+        while True:
+            if not client_thread.is_alive():
+                self.deiconify()
+                self.show_frame("MainMenu")  # TODO: show reconnect frame
+                break
 
     def connect(self, ip: tk.StringVar):
         pass
+
+    def create_server(self):  # add arg parser for App.py to manage game mode (singleplayer / multiplayer)
+        chdir("../../../")
+        server_thread = threading.Thread(target=start_server)
+        server_thread.daemon = True
+        server_thread.start()
+        self.show_frame("WaitingForPlayer")
 
 
 class MainMenu(tk.Frame):
@@ -74,7 +95,7 @@ class MultiPlayer(tk.Frame):
 
         host_game_button = tk.Button(self, text="Host Game",
                                      command=lambda: [controller.show_frame("Loading"),
-                                                      controller.start_server()])
+                                                      controller.create_server()])
         connect_button = tk.Button(self, text="Connect",
                                    command=lambda: controller.show_frame("Connect"))
         back_button = tk.Button(self, text="Back",
@@ -128,6 +149,29 @@ class Connect(tk.Frame):
                                 command=lambda: controller.show_frame("MainMenu"))
         connect_button.pack()
         back_button.pack()
+
+
+class Playing(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        label = tk.Label(self, text="Currently playing", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+
+class WaitingForPlayer(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        label = tk.Label(self, text="Waiting for second player ...", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+def start_server():
+    system("python3 App.py")
+
+
+def start_client():
+    system("python3 client-shell.py")
 
 
 if __name__ == "__main__":
