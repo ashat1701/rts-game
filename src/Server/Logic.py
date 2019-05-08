@@ -73,4 +73,3 @@ class Logic:
                     world.set_last_attack(entity_id, None)
             else:
                 world.set_last_attack(entity_id, time())
-
