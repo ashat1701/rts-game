@@ -5,7 +5,7 @@ from src.Client.Camera import Camera
 from src.Client.EntitySprite import EntitySprite
 from src.Client.UI.Window import Window
 from src.utility.utilities import Vector
-
+from src.utility.utilities import level_to_tile
 
 class MainWindow(Window):
     def __init__(self, size, client=None):
@@ -44,7 +44,8 @@ class MainWindow(Window):
             raise RuntimeError(
                 "Action is not of type list. Don't know what to do with it")
         if action[0] == "MAP":
-           self.main_camera._tile = action[1]
+           self.main_camera.level = action[1]
+           self.main_camera.map_tile = level_to_tile(action[1])
         else:
             self.entities = [EntitySprite(info) for info in action]
             self.main_camera.set_sprites(self.entities)

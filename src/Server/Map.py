@@ -1,6 +1,6 @@
 from src.utility.constants import *
 import random
-
+from src.utility.utilities import level_to_tile
 
 class Map:
     def room_overlapping(self, room, room_list):
@@ -168,12 +168,7 @@ class Map:
 
                     if self.level[row + 1][col + 1] == STONE:
                         self.level[row + 1][col + 1] = WALL
-        self._tile = [[] for _ in range(self.height * MAP_SCALE)]
-        for i in range(self.height):
-            for j in range(self.width):
-                text = self.level[i][j]
-                for k in range(MAP_SCALE):
-                    self._tile[i * MAP_SCALE + k] += [text] * MAP_SCALE
+        self._tile = level_to_tile(self.level)
 
     #  tile_type{0 - free space; 1 - wall}
     def set(self, x, y, tile_type):

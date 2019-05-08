@@ -1,7 +1,6 @@
 import json
-from src.Server.AnimationSystem import StaticAnimation
 import os
-
+from .constants import MAP_SCALE
 
 def cls_init(cls):
     cls.cls_init()
@@ -42,3 +41,12 @@ class Vector(tuple):
 def load_sprites(files):
     import pygame
     return [pygame.image.load(file) for file in files]
+
+def level_to_tile(level):
+    _tile = [[] for _ in range(len(level) * MAP_SCALE)]
+    for i in range(len(level)):
+        for j in range(len(level[i])):
+            text = level[i][j]
+            for k in range(MAP_SCALE):
+                _tile[i * MAP_SCALE + k] += [text] * MAP_SCALE
+    return _tile
