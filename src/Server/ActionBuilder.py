@@ -17,9 +17,3 @@ class ActionBuilder:
 
     def get_action(self):
         return tuple(self._action.values())
-
-    def get_animation_state(self):
-        return self._action['animation_name'], self._action['frame']
-
-    def get_type(self):
-        return self._action['type']

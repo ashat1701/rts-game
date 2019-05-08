@@ -8,6 +8,7 @@ class Entity:
     def __init__(self):
         self._id = None
         self.box = None  # box - это хитбокс (pygame.rect для готовой геометрии)
+        self._type = "entity"
 
     def accept(self, visitor):
         raise NotImplementedError
@@ -32,6 +33,9 @@ class Entity:
 
     def get_box(self):
         return self.box
+
+    def get_type(self):
+        return self._type
 
 
 class MovableEntity(Entity):
@@ -146,13 +150,14 @@ class RangedEnemy(Enemy):
 class PlayerEntity(MovableEntity):
     def __init__(self):
         super().__init__()
+        self._type = "player"
         self._damage = PLAYER_START_DAMAGE
         self._health = PLAYER_HEALTH
         self._attack_reload = None
         self._last_attack = None
 
     def accept(self, visitor):
-        visitor.visit_player(
+        return visitor.visit_player(
             self)  # Надо ещё передать инфу о том, какой это Player. (может их айди будут в константах?)
 
     def set_last_attack(self, last_attack):
@@ -179,3 +184,4 @@ class PlayerEntity(MovableEntity):
     def set_health(self, health):
         self._health = health
         return self
+

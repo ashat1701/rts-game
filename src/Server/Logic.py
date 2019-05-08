@@ -5,7 +5,7 @@ from .AnimationSystem import AnimationSystem
 from .WorldState import world
 from .Entity import Projectile
 from time import time
-
+import os
 
 class Logic:
     def __init__(self):
@@ -13,8 +13,9 @@ class Logic:
         self.geometry_system = GeometrySystem()
         self.damage_system = DamageSystem()
         self.animation_system = AnimationSystem()
-        self.animation_system.load_entity_config('utility/animations/'
-                                                 'melee_animations.json')
+        dirname = os.path.dirname(__file__)
+        self.animation_system.load_entity_config(os.path.join(dirname, '../utility/animations/'
+                                                 'melee_animations.json'))
 
     # move в Logic должен разумно вызывать move GeometrySystem в зависимости от WorldState
     # move в GeometrySystem должен обновлять состояние мира

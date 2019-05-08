@@ -24,7 +24,7 @@ class Client:
     def handler(self):
         while True:
             try:
-                data = self.client_socket.recv(4096)
+                data = self.client_socket.recv(100000)
             except ConnectionError as e:
                 logging.error("Disconnect from server")
                 break
@@ -112,4 +112,4 @@ if __name__ == '__main__':
     with reconnecting_client("127.0.0.1") as our_client:
         while True:
             pass
-        our_client.send_object([1,1,1,1,1,1])
+        our_client.send_object([1, 1, 1, 1, 1, 1])

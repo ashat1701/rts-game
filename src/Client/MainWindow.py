@@ -1,4 +1,5 @@
 import pygame
+import logging
 
 from src.Client.Camera import Camera
 from src.Client.EntitySprite import EntitySprite
@@ -42,6 +43,8 @@ class MainWindow(Window):
         if not isinstance(action, list):
             raise RuntimeError(
                 "Action is not of type list. Don't know what to do with it")
-
-        self.entities = [EntitySprite(info) for info in action]
-        self.main_camera.set_sprites(self.entities)
+        if action[0] == "MAP":
+           self.main_camera._tile = action[1]
+        else:
+            self.entities = [EntitySprite(info) for info in action]
+            self.main_camera.set_sprites(self.entities)

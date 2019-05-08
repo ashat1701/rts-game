@@ -14,6 +14,7 @@ class Camera(Widget):
         self.world_position = world_camera_position
         self.size = size
         self.sprites = []
+        self._tiles = None
 
     def draw(self, surface: pygame.Surface,
              abs_position: Union[Vector, tuple]):

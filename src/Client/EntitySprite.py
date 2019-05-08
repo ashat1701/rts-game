@@ -41,7 +41,7 @@ class EntitySpriteManager:
 
     @classmethod
     def load_entity_config(cls, filename):
-        with open(filename) as file:
+        with open("../../" + filename) as file:
             config = json.load(file)
 
         cls.register_animations(config['entity_type'],
@@ -59,23 +59,23 @@ class EntitySprite(Widget):
 
     @property
     def x(self):
-        return self.info[0]
+        return self.info[0][0]
 
     @property
     def y(self):
-        return self.info[0]
+        return self.info[0][1]
 
     @property
     def type(self):
-        return self.info[0]
+        return self.info[1]
 
     @property
     def animation_name(self):
-        return self.info[0]
+        return self.info[2]
 
     @property
     def frame(self):
-        return self.info[0]
+        return self.info[3]
 
     @property
     def position(self):

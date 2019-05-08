@@ -31,7 +31,7 @@ class AnimationSet:
         return self._cur_animation_name, self._cur_frame
 
     def set_frame(self, new_frame):
-        if new_frame > self.cur_animation.frame_num:
+        if new_frame >= self.cur_animation.frame_num:
             if self.cur_animation.play_once:
                 new_frame = self.cur_animation.frame_num - 1
             else:
@@ -90,7 +90,7 @@ class AnimationSystem:
 
     def add_entity(self, id_):
         logging.info("AnimationSystem: Added entity {}".format(id_))
-        entity_type = world.entity[id_].type
+        entity_type = world.entity[id_].get_type()
 
         self._anim_sets[id_] = self.factory.get_animation_set(entity_type)
 

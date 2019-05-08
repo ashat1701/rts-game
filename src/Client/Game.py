@@ -1,5 +1,5 @@
 import pygame
-
+import time
 from src.Client.Client import reconnecting_client
 from src.Client.EntitySprite import EntitySpriteManager
 
@@ -7,11 +7,11 @@ from src.Client.EntitySprite import EntitySpriteManager
 class Game:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((500, 500))
+        self.screen = pygame.display.set_mode((1000, 1000))
 
-        EntitySpriteManager.load_entity_config('src/utility/animations/'
+        EntitySpriteManager.load_entity_config('/src/utility/animations/'
                                                'melee_animations.json')
-
+        self._tile = None  # Гриша
         from src.Client.MainWindow import MainWindow
         self.active_window = MainWindow((500, 500))
         self.running = True
