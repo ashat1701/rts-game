@@ -45,6 +45,11 @@ class GeometrySystem:
                     glare_map[tx][ty] = 1
         return visible_tiles
 
+    @staticmethod
+    def get_squared_distance(entity_id1, entity_id2):
+        return (world.get_box(entity_id1).centerx - world.get_box(entity_id2).centerx) ** 2 + \
+               (world.get_box(entity_id1).centery - world.get_box(entity_id2).centery) ** 2
+
     # TODO: нормальная система зрения
     @staticmethod
     def _is_visible(position1: tuple, position2: tuple) -> bool:
@@ -107,3 +112,20 @@ class GeometrySystem:
                in non_passable_textures or world.map.get(
             *box.bottomleft) in non_passable_textures or \
                world.map.get(*box.bottomright) in non_passable_textures
+
+    def find_aim(self, entity_id):
+        dist_to_first_player = self.get_squared_distance(entity_id, world.get_first_player_id())
+        dist_to_second_player = self.get_squared_distance(entity_id, world.get_second_player_id())
+
+        dist_to_aim = max(dist_to_second_player, dist_to_second_player)
+
+        if dist_to_first_player > dist_to_second_player:
+            probable_aim = world.get_box(world.get_first_player_id()).center
+
+        else:
+            probable_aim = world.get_box(world.get_second_player_id()).center
+
+        if dist_to_aim < VISION_RANGE ** 2:
+            world.entity[entity_id].set_aim(probable_aim)
+        else:
+            world.entity[entity_id].set_aim(None)
