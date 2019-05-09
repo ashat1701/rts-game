@@ -28,7 +28,7 @@ class MeleeEnemyFactory(EnemyFactory):
 
 # TODO: вещи связанные с генерацией параметров у монстров
 def generate_random_direction():
-    return 0, 0
+    return 1, 0
 
 
 def generate_enemy_damage():
@@ -36,7 +36,7 @@ def generate_enemy_damage():
 
 
 def generate_enemy_health():
-    return 100
+    return 100000
 
 def generate_box():
     return Rect(0, 0, ENEMY_BOX_SIZE, ENEMY_BOX_SIZE)

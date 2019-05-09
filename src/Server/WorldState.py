@@ -45,6 +45,7 @@ class WorldState:
         return self.entity[entity_id].get_box()
 
     def get_last_attack(self, entity_id):
+        print(self.entity)
         return self.entity[entity_id].get_last_attack()
 
     def get_attack_reload(self, entity_id):
@@ -75,6 +76,7 @@ class WorldState:
         self.entity[entity_id].set_health(health)
 
     def delete_entity(self, entity_id):
+        self.movable_entities.discard(entity_id)
         self.entity.pop(entity_id, None)
         self.enemies.discard(entity_id)
         self.projectiles.discard(entity_id)

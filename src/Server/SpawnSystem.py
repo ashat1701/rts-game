@@ -45,7 +45,7 @@ class SpawnSystem:
     def create_player(self, player_id):
         player_box = generate_random_free_box(Rect(0, 0, PLAYER_HEIGHT, PLAYER_WIDTH))
         world.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY)\
-            .set_direction((0, 0)).set_health(10).set_id(len(world.entity)).\
+            .set_direction((0, 0)).set_health(PLAYER_HEALTH).set_id(len(world.entity)).\
             set_box(player_box).set_position((player_box.centerx, player_box.centery))
         world.movable_entities.add(player_id)
 
