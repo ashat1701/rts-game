@@ -55,8 +55,9 @@ class EntitySpriteManager:
                                "../.." + filename)) as file:
             config = json.load(file)
 
-        cls.register_animations(config['entity_type'],
-                                parse_descriptions(config['animations']))
+        all_animations = parse_descriptions(config['move'])
+        all_animations.update(parse_descriptions(config['attack']))
+        cls.register_animations(config['entity_type'], all_animations)
 
 
 class EntitySprite(Sprite):
@@ -97,5 +98,6 @@ class EntitySprite(Sprite):
         super().draw(surface, abs_position)
         if self.debug:
             pygame.draw.rect(surface, (255, 255, 255),
-                             (abs_position, (PIXEL_SCALE/ 2, PIXEL_SCALE / 2)))
+                             (
+                             abs_position, (PIXEL_SCALE / 2, PIXEL_SCALE / 2)))
         surface.blit(self.sprite, abs_position - self.offset)
