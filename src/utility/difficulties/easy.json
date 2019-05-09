@@ -1,0 +1,12 @@
+{
+  "enemies": [
+    {
+      "entity_type": "melee",
+      "box_width": 50,
+      "box_height": 50,
+      "damage": 10,
+      "min_health": 20,
+      "max_health": 100
+    }
+  ]
+}
