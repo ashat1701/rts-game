@@ -1,10 +1,8 @@
-import logging
-from typing import Union
 from itertools import chain
+from typing import Union
 
 import pygame
 
-from src.Client.EntitySprite import EntitySprite
 from src.Client.TileSprite import TileSprite
 from src.Client.UI.Widget import Widget
 from src.utility.utilities import Vector
@@ -13,8 +11,7 @@ from src.utility.utilities import Vector
 class Camera(Widget):
     def __init__(self, world_camera_position: Vector, size):
         super().__init__()
-        self._box = pygame.Rect(world_camera_position,
-                                size)
+        self._box = pygame.Rect(world_camera_position, size)
         self._sprites = []
         self._tiles = []
 
@@ -52,7 +49,4 @@ class Camera(Widget):
         if sprite.box is None:
             return True
 
-        # print(sprite.box)
-        # print(self._box)
-        # print(self._box.colliderect(sprite.box))
         return self._box.colliderect(sprite.box)
