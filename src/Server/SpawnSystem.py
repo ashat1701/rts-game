@@ -10,21 +10,22 @@ import logging
 
 
 class MonsterSpawner:
-    def __init__(self):
+    def __init__(self, difficulty):
         self._monster_factories = []
-
+        self.difficulty = difficulty
     def spawn_monster(self, *args):
         size = len(self._monster_factories)
         return self._monster_factories[randint(0, size - 1)].generate_enemy()
 
     def add_monster_factory(self, factory):
+        factory.load_difficulty_from_file(self.difficulty)
         self._monster_factories.append(factory)
 
 
 class SpawnSystem:
     def __init__(self):
         self._enemy_types = []
-        self.monster_spawner = MonsterSpawner()
+        self.monster_spawner = MonsterSpawner("easy")
         self.melee_enemy_factory = MeleeEnemyFactory()
         self.monster_spawner.add_monster_factory(self.melee_enemy_factory)
 
