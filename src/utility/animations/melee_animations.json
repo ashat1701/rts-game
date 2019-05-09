@@ -22,7 +22,7 @@
       ]
     ],
     "resize": [100, 100],
-    "offset": [30, 5]
+    "offset": [30, 48]
   },
   {
     "name": "walk_right",
@@ -50,7 +50,7 @@
       ]
     ],
     "resize": [100, 100],
-    "offset": [30, 5]
+    "offset": [30, 48]
   },
   {
     "name": "walk_left",
@@ -66,20 +66,17 @@
     "play_once": false,
     "direction_binds": [
       [
-        -1,
-        0
+        -1,0
       ],
       [
-        -1,
-        1
+        -1, 1
       ],
       [
-        -1,
-        -1
+        -1, -1
       ]
     ],
     "resize": [100, 100],
-    "offset": [30, 5]
+    "offset": [30, 48]
   },
   {
     "name": "walk_up",
@@ -94,12 +91,11 @@
     "play_once": false,
     "direction_binds": [
       [
-        0,
-        1
+        0, -1
       ]
     ],
     "resize": [100, 100],
-    "offset": [30, 5]
+    "offset": [30, 48]
   },
   {
     "name": "walk_down",
@@ -114,11 +110,10 @@
     "play_once": false,
     "direction_binds": [
       [
-        0,
-        -1
+        0, 1
       ]
     ],
     "resize": [100, 100],
-    "offset": [30, 5]
+    "offset": [30, 48]
   }
 ]}

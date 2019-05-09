@@ -47,9 +47,9 @@ class App:
             if current_action == "MOVE_RIGHT":
                 new_direction = (1, world.get_direction(player_id)[1])
             if current_action == "MOVE_UP":
-                new_direction = (world.get_direction(player_id)[0], 1)
-            if current_action == "MOVE_DOWN":
                 new_direction = (world.get_direction(player_id)[0], -1)
+            if current_action == "MOVE_DOWN":
+                new_direction = (world.get_direction(player_id)[0], 1)
             world.set_direction(player_id, new_direction)
 
         if current_action.startswith("STOP"):

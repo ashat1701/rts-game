@@ -71,4 +71,7 @@ class TileSprite(Sprite):
     def sprite(self):
         return _surfaces[self.tile_type][self.tile_state]
 
+    def draw(self, surface: pygame.Surface, abs_position: Vector):
+        surface.blit(self.sprite, abs_position)
 
+        super().draw(surface, abs_position)

@@ -53,7 +53,6 @@ class SpawnSystem:
 
 
 def generate_random_free_box(box):
-    x, y = 0, 0
     while(True):
         x = randint(0, MAP_SCALE * world.map.width - 1)
         y = randint(0, MAP_SCALE * world.map.height - 1)

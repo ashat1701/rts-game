@@ -60,8 +60,9 @@ class EntitySpriteManager:
 
 
 class EntitySprite(Sprite):
-    def __init__(self, info):
+    def __init__(self, info, debug=True):
         super().__init__()
+        self.debug = debug
         self.info = info
         self.x = info[0][0] / MAP_SCALE * PIXEL_SCALE
         self.y = info[0][1] / MAP_SCALE * PIXEL_SCALE
@@ -94,5 +95,7 @@ class EntitySprite(Sprite):
 
     def draw(self, surface: pygame.Surface, abs_position: Vector):
         super().draw(surface, abs_position)
-
+        if self.debug:
+            pygame.draw.rect(surface, (255, 255, 255),
+                             (abs_position, (PIXEL_SCALE/ 2, PIXEL_SCALE / 2)))
         surface.blit(self.sprite, abs_position - self.offset)
