@@ -1,9 +1,6 @@
 from .ActionBuilder import ActionBuilder
 
 
-# import AnimationSet
-
-
 class Visitor:
     def visit_player(self, entity, player=1):
         if player == 1:
