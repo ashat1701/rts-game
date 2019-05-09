@@ -125,9 +125,10 @@ class Projectile(MovableEntity):
 class MeleeEnemy(Enemy):
     def __init__(self):
         super().__init__()
+        self._type = 'melee'
 
     def accept(self, visitor):
-        visitor.visit_melee_enemy(self)
+        return visitor.visit_melee_enemy(self)
 
     def attack(self):
         pass

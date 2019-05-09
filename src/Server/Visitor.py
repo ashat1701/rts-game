@@ -13,12 +13,12 @@ class Visitor:
 
     def visit_melee_enemy(self, entity):
         return ActionBuilder().set_position(entity.get_box().topleft).set_type(
-            "MELEE_ENEMY")
+            "melee")
 
     def visit_ranged_enemy(self, entity):
         return ActionBuilder().set_position(entity.get_box().topleft).set_type(
-            "RANGED_ENEMY")
+            "range")
 
     def visit_projectile(self, entity):
         return ActionBuilder().set_position(entity.get_box().topleft).set_type(
-            "PROJECTILE")
+            "projectile")

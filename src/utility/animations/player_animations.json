@@ -1,5 +1,5 @@
 {
-  "entity_type": "melee",
+  "entity_type": "player",
   "default": "idle",
   "move": [
     {
