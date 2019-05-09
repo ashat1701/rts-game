@@ -3,7 +3,9 @@ from random import randint
 
 from src.Server.WorldState import world
 from src.utility.constants import *
-
+from random import randint
+from math import sin, cos
+from src.Server.Entity import PlayerEntity, Enemy
 
 class GeometrySystem:
 
@@ -63,11 +65,16 @@ class GeometrySystem:
 
     def get_attackable_entites(self, entity_id) -> list:
         entities_id = []
+        if (isinstance(world.entity[entity_id]), PlayerEntity):
+            EnemyClass = Enemy
+        if (isinstance(world.entity[entity_id]), Enemy):
+            EnemyClass = PlayerEntity
+
         for other_entity_id in world.entity.keys():
-            if self._is_attackable(world.get_position(entity_id),
-                                   world.get_position(other_entity_id)) \
+            if (isinstance(world.entity[other_entity_id]), EnemyClass):
+                if self._is_attackable(world.get_position(entity_id), world.get_position(other_entity_id))\
                     and other_entity_id != entity_id:
-                entities_id.append(other_entity_id)
+                    entities_id.append(other_entity_id)
         return entities_id
 
     # TODO

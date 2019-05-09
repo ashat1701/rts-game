@@ -7,7 +7,6 @@ from src.Client.TileSprite import TileSprite
 from src.Client.UI.Widget import Widget
 from src.utility.utilities import Vector
 
-
 class Camera(Widget):
     def __init__(self, world_camera_position: Vector, size):
         super().__init__()
