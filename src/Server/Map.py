@@ -1,6 +1,8 @@
-from src.utility.constants import *
 import random
+
+from src.utility.constants import *
 from src.utility.utilities import level_to_tile
+
 
 class Map:
     def room_overlapping(self, room, room_list):
@@ -39,7 +41,8 @@ class Map:
         h2 = sorted_room[1][3]
         x2_2 = x2 + w2 - 1
         y2_2 = y2 + h2 - 1
-        if x1 < (x2 + w2) and x2 < (x1 + w1):  # Если комнаты накладываются по x
+        if x1 < (x2 + w2) and x2 < (
+                x1 + w1):  # Если комнаты накладываются по x
             jx1 = random.randint(x2, x1_2)
             jx2 = jx1
             tmp_y = [y1, y2, y1_2, y2_2]
@@ -62,21 +65,24 @@ class Map:
             corridors = self.corridor_between_points(jx1, jy1, jx2, jy2)
             self.corridor_list.append(corridors)
         else:  # Буква Г
-            join = random.randint(0, 1)  # Выбираем сторону в которую повернута буква Г
+            join = random.randint(0,
+                                  1)  # Выбираем сторону в которую повернута буква Г
             if join == 0:  # Неправильная буква Г - вправо-вверх
                 if y2 > y1:
                     jx1 = x1_2 + 1
                     jy1 = random.randint(y1, y1_2)
                     jx2 = random.randint(x2, x2_2)
                     jy2 = y2 - 1
-                    corridors = self.corridor_between_points(jx1, jy1, jx2, jy2, 0)
+                    corridors = self.corridor_between_points(jx1, jy1, jx2,
+                                                             jy2, 0)
                     self.corridor_list.append(corridors)
                 else:
                     jx1 = random.randint(x1, x1_2)
                     jy1 = y1 - 1
                     jx2 = x2 - 1
                     jy2 = random.randint(y2, y2_2)
-                    corridors = self.corridor_between_points(jx1, jy1, jx2, jy2, 1)
+                    corridors = self.corridor_between_points(jx1, jy1, jx2,
+                                                             jy2, 1)
                     self.corridor_list.append(corridors)
             else:  # Правильная буква Г - вверх вправо
                 if y2 > y1:
@@ -84,17 +90,20 @@ class Map:
                     jy1 = y1_2 + 1
                     jx2 = x2 - 1
                     jy2 = random.randint(y2, y2_2)
-                    corridors = self.corridor_between_points(jx1, jy1, jx2, jy2, 1)
+                    corridors = self.corridor_between_points(jx1, jy1, jx2,
+                                                             jy2, 1)
                     self.corridor_list.append(corridors)
                 else:
                     jx1 = x1_2 + 1
                     jy1 = random.randint(y1, y1_2)
                     jx2 = random.randint(x2, x2_2)
                     jy2 = y2_2 + 1
-                    corridors = self.corridor_between_points(jx1, jy1, jx2, jy2, 0)
+                    corridors = self.corridor_between_points(jx1, jy1, jx2,
+                                                             jy2, 0)
                     self.corridor_list.append(corridors)
 
-    def __init__(self, width, height, max_rooms, min_room_len, max_room_len, random_connections):
+    def __init__(self, width, height, max_rooms, min_room_len, max_room_len,
+                 random_connections):
         self.height = height
         self.min_room_len = min_room_len
         self.random_connections = random_connections
@@ -136,12 +145,14 @@ class Map:
             x2, y2 = corridor[1]
             for width in range(abs(x1 - x2) + 1):
                 for height in range(abs(y1 - y2) + 1):
-                    self.level[min(y1, y2) + height][min(x1, x2) + width] = FLOOR
+                    self.level[min(y1, y2) + height][
+                        min(x1, x2) + width] = FLOOR
             if len(corridor) == 3:
                 x3, y3 = corridor[2]
                 for width in range(abs(x2 - x3) + 1):
                     for height in range(abs(y2 - y3) + 1):
-                        self.level[min(y2, y3) + height][min(x2, x3) + width] = FLOOR
+                        self.level[min(y2, y3) + height][
+                            min(x2, x3) + width] = FLOOR
 
         for row in range(1, self.height - 1):
             for col in range(1, self.width - 1):
@@ -191,7 +202,8 @@ class Map:
 
 
 if __name__ == "__main__":
-    map = Map(height=60, width=60, max_rooms=7, max_room_len=8, min_room_len=8, random_connections=3)
+    map = Map(height=60, width=60, max_rooms=7, max_room_len=8, min_room_len=8,
+              random_connections=3)
     for i in map._tile:
         for j in i:
             if (j == -1):

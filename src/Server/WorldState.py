@@ -1,6 +1,8 @@
-from src.Server import Map
 from copy import deepcopy
+
+from src.Server import Map
 from ..utility.constants import *
+
 
 class WorldState:
     def __init__(self):
@@ -8,7 +10,10 @@ class WorldState:
         self.movable_entities = set()
         self.enemies = set()
         self.projectiles = set()
-        self.map = Map.Map(width=WIDTH, height=HEIGHT, max_rooms=ROOMS, min_room_len=MIN_ROOM_LEN, max_room_len=MAX_ROOM_LEN, random_connections=RANDOM_CONNECTIONS)
+        self.map = Map.Map(width=WIDTH, height=HEIGHT, max_rooms=ROOMS,
+                           min_room_len=MIN_ROOM_LEN,
+                           max_room_len=MAX_ROOM_LEN,
+                           random_connections=RANDOM_CONNECTIONS)
         self.first_player_glare = deepcopy(self.map.level)
         self.second_player_glare = deepcopy(self.map.level)
         self.first_player_id = 0
@@ -21,7 +26,8 @@ class WorldState:
         return self.second_player_id
 
     def get_position(self, entity_id):
-        return (self.get_box(entity_id).centerx, self.get_box(entity_id).centery)
+        return (
+            self.get_box(entity_id).centerx, self.get_box(entity_id).centery)
 
     def get_direction(self, entity_id):
         return self.entity[entity_id].get_direction()

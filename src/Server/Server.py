@@ -1,9 +1,9 @@
+import logging
+import pickle
+import queue
 import socket
 import threading
-import sys
-import pickle
-import logging
-import queue
+
 from src.utility.constants import PORT
 
 
@@ -51,19 +51,24 @@ class Server:
                 logging.debug("received - {}".format(query))
                 self.activeConnections += 1
                 if query == "ACTION_GET_ID":
-                    new_thread = threading.Thread(target=self.handler, args=(connection, len(self.connections)))
+                    new_thread = threading.Thread(target=self.handler, args=(
+                    connection, len(self.connections)))
                     self.connections.append(connection)
                     new_thread.daemon = True
                     self.threads.append(new_thread)
-                    self.send_obj_to_player(len(self.connections) - 1, len(self.connections) - 1)
-                    logging.info("player # {} connected".format(len(self.connections) - 1))
-                    self.action_queue.put((len(self.connections) - 1, "PLAYER_CONNECTED"))
+                    self.send_obj_to_player(len(self.connections) - 1,
+                                            len(self.connections) - 1)
+                    logging.info("player # {} connected".format(
+                        len(self.connections) - 1))
+                    self.action_queue.put(
+                        (len(self.connections) - 1, "PLAYER_CONNECTED"))
                     new_thread.start()
                 else:
                     str, client_id = query.split(':')
                     client_id = int(client_id)
                     self.connections[client_id] = connection
-                    new_thread = threading.Thread(target=self.handler, args=(connection, client_id))
+                    new_thread = threading.Thread(target=self.handler,
+                                                  args=(connection, client_id))
                     new_thread.daemon = True
                     self.threads[client_id] = new_thread
                     logging.info("player # {} reconnected".format(client_id))
@@ -75,7 +80,8 @@ class Server:
             self.server_socket.close()
 
     def send_obj_to_player(self, obj, player_id):
-        if player_id < len(self.connections) and self.connections[player_id] is not None:
+        if player_id < len(self.connections) and self.connections[
+            player_id] is not None:
             self.connections[player_id].send(pickle.dumps(obj))
             return True
         return False
@@ -98,8 +104,9 @@ class SafeServer(Server):
             if conn is not None:
                 conn.close()
         self.server_socket.close()
-        if exc_val:
-            raise
+        # TODO АСХАТ, пофикси
+        # if exc_val:
+        #     raise
 
 
 def run():

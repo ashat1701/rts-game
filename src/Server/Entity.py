@@ -1,6 +1,3 @@
-from src.Server.AnimationSystem import parse_animation_descriptions
-from src.utility.utilities import cls_init
-import os
 from ..utility.constants import *
 
 
@@ -184,4 +181,3 @@ class PlayerEntity(MovableEntity):
     def set_health(self, health):
         self._health = health
         return self
-

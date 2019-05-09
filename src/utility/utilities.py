@@ -1,6 +1,9 @@
-import json
 import os
 from .constants import MAP_SCALE
+import os
+
+from .constants import MAP_SCALE
+
 
 def cls_init(cls):
     cls.cls_init()

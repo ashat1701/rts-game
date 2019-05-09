@@ -1,9 +1,8 @@
+import threading
 import tkinter as tk
 from tkinter import font as tkfont
 from tkinter import messagebox
-from os import system, chdir, getcwd
-import threading
-import time
+
 import App
 
 
@@ -13,7 +12,8 @@ class Master(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
         self.geometry("400x200")
         self.resizable(width=False, height=False)
-        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+        self.title_font = tkfont.Font(family='Helvetica', size=18,
+                                      weight="bold", slant="italic")
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -21,7 +21,7 @@ class Master(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Connect, Playing, WaitingForPlayer):
+        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Connect):
             page_name = Frame.__name__
             frame = Frame(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -31,47 +31,40 @@ class Master(tk.Tk):
         self.show_frame("MainMenu")
 
     def exit_app(self):
-        input = tk.messagebox.askquestion('Exit Application', 'Are you sure you want to exit the application',
-                                          icon='warning')
-        if input == 'yes':
+        input_ = tk.messagebox.askquestion('Exit Application',
+                                           'Are you sure you want to exit the '
+                                           'application',
+                                           icon='warning')
+        if input_ == 'yes':
             self.destroy()
 
     def show_frame(self, page_name):
-        ''' Show a frame for the given page name '''
+        """Show a frame for the given page name"""
         frame = self.frames[page_name]
         frame.tkraise()
 
     def single_player_start(self):
         from src.Client.Game import game
-        server_thread = threading.Thread(target=App.start_game, args=["Singleplayer"])
+        server_thread = threading.Thread(target=App.start_game,
+                                         args=["Singleplayer"])
         server_thread.daemon = True
         server_thread.start()
 
         client_thread = threading.Thread(target=game.run, args=["localhost"])
-        client_thread.daemon = True
         client_thread.start()
 
-        self.withdraw()
-        while True:
-            if not client_thread.is_alive():
-                self.deiconify()
-                self.show_frame("MainMenu")  # TODO: show reconnect frame
-                break
+        self.destroy()
 
     def connect(self, ip: tk.StringVar):
         from src.Client.Game import game
         client_thread = threading.Thread(target=game.run, args=[ip.get()])
-        client_thread.daemon = True
         client_thread.run()
-        self.withdraw()
-        while True:
-            if not client_thread.is_alive():
-                self.deiconify()
-                self.show_frame("MainMenu")  # TODO: show reconnect frame
-                break
+
+        self.destroy()
 
     def create_multiplayer_server(self):
-        server_thread = threading.Thread(target=App.start_game, args=["Multiplayer"])
+        server_thread = threading.Thread(target=App.start_game,
+                                         args=["Multiplayer"])
         server_thread.daemon = True
         server_thread.start()
 
@@ -80,13 +73,7 @@ class Master(tk.Tk):
         client_thread.daemon = True
         client_thread.start()
 
-        self.withdraw()  # Какие-то проблемы с while и отображением кадра. пока что буду просто сворачивать для ожидания
-
-        while True:
-            if not client_thread.is_alive():
-                self.deiconify()
-                self.show_frame("MainMenu")  # TODO: show reconnect frame
-                break
+        self.destroy()
 
 
 class MainMenu(tk.Frame):
@@ -98,12 +85,15 @@ class MainMenu(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         singleplayer_button = tk.Button(self, text="Single Player",
-                                        command=lambda: [controller.show_frame("Loading"),
-                                                         controller.single_player_start()])
+                                        command=lambda: [
+                                            controller.show_frame("Loading"),
+                                            controller.single_player_start()])
         multiplayer_button = tk.Button(self, text="Multi Player",
-                                       command=lambda: controller.show_frame("MultiPlayer"))
+                                       command=lambda: controller.show_frame(
+                                           "MultiPlayer"))
         settings_button = tk.Button(self, text="Settings",
-                                    command=lambda: controller.show_frame("Settings"))
+                                    command=lambda: controller.show_frame(
+                                        "Settings"))
         exit_button = tk.Button(self, text="Exit",
                                 command=controller.exit_app)
         singleplayer_button.pack()
@@ -120,9 +110,11 @@ class MultiPlayer(tk.Frame):
         host_game_button = tk.Button(self, text="Host Game",
                                      command=lambda: controller.create_multiplayer_server())
         connect_button = tk.Button(self, text="Connect",
-                                   command=lambda: controller.show_frame("Connect"))
+                                   command=lambda: controller.show_frame(
+                                       "Connect"))
         back_button = tk.Button(self, text="Back",
-                                command=lambda: controller.show_frame("MainMenu"))
+                                command=lambda: controller.show_frame(
+                                    "MainMenu"))
         host_game_button.pack()
         connect_button.pack()
         back_button.pack()
@@ -137,7 +129,8 @@ class Loading(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         cancel_button = tk.Button(self, text="Cancel",
-                                  command=lambda: controller.show_frame("MainMenu"))
+                                  command=lambda: controller.show_frame(
+                                      "MainMenu"))
         cancel_button.pack()
 
 
@@ -150,7 +143,8 @@ class Settings(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         back_button = tk.Button(self, text="Back",
-                                command=lambda: controller.show_frame("MainMenu"))
+                                command=lambda: controller.show_frame(
+                                    "MainMenu"))
         back_button.pack()
 
 
@@ -166,28 +160,14 @@ class Connect(tk.Frame):
         ip_entry.pack()
 
         connect_button = tk.Button(self, text="Connect",
-                                   command=lambda: [controller.show_frame("Loading"),
-                                                    controller.connect(ip)])
+                                   command=lambda: [
+                                       controller.show_frame("Loading"),
+                                       controller.connect(ip)])
         back_button = tk.Button(self, text="Back",
-                                command=lambda: controller.show_frame("MainMenu"))
+                                command=lambda: controller.show_frame(
+                                    "MainMenu"))
         connect_button.pack()
         back_button.pack()
-
-
-class Playing(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-
-        label = tk.Label(self, text="Currently playing", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
-
-
-class WaitingForPlayer(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-
-        label = tk.Label(self, text="Waiting for second player ...", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
 
 
 if __name__ == "__main__":
