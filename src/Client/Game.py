@@ -3,7 +3,7 @@ import time
 import logging
 from src.Client.Client import reconnecting_client
 from src.Client.EntitySprite import EntitySpriteManager
-
+from os import getcwd
 
 class Game:
     def __init__(self):
@@ -20,8 +20,8 @@ class Game:
         self.running = True
         self.clock = pygame.time.Clock()
 
-    def run(self):
-        with reconnecting_client('127.0.0.1') as client:
+    def run(self, ip):
+        with reconnecting_client(ip) as client:
             self.active_window.set_client(client)
             while self.running:
                 self.clock.tick(100)

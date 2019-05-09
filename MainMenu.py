@@ -1,5 +1,10 @@
 import tkinter as tk
 from tkinter import font as tkfont
+from tkinter import messagebox
+from os import system, chdir, getcwd
+import threading
+import time
+import App
 
 
 class Master(tk.Tk):
@@ -10,41 +15,78 @@ class Master(tk.Tk):
         self.resizable(width=False, height=False)
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
-        # the container is where we'll stack a bunch of frames
-        # on top of each other, then the one we want visible
-        # will be raised above the others
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Connect):
+        for Frame in (MainMenu, MultiPlayer, Loading, Settings, Connect, Playing, WaitingForPlayer):
             page_name = Frame.__name__
             frame = Frame(parent=container, controller=self)
             self.frames[page_name] = frame
 
-            # put all of the pages in the same location;
-            # the one on the top of the stacking order
-            # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame("MainMenu")
 
+    def exit_app(self):
+        input = tk.messagebox.askquestion('Exit Application', 'Are you sure you want to exit the application',
+                                          icon='warning')
+        if input == 'yes':
+            self.destroy()
+
     def show_frame(self, page_name):
-        '''Show a frame for the given page name'''
+        ''' Show a frame for the given page name '''
         frame = self.frames[page_name]
         frame.tkraise()
 
-    #TODO
     def single_player_start(self):
-        pass
+        from src.Client.Game import game
+        server_thread = threading.Thread(target=App.start_game, args=["Singleplayer"])
+        server_thread.daemon = True
+        server_thread.start()
 
-    def start_server(self):
-        pass
+        client_thread = threading.Thread(target=game.run, args=["localhost"])
+        client_thread.daemon = True
+        client_thread.start()
+
+        self.withdraw()
+        while True:
+            if not client_thread.is_alive():
+                self.deiconify()
+                self.show_frame("MainMenu")  # TODO: show reconnect frame
+                break
 
     def connect(self, ip: tk.StringVar):
-        pass
+        from src.Client.Game import game
+        client_thread = threading.Thread(target=game.run, args=[ip.get()])
+        client_thread.daemon = True
+        client_thread.run()
+        self.withdraw()
+        while True:
+            if not client_thread.is_alive():
+                self.deiconify()
+                self.show_frame("MainMenu")  # TODO: show reconnect frame
+                break
+
+    def create_multiplayer_server(self):
+        server_thread = threading.Thread(target=App.start_game, args=["Multiplayer"])
+        server_thread.daemon = True
+        server_thread.start()
+
+        from src.Client.Game import game
+        client_thread = threading.Thread(target=game.run, args=["localhost"])
+        client_thread.daemon = True
+        client_thread.start()
+
+        self.withdraw()  # Какие-то проблемы с while и отображением кадра. пока что буду просто сворачивать для ожидания
+
+        while True:
+            if not client_thread.is_alive():
+                self.deiconify()
+                self.show_frame("MainMenu")  # TODO: show reconnect frame
+                break
 
 
 class MainMenu(tk.Frame):
@@ -62,9 +104,12 @@ class MainMenu(tk.Frame):
                                        command=lambda: controller.show_frame("MultiPlayer"))
         settings_button = tk.Button(self, text="Settings",
                                     command=lambda: controller.show_frame("Settings"))
+        exit_button = tk.Button(self, text="Exit",
+                                command=controller.exit_app)
         singleplayer_button.pack()
         multiplayer_button.pack()
         settings_button.pack()
+        exit_button.pack()
 
 
 class MultiPlayer(tk.Frame):
@@ -73,8 +118,7 @@ class MultiPlayer(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         host_game_button = tk.Button(self, text="Host Game",
-                                     command=lambda: [controller.show_frame("Loading"),
-                                                      controller.start_server()])
+                                     command=lambda: controller.create_multiplayer_server())
         connect_button = tk.Button(self, text="Connect",
                                    command=lambda: controller.show_frame("Connect"))
         back_button = tk.Button(self, text="Back",
@@ -130,6 +174,23 @@ class Connect(tk.Frame):
         back_button.pack()
 
 
+class Playing(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        label = tk.Label(self, text="Currently playing", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+
+class WaitingForPlayer(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        label = tk.Label(self, text="Waiting for second player ...", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+
+
 if __name__ == "__main__":
     app = Master()
+    app.protocol("WM_DELETE_WINDOW", app.exit_app)
     app.mainloop()

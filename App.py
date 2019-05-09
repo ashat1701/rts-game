@@ -1,11 +1,15 @@
 import src.Server.Server as Server
 import logging
 import queue
+import os
 from src.Server import Logic
 import time
 from src.Server.WorldState import world
 from src.Server.ActionBuilder import ActionBuilder
 from src.Server.Visitor import Visitor
+
+player1_connected = False
+player2_connected = False
 
 
 class App:
@@ -82,9 +86,9 @@ def start_game(game_mode="Singleplayer"):
     with Server.SafeServer() as server:
         server.start_as_daemon()
         if game_mode == "Singleplayer":
-            connected_players = [False]
+            connected_players = [player1_connected]
         if game_mode == "Multiplayer":
-            connected_players = [False, False]
+            connected_players = [player1_connected, player2_connected]
         while not all(connected_players):
             time.sleep(0.5)
             current_action = server.action_queue.get()
@@ -105,4 +109,5 @@ def start_game(game_mode="Singleplayer"):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
+    os.path.dirname(os.path.abspath(__file__))
     start_game()
