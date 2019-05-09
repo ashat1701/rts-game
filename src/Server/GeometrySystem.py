@@ -7,6 +7,7 @@ from random import randint
 from math import sin, cos
 from src.Server.Entity import PlayerEntity, Enemy
 
+
 class GeometrySystem:
 
     def get_visible_tiles(self, entity_id):
@@ -72,14 +73,25 @@ class GeometrySystem:
 
         for other_entity_id in world.entity.keys():
             if (isinstance(world.entity[other_entity_id]), EnemyClass):
-                if self._is_attackable(world.get_position(entity_id), world.get_position(other_entity_id))\
-                    and other_entity_id != entity_id:
+                if self._is_attackable(world.get_position(entity_id), world.get_position(other_entity_id)) \
+                        and other_entity_id != entity_id:
                     entities_id.append(other_entity_id)
         return entities_id
 
-    # TODO
     def generate_npc_movement(self, npc_id):
-        return randint(-1, 1), randint(-1, 1)
+        if world.entity[npc_id].get_aim() is None:
+            return (0, 0)
+        target = world.entity[npc_id].get_aim()
+        current = world.get_position(npc_id)
+        directions = [(0, 0), (0, 1), (1, 1), (1, 0), (-1, 0), (-1, -1), (0, -1), (1, -1), (-1, 1)]
+        ans = (0, 0)
+        min_dist = 10 ** 10
+        for direction in directions:
+            new_cur = (current[0] + direction[0], current[1] + direction[1])
+            if ((new_cur[0] - target[0]) ** 2 + (new_cur[1] - target[1]) ** 2) < min_dist:
+                min_dist = (new_cur[0] - target[0]) ** 2 + (new_cur[1] - target[1]) ** 2
+                ans = direction
+        return ans
 
     # Провекра пересечения хитбоксов
     @staticmethod

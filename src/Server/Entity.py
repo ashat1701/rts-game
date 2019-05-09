@@ -68,6 +68,7 @@ class Enemy(MovableEntity):
         self._damage = None
         self._attack_reload = None
         self._last_attack = None
+        self._aim_position = None
 
     def set_health(self, health):
         self._health = health
@@ -99,6 +100,12 @@ class Enemy(MovableEntity):
 
     def attack(self):
         raise NotImplementedError
+
+    def get_aim(self):
+        return self._aim_position
+
+    def set_aim(self, position):
+        self._aim_position = position
 
 
 class Projectile(MovableEntity):

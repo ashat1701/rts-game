@@ -55,7 +55,6 @@ class Logic:
 
         # Если никто ни в кого не врезался - двигаем
         world.set_box(entity_id, temp_box)
-        print(entity_id)
 
     def move_all_entities(self):
         for entity_id in world.movable_entities:
@@ -76,3 +75,7 @@ class Logic:
                     world.set_last_attack(entity_id, None)
             else:
                 world.set_last_attack(entity_id, time())
+
+    def update_enemies_direcion(self):
+        for entity_id in world.enemies:
+            world.set_direction(entity_id, self.geometry_system.generate_npc_movement(entity_id))
