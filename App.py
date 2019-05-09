@@ -16,22 +16,34 @@ class App:
     def __init__(self, server):
         self.server = server
         self.logic = Logic.Logic()
+        self.init = True
 
     def get_all_entity_information(self, entity_id, visitor):
         return world.entity[entity_id].accept(visitor). \
-            set_animation_state(*self.logic.animation_system.get_animation_state(entity_id)).get_action()
+            set_animation_state(
+            *self.logic.animation_system.get_animation_state(
+                entity_id)).get_action()
 
     def send_world_state_to_player(self, player_id):
         entities_to_draw = []
         visitor = Visitor()
-        for visible_entity_id in self.logic.geometry_system.get_visible_entities(player_id):
-            entities_to_draw.append(self.get_all_entity_information(visible_entity_id, visitor))
+        print(self.logic.geometry_system.get_visible_entities(player_id))
+        for visible_entity_id in self.logic.geometry_system.get_visible_entities(
+                player_id):
+            entities_to_draw.append(
+                self.get_all_entity_information(visible_entity_id, visitor))
         self.server.send_obj_to_player(entities_to_draw, player_id)
 
     def send_map_to_player(self, player_id):
         self.server.send_obj_to_player(world.map._tile, player_id)
 
     def update(self):
+        for dead_id in world.dead_entities:
+            self.logic.animation_system.remove_entity(dead_id)
+            world.delete_entity(dead_id)
+        world.dead_entities = []
+
+
         while not self.server.action_queue.empty():
             self.analyze_action(self.server.action_queue.get())
         # self.logic.all_npc_start_attack()
@@ -39,8 +51,9 @@ class App:
         self.logic.move_all_entities()
         self.logic.update_attack_state()
 
-        self.send_world_state_to_player(world.get_first_player_id())  # Add second player
-        if len(world.enemies) < 20:
+        self.send_world_state_to_player(
+            world.get_first_player_id())  # Add second player
+        if len(world.enemies) < 20 :
             self.logic.spawn_system.create_enemy()
         # self.send_world_state_to_player(world.get_second_player_id())
 
@@ -76,7 +89,8 @@ class App:
 
         if current_action == 'ATTACK':
             self.logic.start_attack(world.get_first_player_id(),
-                                    world.get_direction(world.get_first_player_id()))
+                                    world.get_direction(
+                                        world.get_first_player_id()))
 
 
 class GameLoop:
@@ -105,7 +119,8 @@ def start_game(game_mode="Singleplayer"):
         new_app = App(server)
         for id in range(len(connected_players)):
             new_app.logic.spawn_system.create_player(id)
-            new_app.logic.animation_system.get_animation_state(id)  # Create in animation set
+            new_app.logic.animation_system.get_animation_state(
+                id)  # Create in animation set
         server.send_obj_all_players(["MAP", world.map.level])
         logging.info("Sent map to everyone")
 

@@ -176,6 +176,9 @@ class PlayerEntity(MovableEntity):
         self._attack_reload = attack_reload
         return self
 
+    def get_attack_reload(self):
+        return self._attack_reload
+
     def set_damage(self, damage):
         self._damage = damage
         return self

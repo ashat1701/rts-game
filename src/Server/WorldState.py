@@ -10,6 +10,7 @@ class WorldState:
         self.movable_entities = set()
         self.enemies = set()
         self.projectiles = set()
+        self.dead_entities = []
         self.map = Map.Map(width=WIDTH, height=HEIGHT, max_rooms=ROOMS,
                            min_room_len=MIN_ROOM_LEN,
                            max_room_len=MAX_ROOM_LEN,
@@ -76,7 +77,7 @@ class WorldState:
 
     def delete_entity(self, entity_id):
         self.movable_entities.discard(entity_id)
-        self.entity.pop(entity_id, None)
+        del self.entity[entity_id]
         self.enemies.discard(entity_id)
         self.projectiles.discard(entity_id)
 
