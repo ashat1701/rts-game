@@ -70,8 +70,8 @@ class Logic:
         for other_entity_id in self.geometry_system.get_attackable_entites(entity_id):
             self.damage_system.deal_damage(entity_id, other_entity_id)
 
-    def all_npc_start_attack(self):
-        for entity_id in world.enemies:
+    def update_attack_state(self):
+        for entity_id in world.entity.keys():
             if len(self.geometry_system.get_attackable_entites(entity_id)) > 0:
                 if world.get_last_attack(entity_id) is not None:
                     if time() - world.get_last_attack(entity_id) > world.get_attack_reload(entity_id):
