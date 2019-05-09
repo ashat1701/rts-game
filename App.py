@@ -96,6 +96,7 @@ def start_game(game_mode="Singleplayer"):
             new_app.logic.spawn_system.create_player(id)
             new_app.logic.animation_system.get_animation_state(id)  # Create in animation set
         server.send_obj_all_players(["MAP", world.map.level])
+        logging.info("Sent map to everyone")
 
         game_loop = GameLoop(new_app)
 

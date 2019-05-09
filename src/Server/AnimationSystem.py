@@ -105,8 +105,8 @@ class AnimationSystem:
 
     def get_move_animation(self, id_, direction):
         logging.debug("id - {} direction - {}".format(id_, direction))
-        if direction != (0,0):
-            pass
+        if id_ not in self._anim_sets:
+            self.add_entity(id_)
         return self._anim_sets[id_].get_move_animation(direction)
 
     def load_entity_config(self, file):

@@ -1,12 +1,16 @@
 import pygame
 import json
 from src.utility.client_config import *
-from src.utility.utilities import join_paths
+from src.utility.utilities import join_paths, Vector
+
 
 class Animation:
-    def __init__(self, filenames, scale=SCALE_FACTOR, transforms=None):
+    def __init__(self, filenames, transforms=None, offset=None):
         if transforms is None:
-            transforms = Transforms([Scale(scale)])
+            transforms = Transforms()
+        if offset is not None:
+            offset = Vector(*offset)
+        self.offset = offset
 
         images = [pygame.image.load(f) for f in filenames]
         self.images = [transforms(img).convert_alpha() for img in images]
@@ -20,8 +24,9 @@ class Animation:
 
 def parse_descriptions(descriptions):
     animations = {
-        row['name']: Animation(join_paths(row['folder'], row['sprites']),
-                               transforms=get_transforms(row))
+        row['name']: Animation(join_paths(row['folder'], row['sprites'],),
+                               transforms=get_transforms(row),
+                               offset=row['offset'])
         for row in descriptions}
 
     return animations
@@ -66,11 +71,22 @@ class Scale(Transform):
                                       img.get_width() * self.factor)
 
 
+class Resize(Transforms):
+    def __init__(self, size):
+        self.size = size
+
+    def __call__(self, img):
+        return pygame.transform.scale(img, self.size)
+
+
 def get_transforms(config_row):
     transforms = Transforms()
     # Flip transform
     if 'flip_x' in config_row or 'flip_y' in config_row:
         transforms.append(Flip(config_row.get('flip_x', False),
                                config_row.get('flip_y', False)))
+    # Resize transform
+    if 'resize' in config_row:
+        transforms.append(Resize(config_row['resize']))
 
     return transforms

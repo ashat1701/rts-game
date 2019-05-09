@@ -1,11 +1,14 @@
 import pygame
 import time
+import logging
 from src.Client.Client import reconnecting_client
 from src.Client.EntitySprite import EntitySpriteManager
 
 
 class Game:
     def __init__(self):
+        logging.basicConfig(level=logging.INFO)
+
         pygame.init()
         self.screen = pygame.display.set_mode((1000, 1000))
 
@@ -13,7 +16,7 @@ class Game:
                                                'melee_animations.json')
         self._tile = None  # Гриша
         from src.Client.MainWindow import MainWindow
-        self.active_window = MainWindow((500, 500))
+        self.active_window = MainWindow((1000, 1000))
         self.running = True
         self.clock = pygame.time.Clock()
 
@@ -21,7 +24,7 @@ class Game:
         with reconnecting_client('127.0.0.1') as client:
             self.active_window.set_client(client)
             while self.running:
-                self.clock.tick(40)
+                self.clock.tick(100)
                 self.screen.fill((0, 0, 0))
                 while not client.action_queue.empty():
                     current_action = client.action_queue.get()
