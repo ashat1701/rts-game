@@ -1,11 +1,15 @@
-from .SpawnSystem import SpawnSystem
-from .GeometrySystem import GeometrySystem
-from .DamageSystem import DamageSystem
-from .AnimationSystem import AnimationSystem
-from .WorldState import world
-from .Entity import Projectile
-from time import time
 import os
+from time import time
+import logging
+
+
+from .AnimationSystem import AnimationSystem
+from .DamageSystem import DamageSystem
+from .Entity import Projectile
+from .GeometrySystem import GeometrySystem
+from .SpawnSystem import SpawnSystem
+from .WorldState import world
+
 
 
 class Logic:
@@ -85,5 +89,7 @@ class Logic:
             return
 
         attack_anim = self.animation_system.get_attack_animation(id_, direction)
+
         self.animation_system.reset_animation(id_, attack_anim)
         world.set_last_attack(id_, time())
+        logging.info("Entity {} attacked".format(id_))

@@ -30,15 +30,17 @@ class MainWindow(Window):
                 self.client.send_object("MOVE_DOWN")
             elif event.key == pygame.K_UP:
                 self.client.send_object("MOVE_UP")
+            elif event.key == pygame.K_f:
+                self.client.send_object("ATTACK")
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
-                self.client.send_object("STOP_MOVE_RIGHT")
+                self.client.send_object("MOVE_RIGHT_STOP")
             elif event.key == pygame.K_LEFT:
-                self.client.send_object("STOP_MOVE_LEFT")
+                self.client.send_object("MOVE_LEFT_STOP")
             elif event.key == pygame.K_DOWN:
-                self.client.send_object("STOP_MOVE_DOWN")
+                self.client.send_object("MOVE_DOWN_STOP")
             elif event.key == pygame.K_UP:
-                self.client.send_object("STOP_MOVE_UP")
+                self.client.send_object("MOVE_UP_STOP")
 
     def accept_action(self, action):
         if not isinstance(action, list):

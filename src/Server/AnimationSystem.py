@@ -121,7 +121,7 @@ class AnimationSystem:
     def get_attack_animation(self, id_, direction):
         if id_ not in self._anim_sets:
             self.add_entity(id_)
-        return self._anim_sets[id_].get_move_animation(direction)
+        return self._anim_sets[id_].get_attack_animation(direction)
 
     def load_entity_config(self, file):
         with open(file) as f:

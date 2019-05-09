@@ -45,7 +45,6 @@ class WorldState:
         return self.entity[entity_id].get_box()
 
     def get_last_attack(self, entity_id):
-        print(self.entity)
         return self.entity[entity_id].get_last_attack()
 
     def get_attack_reload(self, entity_id):
