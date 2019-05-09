@@ -45,7 +45,6 @@ class Master(tk.Tk):
         client_thread.start()
 
         self.withdraw()
-        self.show_frame("Playing")
         while True:
             if not client_thread.is_alive():
                 self.deiconify()
@@ -57,13 +56,30 @@ class Master(tk.Tk):
         client_thread = threading.Thread(target=game.run, args=[ip.get()])
         client_thread.daemon = True
         client_thread.run()
+        self.withdraw()
+        while True:
+            if not client_thread.is_alive():
+                self.deiconify()
+                self.show_frame("MainMenu")  # TODO: show reconnect frame
+                break
 
     def create_multiplayer_server(self):
-        chdir("../../../")
         server_thread = threading.Thread(target=App.start_game, args=["Multiplayer"])
         server_thread.daemon = True
         server_thread.start()
-        self.show_frame("WaitingForPlayer")
+
+        from src.Client.Game import game
+        client_thread = threading.Thread(target=game.run, args=["localhost"])
+        client_thread.daemon = True
+        client_thread.start()
+
+        self.withdraw()  # Какие-то проблемы с while и отображением кадра. пока что буду просто сворачивать для ожидания
+
+        while True:
+            if not client_thread.is_alive():
+                self.deiconify()
+                self.show_frame("MainMenu")  # TODO: show reconnect frame
+                break
 
 
 class MainMenu(tk.Frame):
@@ -92,8 +108,7 @@ class MultiPlayer(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         host_game_button = tk.Button(self, text="Host Game",
-                                     command=lambda: [controller.show_frame("Loading"),
-                                                      controller.create_multiplayer_server()])
+                                     command=lambda: controller.create_multiplayer_server())
         connect_button = tk.Button(self, text="Connect",
                                    command=lambda: controller.show_frame("Connect"))
         back_button = tk.Button(self, text="Back",

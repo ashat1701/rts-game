@@ -7,4 +7,4 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 logging.basicConfig(level=logging.DEBUG)
-game.run()
+game.run("localhost")
