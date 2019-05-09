@@ -2,21 +2,16 @@ import os
 from time import time
 import logging
 
-
 from .AnimationSystem import AnimationSystem
-<<<<<<< HEAD
 from .WorldState import world
 from .Entity import Projectile, Enemy, PlayerEntity
 from time import time
 import os
-=======
 from .DamageSystem import DamageSystem
 from .Entity import Projectile
 from .GeometrySystem import GeometrySystem
 from .SpawnSystem import SpawnSystem
 from .WorldState import world
-
->>>>>>> 5a6fd62cef75a256ba7e7a8b46f91a4da190e5a7
 
 
 class Logic:
@@ -26,10 +21,12 @@ class Logic:
         self.damage_system = DamageSystem()
         self.animation_system = AnimationSystem()
         dirname = os.path.dirname(__file__)
-        self.animation_system.load_entity_config(os.path.join(dirname, '../utility/animations/'
-                                                 'melee_animations.json'))
-        self.animation_system.load_entity_config(os.path.join(dirname, '../utility/animations/'
-                                                 'player_animations.json'))
+        self.animation_system.load_entity_config(
+            os.path.join(dirname, '../utility/animations/'
+                                  'melee_animations.json'))
+        self.animation_system.load_entity_config(
+            os.path.join(dirname, '../utility/animations/'
+                                  'player_animations.json'))
 
     # move в Logic должен разумно вызывать move GeometrySystem в зависимости от WorldState
     # move в GeometrySystem должен обновлять состояние мира
@@ -53,7 +50,8 @@ class Logic:
 
             # Если наш projectile пересекается с другим entity
             for other_entity_id in world.entity.keys():
-                if self.geometry_system.collide(temp_box, world.get_box(other_entity_id)) \
+                if self.geometry_system.collide(temp_box,
+                                                world.get_box(other_entity_id)) \
                         and entity_id != other_entity_id:
                     self.damage_system.deal_damage(entity_id, other_entity_id)
                     world.delete_entity(entity_id)
@@ -63,7 +61,8 @@ class Logic:
             if self.geometry_system.collide_with_wall(temp_box):
                 return
         for other_entity_id in world.entity.keys():
-            if self.geometry_system.collide(temp_box, world.get_box(other_entity_id)) \
+            if self.geometry_system.collide(temp_box,
+                                            world.get_box(other_entity_id)) \
                     and entity_id != other_entity_id:
                 return
 
@@ -78,33 +77,44 @@ class Logic:
 
     # TODO: different attack types (Melee/Ranged)
     def attack(self, entity_id):
-        for other_entity_id in self.geometry_system.get_attackable_entites(entity_id):
+        for other_entity_id in self.geometry_system.get_attackable_entites(
+                entity_id):
             self.damage_system.deal_damage(entity_id, other_entity_id)
 
     def update_attack_state(self):
         for entity_id in world.entity.keys():
-            if isinstance(world.entity[entity_id], Enemy) and len(self.geometry_system.get_attackable_entites(entity_id)) > 0:
+            if isinstance(world.entity[entity_id], Enemy) and len(
+                    self.geometry_system.get_attackable_entites(
+                            entity_id)) > 0:
                 if world.get_last_attack(entity_id) is not None:
-                    if time() - world.get_last_attack(entity_id) > world.get_attack_reload(entity_id):
+                    if time() - world.get_last_attack(
+                            entity_id) > world.get_attack_reload(entity_id):
                         self.attack(entity_id)
                         world.set_last_attack(entity_id, None)
                 else:
-                    self.start_attack(entity_id, world.get_direction(entity_id))
-            if isinstance(world.entity[entity_id], PlayerEntity) and world.get_last_attack(entity_id) is not None:
+                    self.start_attack(entity_id,
+                                      world.get_direction(entity_id))
+            if isinstance(world.entity[entity_id],
+                          PlayerEntity) and world.get_last_attack(
+                    entity_id) is not None:
                 if world.get_last_attack(entity_id) is not None:
-                    if time() - world.get_last_attack(entity_id) > world.get_attack_reload(entity_id):
+                    if time() - world.get_last_attack(
+                            entity_id) > world.get_attack_reload(entity_id):
                         self.attack(entity_id)
                         world.set_last_attack(entity_id, None)
 
     def update_enemies_direcion(self):
         for entity_id in world.enemies:
-            world.set_direction(entity_id, self.geometry_system.generate_npc_movement(entity_id))
+            world.set_direction(entity_id,
+                                self.geometry_system.generate_npc_movement(
+                                    entity_id))
+
     def start_attack(self, id_, direction):
         if world.get_last_attack(id_) is not None:
             return
-        attack_anim = self.animation_system.get_attack_animation(id_, direction)
+        attack_anim = self.animation_system.get_attack_animation(id_,
+                                                                 direction)
 
         self.animation_system.reset_animation(id_, attack_anim)
         world.set_last_attack(id_, time())
         logging.info("Entity {} attacked".format(id_))
-
