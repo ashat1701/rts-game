@@ -16,6 +16,8 @@ class Logic:
         dirname = os.path.dirname(__file__)
         self.animation_system.load_entity_config(os.path.join(dirname, '../utility/animations/'
                                                  'melee_animations.json'))
+        self.animation_system.load_entity_config(os.path.join(dirname, '../utility/animations/'
+                                                 'player_animations.json'))
 
     # move в Logic должен разумно вызывать move GeometrySystem в зависимости от WorldState
     # move в GeometrySystem должен обновлять состояние мира
@@ -36,7 +38,7 @@ class Logic:
                 return
 
             # Если наш projectile пересекается с другим entity
-            for other_entity_id in world.entity.values():
+            for other_entity_id in world.entity.keys():
                 if self.geometry_system.collide(world.get_box(entity_id), world.get_box(other_entity_id)) \
                         and entity_id != other_entity_id:
                     self.damage_system.deal_damage(entity_id, other_entity_id)
@@ -46,13 +48,14 @@ class Logic:
         if self.geometry_system.collide_with_wall(temp_box):
             if self.geometry_system.collide_with_wall(temp_box):
                 return
-            for other_entity_id in world.entity.values():
-                if self.geometry_system.collide(world.get_box(entity_id), world.get_box(other_entity_id)) \
-                        and entity_id != other_entity_id:
-                    return
+        for other_entity_id in world.entity.keys():
+            if self.geometry_system.collide(world.get_box(entity_id), world.get_box(other_entity_id)) \
+                    and entity_id != other_entity_id:
+                return
 
         # Если никто ни в кого не врезался - двигаем
         world.set_box(entity_id, temp_box)
+        print(entity_id)
 
     def move_all_entities(self):
         for entity_id in world.movable_entities:

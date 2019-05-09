@@ -1,6 +1,5 @@
 from .WorldState import world
 from pygame import Rect
-from random import randint
 from .Entity import MeleeEnemy
 from ..utility.constants import *
 
@@ -19,12 +18,12 @@ class MeleeEnemyFactory(EnemyFactory):
 
     def generate_enemy(self):
         current_id = len(world.entity)
-        box = generate_box_size()
+        box = generate_box()
         damage = generate_enemy_damage()
         health = generate_enemy_health()
         direction = generate_random_direction()
         return MeleeEnemy().set_id(current_id).set_box(box).set_damage(damage)\
-            .set_health(health).set_direction(direction).set_attack_reload(AT)
+            .set_health(health).set_direction(direction).set_attack_reload(ATTACK_RELOAD).set_velocity(ENEMY_VELOCITY)
 
 
 # TODO: вещи связанные с генерацией параметров у монстров
@@ -39,5 +38,5 @@ def generate_enemy_damage():
 def generate_enemy_health():
     return 100
 
-def generate_box_size():
+def generate_box():
     return Rect(0, 0, ENEMY_BOX_SIZE, ENEMY_BOX_SIZE)

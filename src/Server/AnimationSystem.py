@@ -13,13 +13,14 @@ class StaticAnimation:
 
 
 class AnimationSet:
-    def __init__(self, animations, direction_binds, anim):
+    def __init__(self, animations, move_binds, attack_binds, anim):
         self._possible_animations = animations
         self._cur_animation_name = None
         self._cur_frame_start = None
         self._cur_frame = None
         self.reset_animation(anim)
-        self._direction_binds = direction_binds
+        self._move_binds = move_binds
+        self._attack_binds = attack_binds
 
     def get_state(self):
         time_delta = int(time.time() * 1000) - self._cur_frame_start
@@ -49,21 +50,29 @@ class AnimationSet:
         return self._possible_animations[self._cur_animation_name]
 
     def get_move_animation(self, direction):
-        if self._direction_binds is None:
+        if self._move_binds is None:
             raise RuntimeError("Direction binds for this animation set were"
                                "not specified in config")
-        return self._direction_binds[direction]
+        return self._move_binds[direction]
+
+    def get_attack_animation(self, direction):
+        if self._attack_binds is None:
+            raise RuntimeError("Direction binds for this animation set were"
+                               "not specified in config")
+        return self._attack_binds[direction]
 
 
 class AnimationSetFactory:
     def __init__(self):
         self._set_inits = {}
 
-    def register(self, entity_type, animations, binds, default_animation):
+    def register(self, entity_type, animations, move_binds, attack_binds,
+                 default_animation):
         if entity_type in self._set_inits:
             raise RuntimeError("{} Already registered for animation set"
                                "factory".format(entity_type))
-        self._set_inits[entity_type] = (animations, binds, default_animation)
+        self._set_inits[entity_type] = (animations, move_binds, attack_binds,
+                                        default_animation)
 
     def get_animation_set(self, entity_type):
         animation_set = AnimationSet(*self._set_inits[entity_type])
@@ -109,14 +118,25 @@ class AnimationSystem:
             self.add_entity(id_)
         return self._anim_sets[id_].get_move_animation(direction)
 
+    def get_attack_animation(self, id_, direction):
+        if id_ not in self._anim_sets:
+            self.add_entity(id_)
+        return self._anim_sets[id_].get_move_animation(direction)
+
     def load_entity_config(self, file):
         with open(file) as f:
             config = json.load(f)
 
-        animations, binds = parse_animation_descriptions(config['animations'])
+        all_animations, move_binds = parse_animation_descriptions(
+            config['move'])
+        attack_animations, attack_binds = parse_animation_descriptions(
+            config['attack'])
+
+        all_animations.update(attack_animations)
         self.factory.register(config['entity_type'],
-                              animations,
-                              binds,
+                              all_animations,
+                              move_binds,
+                              attack_binds,
                               config['default'])
 
 

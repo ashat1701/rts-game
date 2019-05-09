@@ -25,6 +25,8 @@ class SpawnSystem:
     def __init__(self):
         self._enemy_types = []
         self.monster_spawner = MonsterSpawner()
+        self.melee_enemy_factory = MeleeEnemyFactory()
+        self.monster_spawner.add_monster_factory(self.melee_enemy_factory)
 
     def generate_players(self):
         self.create_player(world.get_first_player_id())
