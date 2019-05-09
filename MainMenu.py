@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import font as tkfont
+from tkinter import messagebox
 from os import system, chdir, getcwd
 import threading
 import time
@@ -28,6 +29,12 @@ class Master(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame("MainMenu")
+
+    def exit_app(self):
+        input = tk.messagebox.askquestion('Exit Application', 'Are you sure you want to exit the application',
+                                          icon='warning')
+        if input == 'yes':
+            self.destroy()
 
     def show_frame(self, page_name):
         ''' Show a frame for the given page name '''
@@ -97,9 +104,12 @@ class MainMenu(tk.Frame):
                                        command=lambda: controller.show_frame("MultiPlayer"))
         settings_button = tk.Button(self, text="Settings",
                                     command=lambda: controller.show_frame("Settings"))
+        exit_button = tk.Button(self, text="Exit",
+                                command=controller.exit_app)
         singleplayer_button.pack()
         multiplayer_button.pack()
         settings_button.pack()
+        exit_button.pack()
 
 
 class MultiPlayer(tk.Frame):
@@ -180,10 +190,7 @@ class WaitingForPlayer(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
 
-def start_client(id):
-    system("python3 client-shell.py" + " " + id)
-
-
 if __name__ == "__main__":
     app = Master()
+    app.protocol("WM_DELETE_WINDOW", app.exit_app)
     app.mainloop()
