@@ -84,6 +84,9 @@ class Logic:
                 else:
                     world.set_last_attack(entity_id, time())
 
+    def update_enemies_direcion(self):
+        for entity_id in world.enemies:
+            world.set_direction(entity_id, self.geometry_system.generate_npc_movement(entity_id))
     def start_attack(self, id_, direction):
         if world.get_last_attack(id_) is not None:
             return
