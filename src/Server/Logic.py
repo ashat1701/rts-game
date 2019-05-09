@@ -3,7 +3,7 @@ from .GeometrySystem import GeometrySystem
 from .DamageSystem import DamageSystem
 from .AnimationSystem import AnimationSystem
 from .WorldState import world
-from .Entity import Projectile
+from .Entity import Projectile, Enemy, PlayerEntity
 from time import time
 import os
 
@@ -72,18 +72,22 @@ class Logic:
 
     def update_attack_state(self):
         for entity_id in world.entity.keys():
-            if len(self.geometry_system.get_attackable_entites(entity_id)) > 0:
+            if isinstance(world.entity[entity_id], Enemy) and len(self.geometry_system.get_attackable_entites(entity_id)) > 0:
                 if world.get_last_attack(entity_id) is not None:
                     if time() - world.get_last_attack(entity_id) > world.get_attack_reload(entity_id):
                         self.attack(entity_id)
                         world.set_last_attack(entity_id, None)
                 else:
-                    world.set_last_attack(entity_id, time())
+                    self.start_attack(entity_id, world.get_direction(entity_id))
+            if isinstance(world.entity[entity_id], PlayerEntity) and world.get_last_attack(entity_id) is not None:
+                if world.get_last_attack(entity_id) is not None:
+                    if time() - world.get_last_attack(entity_id) > world.get_attack_reload(entity_id):
+                        self.attack(entity_id)
+                        world.set_last_attack(entity_id, None)
 
     def start_attack(self, id_, direction):
         if world.get_last_attack(id_) is not None:
             return
-
         attack_anim = self.animation_system.get_attack_animation(id_, direction)
         self.animation_system.reset_animation(id_, attack_anim)
         world.set_last_attack(id_, time())
