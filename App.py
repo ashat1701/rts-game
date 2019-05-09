@@ -86,6 +86,7 @@ def start_game(game_mode="Singleplayer"):
             connected_players = [False]
         if game_mode == "Multiplayer":
             connected_players = [False, False]
+        print(connected_players)
         while not all(connected_players):
             time.sleep(0.5)
             current_action = server.action_queue.get()
@@ -103,6 +104,7 @@ def start_game(game_mode="Singleplayer"):
         game_loop.run()
 
 
-logging.basicConfig(level=logging.DEBUG)
-os.path.dirname(os.path.abspath(__file__))
-start_game()
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    os.path.dirname(os.path.abspath(__file__))
+    start_game()

@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import font as tkfont
-from os import system, chdir
+from os import system, chdir, getcwd
 import threading
 import time
+import App
 
 
 class Master(tk.Tk):
@@ -13,9 +14,6 @@ class Master(tk.Tk):
         self.resizable(width=False, height=False)
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
-        # the container is where we'll stack a bunch of frames
-        # on top of each other, then the one we want visible
-        # will be raised above the others
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
@@ -27,25 +25,22 @@ class Master(tk.Tk):
             frame = Frame(parent=container, controller=self)
             self.frames[page_name] = frame
 
-            # put all of the pages in the same location;
-            # the one on the top of the stacking order
-            # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame("MainMenu")
 
     def show_frame(self, page_name):
-        '''Show a frame for the given page name'''
+        ''' Show a frame for the given page name '''
         frame = self.frames[page_name]
         frame.tkraise()
 
     def single_player_start(self):
-        chdir("../../../")
-        server_thread = threading.Thread(target=start_server)
+        from src.Client.Game import game
+        server_thread = threading.Thread(target=App.start_game, args=["Singleplayer"])
         server_thread.daemon = True
         server_thread.start()
 
-        client_thread = threading.Thread(target=start_client)
+        client_thread = threading.Thread(target=game.run, args=["localhost"])
         client_thread.daemon = True
         client_thread.start()
 
@@ -58,11 +53,14 @@ class Master(tk.Tk):
                 break
 
     def connect(self, ip: tk.StringVar):
-        pass
+        from src.Client.Game import game
+        client_thread = threading.Thread(target=game.run, args=[ip.get()])
+        client_thread.daemon = True
+        client_thread.run()
 
-    def create_server(self):  # add arg parser for App.py to manage game mode (singleplayer / multiplayer)
+    def create_multiplayer_server(self):
         chdir("../../../")
-        server_thread = threading.Thread(target=start_server)
+        server_thread = threading.Thread(target=App.start_game, args=["Multiplayer"])
         server_thread.daemon = True
         server_thread.start()
         self.show_frame("WaitingForPlayer")
@@ -95,7 +93,7 @@ class MultiPlayer(tk.Frame):
 
         host_game_button = tk.Button(self, text="Host Game",
                                      command=lambda: [controller.show_frame("Loading"),
-                                                      controller.create_server()])
+                                                      controller.create_multiplayer_server()])
         connect_button = tk.Button(self, text="Connect",
                                    command=lambda: controller.show_frame("Connect"))
         back_button = tk.Button(self, text="Back",
@@ -166,12 +164,9 @@ class WaitingForPlayer(tk.Frame):
         label = tk.Label(self, text="Waiting for second player ...", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
-def start_server():
-    system("python3 App.py")
 
-
-def start_client():
-    system("python3 client-shell.py")
+def start_client(id):
+    system("python3 client-shell.py" + " " + id)
 
 
 if __name__ == "__main__":
