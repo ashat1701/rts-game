@@ -34,6 +34,8 @@ class App:
     def update(self):
         while not self.server.action_queue.empty():
             self.analyze_action(self.server.action_queue.get())
+        # self.logic.all_npc_start_attack()
+        self.logic.update_enemies_direcion()
         self.logic.move_all_entities()
         self.logic.update_attack_state()
 
@@ -56,22 +58,25 @@ class App:
                 new_direction = (world.get_direction(player_id)[0], -1)
             if current_action == "MOVE_DOWN":
                 new_direction = (world.get_direction(player_id)[0], 1)
-            world.set_direction(player_id, new_direction)
 
-        if current_action.startswith("STOP"):
-            if current_action == "STOP_MOVE_LEFT":
+            if current_action == "MOVE_LEFT_STOP":
                 new_direction = (0, world.get_direction(player_id)[1])
-            if current_action == "STOP_MOVE_RIGHT":
+            if current_action == "MOVE_RIGHT_STOP":
                 new_direction = (0, world.get_direction(player_id)[1])
-            if current_action == "STOP_MOVE_UP":
+            if current_action == "MOVE_UP_STOP":
                 new_direction = (world.get_direction(player_id)[0], 0)
-            if current_action == "STOP_MOVE_DOWN":
+            if current_action == "MOVE_DOWN_STOP":
                 new_direction = (world.get_direction(player_id)[0], 0)
             world.set_direction(player_id, new_direction)
-        self.logic.animation_system.continue_or_reset_move_animation(
-            player_id,
-            world.get_direction(player_id)
-        )
+            if world.get_last_attack(world.get_first_player_id()) is None:
+                self.logic.animation_system.continue_or_reset_move_animation(
+                    player_id,
+                    world.get_direction(player_id)
+                )
+
+        if current_action == 'ATTACK':
+            self.logic.start_attack(world.get_first_player_id(),
+                                    world.get_direction(world.get_first_player_id()))
 
 
 class GameLoop:

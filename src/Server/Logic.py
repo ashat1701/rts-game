@@ -1,11 +1,22 @@
-from .SpawnSystem import SpawnSystem
-from .GeometrySystem import GeometrySystem
-from .DamageSystem import DamageSystem
+import os
+from time import time
+import logging
+
+
 from .AnimationSystem import AnimationSystem
+<<<<<<< HEAD
 from .WorldState import world
 from .Entity import Projectile, Enemy, PlayerEntity
 from time import time
 import os
+=======
+from .DamageSystem import DamageSystem
+from .Entity import Projectile
+from .GeometrySystem import GeometrySystem
+from .SpawnSystem import SpawnSystem
+from .WorldState import world
+
+>>>>>>> 5a6fd62cef75a256ba7e7a8b46f91a4da190e5a7
 
 
 class Logic:
@@ -85,9 +96,15 @@ class Logic:
                         self.attack(entity_id)
                         world.set_last_attack(entity_id, None)
 
+    def update_enemies_direcion(self):
+        for entity_id in world.enemies:
+            world.set_direction(entity_id, self.geometry_system.generate_npc_movement(entity_id))
     def start_attack(self, id_, direction):
         if world.get_last_attack(id_) is not None:
             return
         attack_anim = self.animation_system.get_attack_animation(id_, direction)
+
         self.animation_system.reset_animation(id_, attack_anim)
         world.set_last_attack(id_, time())
+        logging.info("Entity {} attacked".format(id_))
+
