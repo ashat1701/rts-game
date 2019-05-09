@@ -45,7 +45,7 @@ class Logic:
         if isinstance(world.entity[entity_id], Projectile):
             # Если снаряд попал в стену, то его нужно удалить
             if self.geometry_system.collide_with_wall(temp_box):
-                world.delete_entity(entity_id)
+                world.dead_entities.append(entity_id)
                 return
 
             # Если наш projectile пересекается с другим entity
@@ -54,7 +54,6 @@ class Logic:
                                                 world.get_box(other_entity_id)) \
                         and entity_id != other_entity_id:
                     self.damage_system.deal_damage(entity_id, other_entity_id)
-                    world.delete_entity(entity_id)
 
         # NOT-PROJECTILE
         if self.geometry_system.collide_with_wall(temp_box):
@@ -83,25 +82,21 @@ class Logic:
 
     def update_attack_state(self):
         for entity_id in world.entity.keys():
+            if world.get_last_attack(entity_id) is not None:
+                if time() - world.get_last_attack(
+                        entity_id) > world.get_attack_reload(entity_id):
+                    self.attack(entity_id)
+                    world.set_last_attack(entity_id, None)
+                    self.animation_system.continue_or_reset_move_animation(
+                        entity_id, world.get_direction(entity_id)
+                    )
+
             if isinstance(world.entity[entity_id], Enemy) and len(
                     self.geometry_system.get_attackable_entites(
                             entity_id)) > 0:
-                if world.get_last_attack(entity_id) is not None:
-                    if time() - world.get_last_attack(
-                            entity_id) > world.get_attack_reload(entity_id):
-                        self.attack(entity_id)
-                        world.set_last_attack(entity_id, None)
-                else:
+                if world.get_last_attack(entity_id) is None:
                     self.start_attack(entity_id,
                                       world.get_direction(entity_id))
-            if isinstance(world.entity[entity_id],
-                          PlayerEntity) and world.get_last_attack(
-                    entity_id) is not None:
-                if world.get_last_attack(entity_id) is not None:
-                    if time() - world.get_last_attack(
-                            entity_id) > world.get_attack_reload(entity_id):
-                        self.attack(entity_id)
-                        world.set_last_attack(entity_id, None)
 
     def update_enemies_direcion(self):
         for entity_id in world.enemies:

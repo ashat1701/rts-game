@@ -103,6 +103,9 @@ class AnimationSystem:
 
         self._anim_sets[id_] = self.factory.get_animation_set(entity_type)
 
+    def remove_entity(self, id_):
+        del self._anim_sets[id_]
+
     def get_animation_state(self, id_):
         if id_ not in self._anim_sets:
             self.add_entity(id_)
