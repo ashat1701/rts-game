@@ -79,3 +79,11 @@ class Logic:
                         world.set_last_attack(entity_id, None)
                 else:
                     world.set_last_attack(entity_id, time())
+
+    def start_attack(self, id_, direction):
+        if world.get_last_attack(id_) is not None:
+            return
+
+        attack_anim = self.animation_system.get_attack_animation(id_, direction)
+        self.animation_system.reset_animation(id_, attack_anim)
+        world.set_last_attack(id_, time())
