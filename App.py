@@ -37,9 +37,10 @@ class App:
         # self.logic.all_npc_start_attack()
         self.logic.update_enemies_direcion()
         self.logic.move_all_entities()
+        self.logic.update_attack_state()
 
         self.send_world_state_to_player(world.get_first_player_id())  # Add second player
-        if len(world.enemies) < 15:
+        if len(world.enemies) < 20:
             self.logic.spawn_system.create_enemy()
         # self.send_world_state_to_player(world.get_second_player_id())
 
