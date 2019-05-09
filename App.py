@@ -34,7 +34,7 @@ class App:
     def update(self):
         while not self.server.action_queue.empty():
             self.analyze_action(self.server.action_queue.get())
-        self.logic.all_npc_start_attack()
+        # self.logic.all_npc_start_attack()
         self.logic.move_all_entities()
 
         self.send_world_state_to_player(world.get_first_player_id())  # Add second player
