@@ -50,12 +50,14 @@ class App:
         self.logic.update_attack_state()
 
         self.send_world_state_to_player(world.get_first_player_id())
-        self.send_world_state_to_player(world.get_second_player_id())
+        if world.get_game_mode() == "Multiplayer":
+            self.send_world_state_to_player(world.get_second_player_id())
 
     def analyze_action(self, action):
         player_id, current_action = action
         if current_action == "PLAYER_CONNECTED":
             self.logic.spawn_system.create_player(player_id)
+
 
         # if current_action.startswith("MOVE"):
         #     if current_action == "MOVE_LEFT":
@@ -124,9 +126,13 @@ def start_game(game_mode="Singleplayer"):
             new_app.logic.spawn_system.create_player(id)
             new_app.logic.animation_system.get_animation_state(
                 id)  # Create in animation set
-        server.send_obj_all_players(["MAP", world.map.level])
-        logging.info("Sent map to everyone")
-        time.sleep(5)
+        server.send_map_to_all_player(["MAP", world.map.level])
+        logging.info("Sent map to everyone. waiting")
+        while server.action_queue.qsize() < len(connected_players):
+            time.sleep(1)
+        logging.info("MAP_RECEIVED_ON_SERVER")
+        for i in range(len(connected_players)):
+            server.action_queue.get()
         for i in range(10):
             new_app.logic.spawn_system.create_enemy()
             new_app.logic.spawn_system.create_enemy()

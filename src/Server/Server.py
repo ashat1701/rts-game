@@ -48,7 +48,6 @@ class Server:
                 connection, addr = self.server_socket.accept()
                 data = connection.recv(4096)
                 query = pickle.loads(data)[1]
-                logging.debug("received - {}".format(query))
                 self.activeConnections += 1
                 if query == "ACTION_GET_ID":
                     new_thread = threading.Thread(target=self.handler, args=(
@@ -82,10 +81,22 @@ class Server:
     def send_obj_to_player(self, obj, player_id):
         if player_id < len(self.connections) and self.connections[
             player_id] is not None:
-            self.connections[player_id].send(pickle.dumps(obj))
+            serial = pickle.dumps(obj)
+            self.connections[player_id].send(serial)
             return True
         return False
 
+    def send_map_to_player(self, map, player_id):
+        if player_id < len(self.connections) and self.connections[
+            player_id] is not None:
+            serial = pickle.dumps(map)
+            self.connections[player_id].send(serial+b"END#")
+            return True
+        return False
+
+    def send_map_to_all_player(self, map):
+        for player_id in range(len(self.connections)):
+            self.send_map_to_player(map, player_id)
 
 class SafeServer(Server):
     def __init__(self, port=8080):
@@ -104,10 +115,8 @@ class SafeServer(Server):
             if conn is not None:
                 conn.close()
         self.server_socket.close()
-        # TODO АСХАТ, пофикси
-        # if exc_val:
-        #     raise
-
+        if exc_val:
+            raise ChildProcessError("Safe sere")
 
 def run():
     with SafeServer() as server:

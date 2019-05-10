@@ -13,7 +13,8 @@ class Client:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     input_thread = None
     current_id = None
-
+    buffer  = b""
+    length = None
     def send_object(self, obj):
         if (self.input_thread is not None and self.input_thread.is_alive()) or self.current_id is None:
             self.client_socket.sendall(pickle.dumps((self.current_id, obj)))
@@ -24,13 +25,18 @@ class Client:
     def handler(self):
         while True:
             try:
-                data = self.client_socket.recv(100000)
+                data = self.client_socket.recv(8192)
             except ConnectionError as e:
                 logging.error("Disconnect from server")
                 break
             if not data:
                 logging.error("Disconnect from server")
                 break
+            if (b"MAP" in data):
+                while b"END#" not in data:
+                    data += self.client_socket.recv(8192)
+                self.send_object("MAP_RECEIVED")
+                data = data[0:-4]
             obj = pickle.loads(data)
             self.action_queue.put(obj)
 
@@ -63,6 +69,15 @@ class Client:
         id = pickle.loads(id_bytes)
         self.current_id = id
 
+def close_socket(connection):
+    try:
+        connection.shutdown(socket.SHUT_RDWR)
+    except:
+        pass
+    try:
+        connection.close()
+    except:
+        pass
 
 def reconnect_client_thread(client):
     while True:
