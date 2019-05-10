@@ -35,28 +35,10 @@ class MainWindow(Window):
             if state[pygame.K_a]:
                 direction += Vector(-1, 0)
 
-            self.client.send_object(["MOVE", tuple(direction)])
+            self.client.send_object(("MOVE", tuple(direction)))
 
-        # if event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_RIGHT:
-        #         self.client.send_object("MOVE_RIGHT")
-        #     elif event.key == pygame.K_LEFT:
-        #         self.client.send_object("MOVE_LEFT")
-        #     elif event.key == pygame.K_DOWN:
-        #         self.client.send_object("MOVE_DOWN")
-        #     elif event.key == pygame.K_UP:
-        #         self.client.send_object("MOVE_UP")
-        #     elif event.key == pygame.K_f:
-        #         self.client.send_object("ATTACK")
-        # elif event.type == pygame.KEYUP:
-        #     if event.key == pygame.K_RIGHT:
-        #         self.client.send_object("MOVE_RIGHT_STOP")
-        #     elif event.key == pygame.K_LEFT:
-        #         self.client.send_object("MOVE_LEFT_STOP")
-        #     elif event.key == pygame.K_DOWN:
-        #         self.client.send_object("MOVE_DOWN_STOP")
-        #     elif event.key == pygame.K_UP:
-        #         self.client.send_object("MOVE_UP_STOP")
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+            self.client.send_object("ATTACK")
 
     def accept_action(self, action):
         if not isinstance(action, list):

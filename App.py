@@ -17,7 +17,6 @@ class App:
         self.server = server
         self.logic = Logic.Logic()
 
-
     def get_all_entity_information(self, entity_id, visitor):
         return world.entity[entity_id].accept(visitor). \
             set_animation_state(
@@ -42,7 +41,6 @@ class App:
             world.delete_entity(dead_id)
         world.dead_entities = []
 
-
         while not self.server.action_queue.empty():
             self.analyze_action(self.server.action_queue.get())
         self.logic.update_enemies_direcion()
@@ -57,7 +55,6 @@ class App:
         player_id, current_action = action
         if current_action == "PLAYER_CONNECTED":
             self.logic.spawn_system.create_player(player_id)
-
 
         # if current_action.startswith("MOVE"):
         #     if current_action == "MOVE_LEFT":
@@ -85,16 +82,16 @@ class App:
         #         )
 
         if current_action == 'ATTACK':
-            self.logic.start_attack(player_id,
-                                    world.get_direction(player_id))
+            self.logic.start_attack(player_id, world.get_direction(player_id))
 
-        if isinstance(current_action[0], tuple) and current_action[0] == 'DIRECTION':
-            world.set_attack_reload(player_id, current_action[1])
+        if isinstance(current_action, tuple) and current_action[0] == 'MOVE':
+            world.set_direction(player_id, current_action[1])
             if world.get_last_attack(player_id) is None:
                 self.logic.animation_system.continue_or_reset_move_animation(
                     player_id,
                     world.get_direction(player_id)
                 )
+
 
 class GameLoop:
     def __init__(self, app):
