@@ -120,6 +120,7 @@ def start_game(game_mode="Singleplayer"):
                 id)  # Create in animation set
         server.send_obj_all_players(["MAP", world.map.level])
         logging.info("Sent map to everyone")
+        time.sleep(5)
         for i in range(10):
             new_app.logic.spawn_system.create_enemy()
             new_app.logic.spawn_system.create_enemy()
