@@ -100,10 +100,11 @@ class Logic:
 
     def update_enemies_direcion(self):
         for entity_id in world.enemies:
-            self.geometry_system.find_aim(entity_id)
-            world.set_direction(entity_id,
-                                self.geometry_system.generate_npc_movement(
-                                    entity_id))
+            if entity_id not in world.dead_entities:
+                self.geometry_system.find_aim(entity_id)
+                world.set_direction(entity_id,
+                                    self.geometry_system.generate_npc_movement(
+                                        entity_id))
 
 
     def start_attack(self, id_, direction):

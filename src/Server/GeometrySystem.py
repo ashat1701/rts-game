@@ -134,5 +134,3 @@ class GeometrySystem:
             dist_to_first_player = self.get_squared_distance(entity_id, world.get_first_player_id())
             if dist_to_first_player < VISION_RANGE ** 2:
                 world.entity[entity_id].set_aim(world.get_box(world.get_first_player_id()).center)
-            else:
-                world.entity[entity_id].set_aim(None)
