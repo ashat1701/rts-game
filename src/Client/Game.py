@@ -5,6 +5,7 @@ from src.Client.Client import reconnecting_client
 from src.Client.EntitySprite import EntitySpriteManager
 from os import getcwd
 
+
 class Game:
     def __init__(self):
         logging.basicConfig(level=logging.INFO)
@@ -22,23 +23,25 @@ class Game:
         self.clock = pygame.time.Clock()
 
     def run(self, ip):
-        with reconnecting_client(ip) as client:
-            self.active_window.set_client(client)
-            while self.running:
-                self.clock.tick(100)
-                self.screen.fill((0, 0, 0))
-                while not client.action_queue.empty():
-                    current_action = client.action_queue.get()
-                    self.active_window.accept_action(current_action)
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.running = False
-                    else:
-                        self.active_window.accept_event(event)
+        from src.Client.SIOServer import sio, run
+        run()
+        self.active_window.set_sio(sio)
 
-                self.active_window.draw(self.screen)
-                pygame.display.update()
-                pygame.event.pump()
+        while self.running:
+            self.clock.tick(100)
+            self.screen.fill((0, 0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                else:
+                    self.active_window.accept_event(event)
+
+            self.active_window.draw(self.screen)
+            pygame.display.update()
+            pygame.event.pump()
+
+    def accept_action(self, action):
+        self.active_window.accept_action(action)
 
 
 game = Game()
