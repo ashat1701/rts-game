@@ -49,9 +49,8 @@ class App:
         self.logic.move_all_entities()
         self.logic.update_attack_state()
 
-        self.send_world_state_to_player(
-            world.get_first_player_id())  # Add second player
-        # self.send_world_state_to_player(world.get_second_player_id())
+        self.send_world_state_to_player(world.get_first_player_id())
+        self.send_world_state_to_player(world.get_second_player_id())
 
     def analyze_action(self, action):
         player_id, current_action = action

@@ -70,7 +70,6 @@ class Master(tk.Tk):
 
         from src.Client.Game import game
         client_thread = threading.Thread(target=game.run, args=["localhost"])
-        client_thread.daemon = True
         client_thread.start()
 
         self.destroy()
