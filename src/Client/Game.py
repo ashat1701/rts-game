@@ -24,6 +24,7 @@ class Game:
 
     def run(self, ip):
         from src.Client.SIOServer import sio, run
+        time.sleep(1)
         run()
         self.active_window.set_sio(sio)
 
@@ -34,7 +35,8 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 else:
-                    self.active_window.accept_event(event)
+                    if self.active_window.running_game:
+                        self.active_window.accept_event(event)
 
             self.active_window.draw(self.screen)
             pygame.display.update()

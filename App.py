@@ -1,4 +1,4 @@
-import src.Server.Server as Server
+from src.Server.Server import server
 import logging
 import queue
 import os
@@ -104,40 +104,38 @@ class GameLoop:
 
 
 def start_game(game_mode="Singleplayer"):
-    with Server.SafeServer() as server:
-        server.start_as_daemon()
-        if game_mode == "Singleplayer":
-            connected_players = [player1_connected]
-            world.set_game_mode("Singleplayer")
-        if game_mode == "Multiplayer":
-            connected_players = [player1_connected, player2_connected]
-            world.set_game_mode("Multiplayer")
-        while not all(connected_players):
-            time.sleep(0.5)
-            current_action = server.action_queue.get()
-            if current_action[1] == "PLAYER_CONNECTED":
-                connected_players[current_action[0]] = True
+    server.start_as_daemon()
+    if game_mode == "Singleplayer":
+        connected_players = [player1_connected]
+        world.set_game_mode("Singleplayer")
+    if game_mode == "Multiplayer":
+        connected_players = [player1_connected, player2_connected]
+        world.set_game_mode("Multiplayer")
+    while not all(connected_players):
+        time.sleep(0.5)
+        current_action = server.action_queue.get()
+        if current_action[1] == "PLAYER_CONNECTED":
+            connected_players[current_action[0]] = True
 
-        new_app = App(server)
-        for id in range(len(connected_players)):
-            new_app.logic.spawn_system.create_player(id)
-            new_app.logic.animation_system.get_animation_state(
-                id)  # Create in animation set
-        server.send_map_to_all_player(["MAP", world.map.level])
-        logging.info("Sent map to everyone. waiting")
-        while server.action_queue.qsize() < len(connected_players):
-            time.sleep(1)
-        logging.info("MAP_RECEIVED_ON_SERVER")
-        for i in range(len(connected_players)):
-            server.action_queue.get()
-        for i in range(10):
-            new_app.logic.spawn_system.create_enemy()
-            new_app.logic.spawn_system.create_enemy()
-            new_app.logic.spawn_system.create_enemy()
-
-        game_loop = GameLoop(new_app)
-        server.send_obj_all_players("START_GAME")
-        game_loop.run()
+    new_app = App(server)
+    for id in range(len(connected_players)):
+        new_app.logic.spawn_system.create_player(id)
+        new_app.logic.animation_system.get_animation_state(
+            id)  # Create in animation set
+    server.send_obj_all_players(["MAP", world.map.level])
+    logging.info("Sent map to everyone. waiting")
+    while server.action_queue.qsize() < len(connected_players):
+        time.sleep(1)
+    logging.info("MAP_RECEIVED_ON_SERVER")
+    for i in range(len(connected_players)):
+        server.action_queue.get()
+    for i in range(10):
+        new_app.logic.spawn_system.create_enemy()
+        new_app.logic.spawn_system.create_enemy()
+        new_app.logic.spawn_system.create_enemy()
+    game_loop = GameLoop(new_app)
+    server.send_obj_all_players("START_GAME")
+    game_loop.run()
 
 
 if __name__ == '__main__':

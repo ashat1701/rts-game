@@ -7,7 +7,6 @@ import time
 import queue
 from src.utility.constants import PORT
 
-
 class Client:
     action_queue = queue.Queue()
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,6 +14,7 @@ class Client:
     current_id = None
     buffer  = b""
     length = None
+
     def send_object(self, obj):
         if (self.input_thread is not None and self.input_thread.is_alive()) or self.current_id is None:
             self.client_socket.sendall(pickle.dumps((self.current_id, obj)))
@@ -25,7 +25,13 @@ class Client:
     def handler(self):
         while True:
             try:
-                data = self.client_socket.recv(8192)
+                buffer = b""
+                while True:
+                    data = self.client_socket.recv(2048)
+                    buffer += data
+                    while b'!!' in buffer:
+                        a = buffer.split('!!')
+
             except ConnectionError as e:
                 logging.error("Disconnect from server")
                 break
@@ -33,15 +39,13 @@ class Client:
                 logging.error("Disconnect from server")
                 break
             obj = pickle.loads(data)
-            if (obj == "START_GAME"):
-                self.game_started = True
-            else:
-                self.action_queue.put(obj)
+            self.action_queue.put(obj)
 
     def __init__(self, addr, port=PORT):
         self.addr = addr
         self.port = port
         self.game_started = False
+
     def run(self):
         self.client_socket.connect((self.addr, self.port))
         logging.debug("connected")
@@ -71,6 +75,7 @@ class Client:
         map = []
         for i in range(size):
             lvl = self.action_queue.get()
+            print("received row", i)
             map.append(lvl)
         self.send_object("MAP_RECEIVED")
         return map

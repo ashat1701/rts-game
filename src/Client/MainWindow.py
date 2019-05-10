@@ -15,7 +15,7 @@ class MainWindow(Window):
         self.sio = sio
         self.entities = []
         self.lock = Lock()
-
+        self.running_game = False
         self.main_camera = Camera(Vector(0, 0), size)
         self.add_child(self.main_camera, Vector(0, 0))
         pygame.time.set_timer(pygame.USEREVENT, MOVE_UPDATE)
@@ -52,8 +52,13 @@ class MainWindow(Window):
             with self.lock:
                 self.main_camera.set_map(action[1])
             logging.info("Initialized map")
+            self.sio.emit("message", "MAP_RECEIVED")
         else:
-            self.entities = [EntitySprite(info) for info in action]
-            with self.lock:
-                self.main_camera.set_center(self.entities[0].position)
-                self.main_camera.set_sprites(self.entities)
+            if action[0] == "START_GAME":
+                self.running_game = True
+            else:
+                if self.running_game:
+                    self.entities = [EntitySprite(info) for info in action]
+                    with self.lock:
+                        self.main_camera.set_center(self.entities[0].position)
+                        self.main_camera.set_sprites(self.entities)
