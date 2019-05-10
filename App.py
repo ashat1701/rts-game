@@ -57,36 +57,42 @@ class App:
         if current_action == "PLAYER_CONNECTED":
             self.logic.spawn_system.create_player(player_id)
 
-        if current_action.startswith("MOVE"):
-            if current_action == "MOVE_LEFT":
-                new_direction = (-1, world.get_direction(player_id)[1])
-            if current_action == "MOVE_RIGHT":
-                new_direction = (1, world.get_direction(player_id)[1])
-            if current_action == "MOVE_UP":
-                new_direction = (world.get_direction(player_id)[0], -1)
-            if current_action == "MOVE_DOWN":
-                new_direction = (world.get_direction(player_id)[0], 1)
+        # if current_action.startswith("MOVE"):
+        #     if current_action == "MOVE_LEFT":
+        #         new_direction = (-1, world.get_direction(player_id)[1])
+        #     if current_action == "MOVE_RIGHT":
+        #         new_direction = (1, world.get_direction(player_id)[1])
+        #     if current_action == "MOVE_UP":
+        #         new_direction = (world.get_direction(player_id)[0], -1)
+        #     if current_action == "MOVE_DOWN":
+        #         new_direction = (world.get_direction(player_id)[0], 1)
+        #
+        #     if current_action == "MOVE_LEFT_STOP":
+        #         new_direction = (0, world.get_direction(player_id)[1])
+        #     if current_action == "MOVE_RIGHT_STOP":
+        #         new_direction = (0, world.get_direction(player_id)[1])
+        #     if current_action == "MOVE_UP_STOP":
+        #         new_direction = (world.get_direction(player_id)[0], 0)
+        #     if current_action == "MOVE_DOWN_STOP":
+        #         new_direction = (world.get_direction(player_id)[0], 0)
+        #     world.set_direction(player_id, new_direction)
+        #     if world.get_last_attack(player_id) is None:
+        #         self.logic.animation_system.continue_or_reset_move_animation(
+        #             player_id,
+        #             world.get_direction(player_id)
+        #         )
 
-            if current_action == "MOVE_LEFT_STOP":
-                new_direction = (0, world.get_direction(player_id)[1])
-            if current_action == "MOVE_RIGHT_STOP":
-                new_direction = (0, world.get_direction(player_id)[1])
-            if current_action == "MOVE_UP_STOP":
-                new_direction = (world.get_direction(player_id)[0], 0)
-            if current_action == "MOVE_DOWN_STOP":
-                new_direction = (world.get_direction(player_id)[0], 0)
-            world.set_direction(player_id, new_direction)
-            if world.get_last_attack(world.get_first_player_id()) is None:
+        if current_action == 'ATTACK':
+            self.logic.start_attack(player_id,
+                                    world.get_direction(player_id))
+
+        if isinstance(current_action[0], tuple) and current_action[0] == 'DIRECTION':
+            world.set_attack_reload(player_id, current_action[1])
+            if world.get_last_attack(player_id) is None:
                 self.logic.animation_system.continue_or_reset_move_animation(
                     player_id,
                     world.get_direction(player_id)
                 )
-
-        if current_action == 'ATTACK':
-            self.logic.start_attack(world.get_first_player_id(),
-                                    world.get_direction(
-                                        world.get_first_player_id()))
-
 
 class GameLoop:
     def __init__(self, app):
