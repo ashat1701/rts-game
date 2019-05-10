@@ -2,6 +2,7 @@ import logging
 import pickle
 import queue
 import socket
+import time
 import threading
 
 from src.utility.constants import PORT
@@ -89,8 +90,12 @@ class Server:
     def send_map_to_player(self, map, player_id):
         if player_id < len(self.connections) and self.connections[
             player_id] is not None:
-            serial = pickle.dumps(map)
-            self.connections[player_id].send(serial+b"END#")
+            header = ["MAP", len(map[1])]
+            self.connections[player_id].send(pickle.dumps(header))
+            time.sleep(0.1)
+            for lvl in map[1]:
+                self.connections[player_id].send(pickle.dumps(lvl))
+                time.sleep(0.1)
             return True
         return False
 

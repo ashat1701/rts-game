@@ -47,7 +47,8 @@ class MainWindow(Window):
         if action[0] == "MAP":
             # self.main_camera.level = action[1]
             # self.main_camera.map_tile = level_to_tile(action[1])
-            self.main_camera.set_map(action[1])
+            map = self.client.receive_map(action[1])
+            self.main_camera.set_map(map)
             logging.info("Initialized map")
         else:
             self.entities = [EntitySprite(info) for info in action]
