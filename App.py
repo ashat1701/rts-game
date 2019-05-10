@@ -136,7 +136,7 @@ def start_game(game_mode="Singleplayer"):
             new_app.logic.spawn_system.create_enemy()
 
         game_loop = GameLoop(new_app)
-
+        server.send_obj_all_players("START_GAME")
         game_loop.run()
 
 
