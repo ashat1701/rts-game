@@ -32,17 +32,16 @@ class Logic:
     # move в GeometrySystem должен обновлять состояние мира
     # move у Entity - просто делает сдвигает в указанном направлении
     def move(self, entity_id, direction=None):
-        box = world.get_box(entity_id)
         if direction is None:
             direction = world.get_direction(entity_id)
         if direction == (0, 0):
             return
         world.set_direction(entity_id, direction)
         dx, dy = [i * world.get_velocity(entity_id) for i in direction]
-        temp_box = box.move(dx, dy)
 
         # PROJECTILES
         if isinstance(world.entity[entity_id], Projectile):
+            temp_box = world.get_box(entity_id).move(dx, dy)
             # Если снаряд попал в стену, то его нужно удалить
             if self.geometry_system.collide_with_wall(temp_box):
                 world.dead_entities.append(entity_id)
@@ -56,17 +55,18 @@ class Logic:
                     self.damage_system.deal_damage(entity_id, other_entity_id)
 
         # NOT-PROJECTILE
-        if self.geometry_system.collide_with_wall(temp_box):
+        for delta_x, delta_y in [(dx, 0), (0, dy)]:
+            temp_box = world.get_box(entity_id).move(delta_x, delta_y)
             if self.geometry_system.collide_with_wall(temp_box):
-                return
-        for other_entity_id in world.entity.keys():
-            if self.geometry_system.collide(temp_box,
-                                            world.get_box(other_entity_id)) \
-                    and entity_id != other_entity_id:
-                return
+                continue
 
-        # Если никто ни в кого не врезался - двигаем
-        world.set_box(entity_id, temp_box)
+            for other_entity_id in world.entity.keys():
+                if (self.geometry_system.collide(temp_box, world.get_box(other_entity_id))
+                        and entity_id != other_entity_id):
+                    break
+            else:
+                # Если никто ни в кого не врезался - двигаем
+                world.set_box(entity_id, temp_box)
 
     def move_all_entities(self):
         for entity_id in world.movable_entities:
