@@ -114,18 +114,25 @@ class GeometrySystem:
                world.map.get(*box.bottomright) in non_passable_textures
 
     def find_aim(self, entity_id):
-        dist_to_first_player = self.get_squared_distance(entity_id, world.get_first_player_id())
-        dist_to_second_player = self.get_squared_distance(entity_id, world.get_second_player_id())
+        if world.game_mode == "Multiplayer":
+            dist_to_first_player = self.get_squared_distance(entity_id, world.get_first_player_id())
+            dist_to_second_player = self.get_squared_distance(entity_id, world.get_second_player_id())
 
-        dist_to_aim = max(dist_to_second_player, dist_to_second_player)
+            dist_to_aim = max(dist_to_second_player, dist_to_second_player)
 
-        if dist_to_first_player > dist_to_second_player:
-            probable_aim = world.get_box(world.get_first_player_id()).center
+            if dist_to_first_player > dist_to_second_player:
+                probable_aim = world.get_box(world.get_first_player_id()).center
 
-        else:
-            probable_aim = world.get_box(world.get_second_player_id()).center
+            else:
+                probable_aim = world.get_box(world.get_second_player_id()).center
 
-        if dist_to_aim < VISION_RANGE ** 2:
-            world.entity[entity_id].set_aim(probable_aim)
-        else:
-            world.entity[entity_id].set_aim(None)
+            if dist_to_aim < VISION_RANGE ** 2:
+                world.entity[entity_id].set_aim(probable_aim)
+            else:
+                world.entity[entity_id].set_aim(None)
+        if world.game_mode == "Singleplayer":
+            dist_to_first_player = self.get_squared_distance(entity_id, world.get_first_player_id())
+            if dist_to_first_player < VISION_RANGE ** 2:
+                world.entity[entity_id].set_aim(world.get_box(world.get_first_player_id()).center)
+            else:
+                world.entity[entity_id].set_aim(None)

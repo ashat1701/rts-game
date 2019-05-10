@@ -5,7 +5,8 @@ from ..utility.constants import *
 
 
 class WorldState:
-    def __init__(self):
+    def __init__(self, game_mode):
+        self.game_mode = game_mode
         self.entity = {}
         self.movable_entities = set()
         self.enemies = set()
@@ -19,6 +20,12 @@ class WorldState:
         self.second_player_glare = deepcopy(self.map.level)
         self.first_player_id = 0
         self.second_player_id = 1
+
+    def get_game_mode(self):
+        return self.game_mode
+
+    def set_game_mode(self, game_mode):
+        self.game_mode = game_mode
 
     def get_first_player_id(self):
         return self.first_player_id
@@ -82,4 +89,4 @@ class WorldState:
         self.projectiles.discard(entity_id)
 
 
-world = WorldState()
+world = WorldState("Singleplayer")

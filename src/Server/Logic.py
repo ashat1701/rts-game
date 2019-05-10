@@ -105,6 +105,7 @@ class Logic:
                                 self.geometry_system.generate_npc_movement(
                                     entity_id))
 
+
     def start_attack(self, id_, direction):
         if world.get_last_attack(id_) is not None:
             return

@@ -24,7 +24,7 @@ class MeleeEnemyFactory(EnemyFactory):
         self.damage = 2
 
     def generate_enemy(self):
-        current_id = len(world.entity)
+        current_id = len(world.entity) + 1
         box = generate_box(self.box_width, self.box_height)
         damage = self.damage
         health = generate_enemy_health(self.min_health, self.max_health)

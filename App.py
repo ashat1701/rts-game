@@ -16,7 +16,7 @@ class App:
     def __init__(self, server):
         self.server = server
         self.logic = Logic.Logic()
-        self.init = True
+
 
     def get_all_entity_information(self, entity_id, visitor):
         return world.entity[entity_id].accept(visitor). \
@@ -27,7 +27,6 @@ class App:
     def send_world_state_to_player(self, player_id):
         entities_to_draw = []
         visitor = Visitor()
-        print(self.logic.geometry_system.get_visible_entities(player_id))
         for visible_entity_id in self.logic.geometry_system.get_visible_entities(
                 player_id):
             entities_to_draw.append(
@@ -46,15 +45,12 @@ class App:
 
         while not self.server.action_queue.empty():
             self.analyze_action(self.server.action_queue.get())
-        # self.logic.all_npc_start_attack()
         self.logic.update_enemies_direcion()
         self.logic.move_all_entities()
         self.logic.update_attack_state()
 
         self.send_world_state_to_player(
             world.get_first_player_id())  # Add second player
-        if len(world.enemies) < 20 :
-            self.logic.spawn_system.create_enemy()
         # self.send_world_state_to_player(world.get_second_player_id())
 
     def analyze_action(self, action):
@@ -108,8 +104,10 @@ def start_game(game_mode="Singleplayer"):
         server.start_as_daemon()
         if game_mode == "Singleplayer":
             connected_players = [player1_connected]
+            world.set_game_mode("Singleplayer")
         if game_mode == "Multiplayer":
             connected_players = [player1_connected, player2_connected]
+            world.set_game_mode("Multiplayer")
         while not all(connected_players):
             time.sleep(0.5)
             current_action = server.action_queue.get()
@@ -123,6 +121,10 @@ def start_game(game_mode="Singleplayer"):
                 id)  # Create in animation set
         server.send_obj_all_players(["MAP", world.map.level])
         logging.info("Sent map to everyone")
+        for i in range(10):
+            new_app.logic.spawn_system.create_enemy()
+            new_app.logic.spawn_system.create_enemy()
+            new_app.logic.spawn_system.create_enemy()
 
         game_loop = GameLoop(new_app)
 
