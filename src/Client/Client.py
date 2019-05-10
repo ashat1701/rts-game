@@ -25,7 +25,7 @@ class Client:
     def handler(self):
         while True:
             try:
-                data = self.client_socket.recv(8192)
+                data = self.client_socket.recv(4096)
             except ConnectionError as e:
                 logging.error("Disconnect from server")
                 break
@@ -33,17 +33,22 @@ class Client:
                 logging.error("Disconnect from server")
                 break
             if (b"MAP" in data):
-                while b"END#" not in data:
-                    data += self.client_socket.recv(8192)
+                buffer = data
+                while b"END#" not in buffer:
+                    data = self.client_socket.recv(4096)
+                    buffer += data
                 self.send_object("MAP_RECEIVED")
-                data = data[0:-4]
+                data = buffer[0:-4]
             obj = pickle.loads(data)
-            self.action_queue.put(obj)
+            if (obj == "START_GAME"):
+                self.game_started = True
+            else:
+                self.action_queue.put(obj)
 
     def __init__(self, addr, port=PORT):
         self.addr = addr
         self.port = port
-
+        self.game_started = False
     def run(self):
         self.client_socket.connect((self.addr, self.port))
         logging.debug("connected")

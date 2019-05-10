@@ -30,6 +30,9 @@ class Game:
                 while not client.action_queue.empty():
                     current_action = client.action_queue.get()
                     self.active_window.accept_action(current_action)
+                if not client.game_started:
+                    time.sleep(0.5)
+                    continue
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.running = False
