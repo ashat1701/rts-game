@@ -30,10 +30,11 @@ class App:
     def send_world_state_to_player(self, player_id):
         entities_to_draw = []
         visitor = Visitor()
-        for visible_entity_id in self.logic.geometry_system.get_visible_entities(
-                player_id):
-            entities_to_draw.append(
-                self.get_all_entity_information(visible_entity_id, visitor))
+        entities_to_draw.append(self.get_all_entity_information(player_id, visitor))
+        for visible_entity_id in self.logic.geometry_system.get_visible_entities(player_id):
+            if visible_entity_id != player_id:
+                entities_to_draw.append(
+                    self.get_all_entity_information(visible_entity_id, visitor))
         self.server.send_obj_to_player(entities_to_draw, player_id)
 
     def update(self):
