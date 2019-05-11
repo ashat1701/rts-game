@@ -37,7 +37,7 @@ jobs:
         - run: sudo pip3 install -r requirements.txt
         - run: sudo pip install -U pytest
         - run: mkdir reports
-        - run: pytest --junitxml=test-reports/junit.xml
+        - run: pytest --junitxml=reports/junit.xml
         - store_test_results:
             path: reports
         - store_artifacts:
