@@ -46,7 +46,6 @@ def test_player_move():
         dx, dy = [i * world.get_velocity(0) for i in direction]
 
         for delta_x, delta_y in [(dx, 0), (0, dy)]:
-            print(world.get_box(0))
             temp_box = world.get_box(0).move(delta_x, delta_y)
             if logic.geometry_system.collide_with_wall(temp_box):
                 logic.move(0)
@@ -59,7 +58,6 @@ def test_player_move():
                     break
             else:
                 logic.move(0)
-                print(world.get_direction(0))
                 new_position = world.get_box(0).center
                 assert new_position != initial_position
                 initial_position = new_position

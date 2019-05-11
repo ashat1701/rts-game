@@ -20,7 +20,7 @@ class MeleeEnemyFactory(EnemyFactory):
         self.box_width = ENEMY_BOX_SIZE
         self.box_height = ENEMY_BOX_SIZE
         self.min_health = 10
-        self.max_heath = self.min_health * 2
+        self.max_health = self.min_health * 2
         self.damage = 2
 
     def generate_enemy(self):
@@ -29,15 +29,17 @@ class MeleeEnemyFactory(EnemyFactory):
         damage = self.damage
         health = generate_enemy_health(self.min_health, self.max_health)
         direction = generate_random_direction()
-        return MeleeEnemy().set_id(current_id).set_box(box).set_damage(damage)\
-            .set_health(health).set_direction(direction).set_attack_reload(ATTACK_RELOAD).set_velocity(ENEMY_VELOCITY)
+        return MeleeEnemy().set_id(current_id).set_box(box).set_damage(damage) \
+            .set_health(health).set_direction(direction).set_attack_reload(
+            ATTACK_RELOAD).set_velocity(ENEMY_VELOCITY)
 
     def load_difficulty_from_file(self, name):
-        obj = json.load(open("src/utility/difficulties/{}.json".format(name)))
+        obj = json.load(open("utility/difficulties/{}.json".format(name)))
         self.box_width = obj["enemies"][0]["box_width"]
         self.box_height = obj["enemies"][0]["box_height"]
         self.min_health = obj["enemies"][0]["min_health"]
         self.max_health = obj["enemies"][0]["max_health"]
+
 
 def generate_random_direction():
     return 1, 0
@@ -49,6 +51,7 @@ def generate_enemy_damage():
 
 def generate_enemy_health(min_health, max_health):
     return randint(min_health, max_health + 1)
+
 
 def generate_box(width, height):
     return Rect(0, 0, width, height)
