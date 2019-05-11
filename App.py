@@ -106,8 +106,8 @@ def start_game(game_mode="Singleplayer"):
         app.logic.spawn_system.create_enemy()
         app.logic.spawn_system.create_enemy()
         app.logic.spawn_system.create_enemy()
-    app.run()
     server.send_obj_all_players(["START_GAME"])
+    app.run()
 
 
 if __name__ == '__main__':

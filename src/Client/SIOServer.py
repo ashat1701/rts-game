@@ -21,5 +21,4 @@ def run():
     sio.connect('http://localhost:8080')
 
     sio_thread = Thread(target=sio.wait)
-    sio_thread.setDaemon(True)
     sio_thread.start()
