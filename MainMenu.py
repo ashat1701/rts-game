@@ -1,15 +1,13 @@
 import threading
 import tkinter as tk
-import subprocess
+import os
 import time
 from tkinter import font as tkfont
 from tkinter import messagebox
 import multiprocessing
 
-import eventlet
-eventlet.monkey_patch()
-
-import App
+# import eventlet
+# eventlet.monkey_patch()
 
 
 class Master(tk.Tk):
@@ -50,17 +48,14 @@ class Master(tk.Tk):
         frame.tkraise()
 
     def single_player_start(self):
-        from os import system
         from src.Client.Game import game
-        server_thread = multiprocessing.Process(target=App.start_game,
-                                         args=["Singleplayer"])
+        server_thread = multiprocessing.Process(target=run_server,
+                                                args=["Singleplayer"])
         server_thread.start()
-        system("python3 App.py &")
 
-        time.sleep(2)
-        system("python3 client-shell.py &")
+        time.sleep(5)
         self.destroy()
-
+        game.run()
 
     def connect(self, ip: tk.StringVar):
         from src.Client.Game import game
@@ -70,7 +65,7 @@ class Master(tk.Tk):
         self.destroy()
 
     def create_multiplayer_server(self):
-        server_thread = threading.Thread(target=App.start_game,
+        server_thread = threading.Thread(target=run_server,
                                          args=["Multiplayer"])
         server_thread.daemon = True
         server_thread.start()
@@ -174,6 +169,11 @@ class Connect(tk.Frame):
                                     "MainMenu"))
         connect_button.pack()
         back_button.pack()
+
+
+def run_server(mode):
+    import App
+    App.start_game(mode)
 
 
 if __name__ == "__main__":
