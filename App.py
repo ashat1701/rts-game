@@ -69,11 +69,11 @@ class App:
 
     def run(self):
         while True:
-            eventlet.sleep(0.01)
+            eventlet.sleep(0.1)
             self.update()
 
 
-def start_game(game_mode="Singleplayer"):
+def start_game(game_mode="Multiplayer"):
     server = Server()
     server.start()
 
