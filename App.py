@@ -1,4 +1,5 @@
 import eventlet
+
 eventlet.monkey_patch()
 import logging
 import os
@@ -8,7 +9,6 @@ from src.Server.Server import Server
 from src.Server.Visitor import Visitor
 from src.Server.WorldState import world
 import src.Server.Server
-
 
 
 player1_connected = False

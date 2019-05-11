@@ -1,14 +1,24 @@
-import pygame
-import time
 import logging
+
+import pygame
+
 from src.Client.EntitySprite import EntitySpriteManager
-from os import getcwd
 
 
 class Game:
     def __init__(self):
         logging.basicConfig(level=logging.INFO)
+        self.screen = None
+        self.clock = None
+        self.active_window = None
 
+    def start_main_window(self, level_map):
+        from src.Client.MainWindow import MainWindow
+        main_window = MainWindow((1000, 1000), self.active_window.sio)
+        main_window.main_camera.set_map(level_map)
+        self.active_window = main_window
+
+    def run(self):
         pygame.init()
         self.screen = pygame.display.set_mode((1000, 1000))
 
@@ -18,25 +28,24 @@ class Game:
                                                'player1_animations.json')
         EntitySpriteManager.load_entity_config('/src/utility/animations/'
                                                'player2_animations.json')
-        from src.Client.MainWindow import MainWindow
-        self.active_window = MainWindow((1000, 1000))
         self.running = True
         self.clock = pygame.time.Clock()
 
-    def run(self, ip):
+        from src.Client.TextWindow import WaitWindow
+        self.active_window = WaitWindow()
+
         from src.Client.SIOServer import sio, run
         self.active_window.set_sio(sio)
         run(ip)
 
         while self.running:
-            self.clock.tick(40)
+            self.clock.tick(30)
             self.screen.fill((0, 0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                 else:
-                    if self.active_window.running_game:
-                        self.active_window.accept_event(event)
+                    self.active_window.accept_event(event)
 
             self.active_window.draw(self.screen)
             pygame.display.update()
