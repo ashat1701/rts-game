@@ -58,10 +58,8 @@ class Master(tk.Tk):
 
     def connect(self, ip: tk.StringVar):
         from src.Client.Game import game
-        client_thread = threading.Thread(target=game.run, args=[ip.get()])
-        client_thread.run()
-
         self.destroy()
+        game.run(ip.get())
 
     def create_multiplayer_server(self):
         from src.Client.Game import game
