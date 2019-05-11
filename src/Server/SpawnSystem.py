@@ -48,7 +48,7 @@ class SpawnSystem:
         world.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY)\
             .set_direction((0, 0)).set_health(PLAYER_HEALTH).set_id(len(world.entity)).\
             set_box(player_box).set_position((player_box.centerx, player_box.centery)).\
-            set_attack_reload(PLAYER_RELOAD)
+            set_attack_reload(PLAYER_RELOAD).set_type("player" + str(player_id + 1))
         world.movable_entities.add(player_id)
 
     # TODO: система вещей?

@@ -161,6 +161,13 @@ class PlayerEntity(MovableEntity):
         self._attack_reload = None
         self._last_attack = None
 
+    def set_type(self, type):
+        self._type = type
+        return self
+
+    def get_type(self):
+        return self._type
+
     def accept(self, visitor):
         return visitor.visit_player(
             self)  # Надо ещё передать инфу о том, какой это Player. (может их айди будут в константах?)

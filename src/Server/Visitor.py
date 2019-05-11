@@ -4,7 +4,7 @@ from .ActionBuilder import ActionBuilder
 class Visitor:
     def visit_player(self, entity):
         return ActionBuilder().set_position(
-            entity.get_box().topleft).set_type("player")
+            entity.get_box().topleft).set_type("player" + str(entity.get_id() + 1))
 
     def visit_melee_enemy(self, entity):
         return ActionBuilder().set_position(entity.get_box().topleft).set_type(

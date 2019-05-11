@@ -1,6 +1,6 @@
 import threading
 import tkinter as tk
-import os
+import subprocess
 import time
 from tkinter import font as tkfont
 from tkinter import messagebox
@@ -50,14 +50,16 @@ class Master(tk.Tk):
         frame.tkraise()
 
     def single_player_start(self):
+        from os import system
         from src.Client.Game import game
         server_thread = multiprocessing.Process(target=App.start_game,
                                          args=["Singleplayer"])
         server_thread.start()
+        system("python3 App.py &")
 
         time.sleep(2)
+        system("python3 client-shell.py &")
         self.destroy()
-        game.run()
 
 
     def connect(self, ip: tk.StringVar):

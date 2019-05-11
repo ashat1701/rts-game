@@ -15,7 +15,9 @@ class Game:
         EntitySpriteManager.load_entity_config('/src/utility/animations/'
                                                'melee_animations.json')
         EntitySpriteManager.load_entity_config('/src/utility/animations/'
-                                               'player_animations.json')
+                                               'player1_animations.json')
+        EntitySpriteManager.load_entity_config('/src/utility/animations/'
+                                               'player2_animations.json')
         from src.Client.MainWindow import MainWindow
         self.active_window = MainWindow((1000, 1000))
         self.running = True

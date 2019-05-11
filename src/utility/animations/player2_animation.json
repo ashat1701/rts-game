@@ -1,0 +1,204 @@
+{
+  "entity_type": "player2",
+  "default": "idle",
+  "move": [
+    {
+      "name": "idle",
+      "folder": "./src/Client/Sprites/Player/Sword/Defence0/",
+      "sprites": [
+        "Player_Idle_Sword_Defence0_0.png",
+        "Player_Idle_Sword_Defence0_1.png",
+        "Player_Idle_Sword_Defence0_2.png",
+        "Player_Idle_Sword_Defence0_3.png"
+      ],
+      "frame_duration": 200,
+      "flip_x": false,
+      "flip_y": false,
+      "play_once": false,
+      "direction_binds": [
+        [
+          0,
+          0
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_right",
+      "folder": "./src/Client/Sprites/Player/Sword/Defence0/",
+      "sprites": [
+        "Player_Walk_Sword_Defence0_0.png",
+        "Player_Walk_Sword_Defence0_1.png",
+        "Player_Walk_Sword_Defence0_2.png",
+        "Player_Walk_Sword_Defence0_3.png"
+      ],
+      "frame_duration": 100,
+      "play_once": false,
+      "direction_binds": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_left",
+      "folder": "./src/Client/Sprites/Player/Sword/Defence0/",
+      "sprites": [
+        "Player_Walk_Sword_Defence0_0.png",
+        "Player_Walk_Sword_Defence0_1.png",
+        "Player_Walk_Sword_Defence0_2.png",
+        "Player_Walk_Sword_Defence0_3.png"
+      ],
+      "frame_duration": 100,
+      "flip_x": true,
+      "play_once": false,
+      "direction_binds": [
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          -1,
+          -1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_up",
+      "folder": "./src/Client/Sprites/Player/Sword/Defence0/",
+      "sprites": [
+        "Player_Walk_Sword_Defence0_0.png",
+        "Player_Walk_Sword_Defence0_1.png",
+        "Player_Walk_Sword_Defence0_2.png",
+        "Player_Walk_Sword_Defence0_3.png"
+      ],
+      "frame_duration": 100,
+      "play_once": false,
+      "direction_binds": [
+        [
+          0,
+          -1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_down",
+      "folder": "./src/Client/Sprites/Player/Sword/Defence0/",
+      "sprites": [
+        "Player_Walk_Sword_Defence0_0.png",
+        "Player_Walk_Sword_Defence0_1.png",
+        "Player_Walk_Sword_Defence0_2.png",
+        "Player_Walk_Sword_Defence0_3.png"
+      ],
+      "frame_duration": 100,
+      "play_once": false,
+      "direction_binds": [
+        [
+          0,
+          1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    }
+  ],
+  "attack": [
+    {
+      "name": "attack_right",
+      "folder": "./src/Client/Sprites/Player/Sword/Defence0/",
+      "sprites": [
+        "Player_Attack_Sword_Defence0_0.png",
+        "Player_Attack_Sword_Defence0_1.png",
+        "Player_Attack_Sword_Defence0_2.png",
+        "Player_Attack_Sword_Defence0_3.png"
+      ],
+      "frame_duration": 200,
+      "play_once": true,
+      "direction_binds": [
+        [1,0],[1,1],[1,-1],[0,1],[0,-1],[0,0]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "attack_left",
+      "folder": "./src/Client/Sprites/Player/Sword/Defence0/",
+      "sprites": [
+        "Player_Attack_Sword_Defence0_0.png",
+        "Player_Attack_Sword_Defence0_1.png",
+        "Player_Attack_Sword_Defence0_2.png",
+        "Player_Attack_Sword_Defence0_3.png"
+      ],
+      "frame_duration": 200,
+      "flip_x": true,
+      "play_once": true,
+      "direction_binds": [
+        [-1,0],[-1,1],[-1,-1]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    }
+  ]
+}

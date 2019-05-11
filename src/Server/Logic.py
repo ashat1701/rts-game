@@ -26,7 +26,10 @@ class Logic:
                                   'melee_animations.json'))
         self.animation_system.load_entity_config(
             os.path.join(dirname, '../utility/animations/'
-                                  'player_animations.json'))
+                                  'player1_animations.json'))
+        self.animation_system.load_entity_config(
+            os.path.join(dirname, '../utility/animations/'
+                                  'player2_animations.json'))
 
     # move в Logic должен разумно вызывать move GeometrySystem в зависимости от WorldState
     # move в GeometrySystem должен обновлять состояние мира
