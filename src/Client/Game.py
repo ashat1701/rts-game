@@ -8,7 +8,17 @@ from src.Client.EntitySprite import EntitySpriteManager
 class Game:
     def __init__(self):
         logging.basicConfig(level=logging.INFO)
+        self.screen = None
+        self.clock = None
+        self.active_window = None
 
+    def start_main_window(self, level_map):
+        from src.Client.MainWindow import MainWindow
+        main_window = MainWindow((1000, 1000), self.active_window.sio)
+        main_window.main_camera.set_map(level_map)
+        self.active_window = main_window
+
+    def run(self):
         pygame.init()
         self.screen = pygame.display.set_mode((1000, 1000))
 
@@ -24,13 +34,7 @@ class Game:
         from src.Client.TextWindow import WaitWindow
         self.active_window = WaitWindow()
 
-    def start_main_window(self, level_map):
-        from src.Client.MainWindow import MainWindow
-        main_window = MainWindow((1000, 1000), self.active_window.sio)
-        main_window.main_camera.set_map(level_map)
-        self.active_window = main_window
 
-    def run(self):
         from src.Client.SIOServer import sio, run
         self.active_window.set_sio(sio)
         run()
