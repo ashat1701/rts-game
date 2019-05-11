@@ -11,6 +11,7 @@ class Game:
         self.screen = None
         self.clock = None
         self.active_window = None
+        self.running = True
 
     def start_main_window(self, level_map):
         from src.Client.MainWindow import MainWindow
@@ -28,7 +29,6 @@ class Game:
                                                'player1_animations.json')
         EntitySpriteManager.load_entity_config('/src/utility/animations/'
                                                'player2_animations.json')
-        self.running = True
         self.clock = pygame.time.Clock()
 
         from src.Client.TextWindow import WaitWindow

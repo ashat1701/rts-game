@@ -3,6 +3,7 @@ import logging
 
 from src.Client.Camera import Camera
 from src.Client.EntitySprite import EntitySprite
+from src.Client.TextWidget import TextWidget
 from src.Client.UI.Window import Window
 from src.utility.utilities import Vector
 from src.utility.constants import MOVE_UPDATE
@@ -41,6 +42,12 @@ class MainWindow(Window):
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
             self.sio.emit('message', "ATTACK")
+
+    def enable_spectate(self):
+        spectate_text = TextWidget('Spectating')
+        self.add_child(spectate_text, Vector(0, 900))
+
+        self.spectate = True
 
     def accept_action(self, action):
         if not isinstance(action, list):
