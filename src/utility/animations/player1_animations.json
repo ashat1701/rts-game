@@ -1,5 +1,5 @@
 {
-  "entity_type": "player",
+  "entity_type": "player1",
   "default": "idle",
   "move": [
     {
