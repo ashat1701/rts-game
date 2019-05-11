@@ -4,12 +4,12 @@
   "move": [
     {
       "name": "idle",
-      "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
+      "folder": "./src/Client/Sprites/Enemy/",
       "sprites": [
-        "Player_Idle_Axe_Defence0_0.png",
-        "Player_Idle_Axe_Defence0_1.png",
-        "Player_Idle_Axe_Defence0_2.png",
-        "Player_Idle_Axe_Defence0_3.png"
+        "Enemy_Idle_Special_0.png",
+        "Enemy_Idle_Special_1.png",
+        "Enemy_Idle_Special_2.png",
+        "Enemy_Idle_Special_3.png"
       ],
       "frame_duration": 200,
       "flip_x": false,
@@ -32,12 +32,12 @@
     },
     {
       "name": "walk_right",
-      "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
+      "folder": "./src/Client/Sprites/Enemy/",
       "sprites": [
-        "Player_Walk_Axe_Defence0_0.png",
-        "Player_Walk_Axe_Defence0_1.png",
-        "Player_Walk_Axe_Defence0_2.png",
-        "Player_Walk_Axe_Defence0_3.png"
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
       ],
       "frame_duration": 200,
       "play_once": false,
@@ -66,12 +66,12 @@
     },
     {
       "name": "walk_left",
-      "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
+      "folder": "./src/Client/Sprites/Enemy/",
       "sprites": [
-        "Player_Walk_Axe_Defence0_0.png",
-        "Player_Walk_Axe_Defence0_1.png",
-        "Player_Walk_Axe_Defence0_2.png",
-        "Player_Walk_Axe_Defence0_3.png"
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
       ],
       "frame_duration": 200,
       "flip_x": true,
@@ -101,12 +101,12 @@
     },
     {
       "name": "walk_up",
-      "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
+      "folder": "./src/Client/Sprites/Enemy/",
       "sprites": [
-        "Player_Walk_Axe_Defence0_0.png",
-        "Player_Walk_Axe_Defence0_1.png",
-        "Player_Walk_Axe_Defence0_2.png",
-        "Player_Walk_Axe_Defence0_3.png"
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
       ],
       "frame_duration": 200,
       "play_once": false,
@@ -127,12 +127,12 @@
     },
     {
       "name": "walk_down",
-      "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
+      "folder": "./src/Client/Sprites/Enemy/",
       "sprites": [
-        "Player_Walk_Axe_Defence0_0.png",
-        "Player_Walk_Axe_Defence0_1.png",
-        "Player_Walk_Axe_Defence0_2.png",
-        "Player_Walk_Axe_Defence0_3.png"
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
       ],
       "frame_duration": 200,
       "play_once": false,
@@ -155,12 +155,12 @@
   "attack": [
     {
       "name": "attack_right",
-      "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
+      "folder": "./src/Client/Sprites/Enemy/",
       "sprites": [
-        "Player_Attack_Axe_Defence0_0.png",
-        "Player_Attack_Axe_Defence0_1.png",
-        "Player_Attack_Axe_Defence0_2.png",
-        "Player_Attack_Axe_Defence0_3.png"
+        "Enemy_Attack_Special_0.png",
+        "Enemy_Attack_Special_1.png",
+        "Enemy_Attack_Special_2.png",
+        "Enemy_Attack_Special_3.png"
       ],
       "frame_duration": 200,
       "play_once": true,
@@ -178,12 +178,12 @@
     },
     {
       "name": "attack_left",
-      "folder": "./src/Client/Sprites/Player/Axe/Defence0/",
+      "folder": "./src/Client/Sprites/Enemy/",
       "sprites": [
-        "Player_Attack_Axe_Defence0_0.png",
-        "Player_Attack_Axe_Defence0_1.png",
-        "Player_Attack_Axe_Defence0_2.png",
-        "Player_Attack_Axe_Defence0_3.png"
+        "Enemy_Attack_Special_0.png",
+        "Enemy_Attack_Special_1.png",
+        "Enemy_Attack_Special_2.png",
+        "Enemy_Attack_Special_3.png"
       ],
       "frame_duration": 200,
       "flip_x": true,

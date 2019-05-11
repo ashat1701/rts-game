@@ -14,8 +14,8 @@ class Server:
     def __init__(self, port=PORT):
         super().__init__()
         self.action_queue = queue.Queue()
-        self.connections = {}  # map player_id to cid
-        self.rconnections = {}  # map cid to player_id
+        self.connections = {}
+        self.rconnections = {}
         self.activeConnections = 0
         self.sio = socketio.Server(async_mode='eventlet')
         self.app = socketio.WSGIApp(self.sio)
