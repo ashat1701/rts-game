@@ -41,23 +41,22 @@ def test_damage_deal():
 
 def test_player_move():
     initial_position = world.get_box(0).center
-    for direction in [(0, 1), (1, 1), (1, 0), (-1, 0), (-1, -1), (0, -1), (1, -1), (-1, 1)]:
+    for direction in [(0, 1), (1, 0), (-1, 0), (0, -1)]:
         world.set_direction(0, direction)
         dx, dy = [i * world.get_velocity(0) for i in direction]
 
-        for delta_x, delta_y in [(dx, 0), (0, dy)]:
-            temp_box = world.get_box(0).move(delta_x, delta_y)
-            if logic.geometry_system.collide_with_wall(temp_box):
+        temp_box = world.get_box(0).move(dx, dy)
+        if logic.geometry_system.collide_with_wall(temp_box):
+            logic.move(0)
+            assert initial_position == world.get_box(0).center
+
+        for other_entity_id in world.entity.keys():
+            if logic.geometry_system.collide(temp_box, world.get_box(other_entity_id)) and 0 != other_entity_id:
                 logic.move(0)
                 assert initial_position == world.get_box(0).center
-
-            for other_entity_id in world.entity.keys():
-                if logic.geometry_system.collide(temp_box, world.get_box(other_entity_id)) and 0 != other_entity_id:
-                    logic.move(0)
-                    assert initial_position == world.get_box(0).center
-                    break
-            else:
-                logic.move(0)
-                new_position = world.get_box(0).center
-                assert new_position != initial_position
-                initial_position = new_position
+                break
+        else:
+            logic.move(0)
+            new_position = world.get_box(0).center
+            assert new_position != initial_position
+            initial_position = new_position

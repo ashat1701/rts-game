@@ -14,7 +14,6 @@ class TextWindow(Window):
 
     def draw(self, surface: pygame.Surface,
              abs_position: Vector = Vector(0, 0)):
-        print("SK")
         surface.blit(self.text_surface, abs_position + self.position)
 
 

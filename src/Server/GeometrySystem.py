@@ -4,7 +4,7 @@ from random import randint
 from src.Server.WorldState import world
 from src.utility.constants import *
 from random import randint
-from math import sin, cos
+from math import sin, cos, inf
 from src.Server.Entity import PlayerEntity, Enemy
 
 
@@ -115,8 +115,15 @@ class GeometrySystem:
 
     def find_aim(self, entity_id):
         if world.game_mode == "Multiplayer":
-            dist_to_first_player = self.get_squared_distance(entity_id, world.get_first_player_id())
-            dist_to_second_player = self.get_squared_distance(entity_id, world.get_second_player_id())
+            if not world.player_dead[world.get_first_player_id()]:
+                dist_to_first_player = self.get_squared_distance(entity_id, world.get_first_player_id())
+            else:
+                dist_to_first_player = inf
+
+            if not world.player_dead[world.get_second_player_id()]:
+                dist_to_second_player = self.get_squared_distance(entity_id, world.get_second_player_id())
+            else:
+                dist_to_second_player = inf
 
             dist_to_aim = min(dist_to_first_player, dist_to_second_player)
 

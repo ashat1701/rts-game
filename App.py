@@ -41,6 +41,9 @@ class App:
         if src.Server.Server.player_disconnected:
             exit()
         for dead_id in world.dead_entities:
+            if dead_id in (world.get_first_player_id(), world.get_second_player_id()):
+                self.server.send_obj_to_player(["SPECTATE"], dead_id)
+                world.player_dead[dead_id] = True
             self.logic.animation_system.remove_entity(dead_id)
             world.delete_entity(dead_id)
         world.dead_entities = []

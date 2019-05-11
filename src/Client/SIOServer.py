@@ -19,7 +19,7 @@ def on_connect():
 @sio.on('disconnect')
 def on_disconnect():
     game.running = False
-    exit()
+    exit(0)
 
 def run(ip):
     sio.connect(f"http://{ip}:{PORT}")

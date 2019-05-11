@@ -51,9 +51,9 @@ class Master(tk.Tk):
         server_thread = multiprocessing.Process(target=run_server,
                                                 args=["Singleplayer"])
         server_thread.start()
+        self.destroy()
 
         time.sleep(5)
-        self.destroy()
         game.run("localhost")
 
     def connect(self, ip: tk.StringVar):
@@ -66,8 +66,10 @@ class Master(tk.Tk):
         server_thread = multiprocessing.Process(target=run_server,
                                                 args=["Multiplayer"])
         server_thread.start()
-        time.sleep(5)
         self.destroy()
+
+        time.sleep(5)
+
         game.run("localhost")
 
 
