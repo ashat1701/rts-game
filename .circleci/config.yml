@@ -37,10 +37,7 @@ jobs:
         - run: sudo pip install -r requirements.txt
         - run: mkdir reports
         - run: pytest --junitxml=test-reports/junit.xml
-        - store_test_results:
-          path: test-reports
-        - store_artifacts:
-          path: test-reports  
+
 workflows:
     "Build All":
         jobs:
