@@ -34,7 +34,7 @@ class MeleeEnemyFactory(EnemyFactory):
             ATTACK_RELOAD).set_velocity(ENEMY_VELOCITY)
 
     def load_difficulty_from_file(self, name):
-        obj = json.load(open("utility/difficulties/{}.json".format(name)))
+        obj = json.load(open("src/utility/difficulties/{}.json".format(name)))
         self.box_width = obj["enemies"][0]["box_width"]
         self.box_height = obj["enemies"][0]["box_height"]
         self.min_health = obj["enemies"][0]["min_health"]

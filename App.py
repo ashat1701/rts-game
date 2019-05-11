@@ -97,8 +97,6 @@ def start_game(game_mode="Singleplayer"):
     server.send_obj_all_players(["MAP", world.map.level])
     logging.info("Sent map to everyone. waiting")
     while server.action_queue.qsize() < len(connected_players):
-        # print(server.action_queue.qsize())
-        # print(connected_players)
         eventlet.sleep(1)
 
     logging.info("MAP_RECEIVED_ON_SERVER")
@@ -108,8 +106,8 @@ def start_game(game_mode="Singleplayer"):
         app.logic.spawn_system.create_enemy()
         app.logic.spawn_system.create_enemy()
         app.logic.spawn_system.create_enemy()
-    server.send_obj_all_players(["START_GAME"])
     app.run()
+    server.send_obj_all_players(["START_GAME"])
 
 
 if __name__ == '__main__':

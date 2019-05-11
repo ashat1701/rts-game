@@ -27,6 +27,7 @@ class Game:
         run()
 
         while self.running:
+            print()
             self.clock.tick(40)
             self.screen.fill((0, 0, 0))
             for event in pygame.event.get():

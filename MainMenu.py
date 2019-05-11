@@ -1,7 +1,10 @@
 import threading
 import tkinter as tk
+import os
+import time
 from tkinter import font as tkfont
 from tkinter import messagebox
+import multiprocessing
 
 import eventlet
 eventlet.monkey_patch()
@@ -48,14 +51,14 @@ class Master(tk.Tk):
 
     def single_player_start(self):
         from src.Client.Game import game
-        server_thread = threading.Thread(target=App.start_game,
+        server_thread = multiprocessing.Process(target=App.start_game,
                                          args=["Singleplayer"])
         server_thread.start()
 
-        client_thread = threading.Thread(target=game.run, args=["localhost"])
-        client_thread.start()
+        time.sleep(2)
+        self.destroy()
+        game.run()
 
-        # self.destroy()
 
     def connect(self, ip: tk.StringVar):
         from src.Client.Game import game
