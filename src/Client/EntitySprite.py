@@ -62,7 +62,7 @@ class EntitySpriteManager:
 
 
 class EntitySprite(Sprite):
-    def __init__(self, info, debug=True):
+    def __init__(self, info, debug=False):
         super().__init__()
         self.debug = debug
         self.info = info

@@ -64,7 +64,8 @@ class Logic:
                 continue
 
             for other_entity_id in world.entity.keys():
-                if (self.geometry_system.collide(temp_box, world.get_box(other_entity_id))
+                if (self.geometry_system.collide(temp_box, world.get_box(
+                        other_entity_id))
                         and entity_id != other_entity_id):
                     break
             else:
@@ -76,6 +77,9 @@ class Logic:
             # Если entity не начал атаку
             if world.get_last_attack(entity_id) is None:
                 self.move(entity_id)
+                self.animation_system.continue_or_reset_move_animation(
+                    entity_id,
+                    world.get_direction(entity_id))
 
     # TODO: different attack types (Melee/Ranged)
     def attack(self, entity_id):
@@ -96,7 +100,7 @@ class Logic:
 
             if isinstance(world.entity[entity_id], Enemy) and len(
                     self.geometry_system.get_attackable_entites(
-                            entity_id)) > 0:
+                        entity_id)) > 0:
                 if world.get_last_attack(entity_id) is None:
                     self.start_attack(entity_id,
                                       world.get_direction(entity_id))
@@ -108,7 +112,6 @@ class Logic:
                 world.set_direction(entity_id,
                                     self.geometry_system.generate_npc_movement(
                                         entity_id))
-
 
     def start_attack(self, id_, direction):
         if world.get_last_attack(id_) is not None:

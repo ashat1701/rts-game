@@ -42,6 +42,8 @@ class Game:
             pygame.display.update()
             pygame.event.pump()
 
+        sio.disconnect()
+
     def accept_action(self, action):
         self.active_window.accept_action(action)
 

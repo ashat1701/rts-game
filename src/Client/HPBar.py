@@ -18,6 +18,5 @@ class HPBar(Widget):
         self.max_hp = max_hp
 
     def draw(self, surface: pygame.Surface, abs_position: Vector):
-        print(self.hp)
         sprite_num = int(self.hp / self.max_hp * (len(self.sprites) - 1))
         surface.blit(self.sprites[sprite_num], abs_position)
