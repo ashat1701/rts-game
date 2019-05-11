@@ -1,7 +1,6 @@
 import pygame
 import time
 import logging
-from src.Client.Client import reconnecting_client
 from src.Client.EntitySprite import EntitySpriteManager
 from os import getcwd
 
@@ -22,14 +21,13 @@ class Game:
         self.running = True
         self.clock = pygame.time.Clock()
 
-    def run(self, ip):
+    def run(self):
         from src.Client.SIOServer import sio, run
-        time.sleep(1)
-        run()
         self.active_window.set_sio(sio)
+        run()
 
         while self.running:
-            self.clock.tick(100)
+            self.clock.tick(40)
             self.screen.fill((0, 0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

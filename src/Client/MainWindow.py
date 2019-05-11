@@ -47,8 +47,6 @@ class MainWindow(Window):
             raise RuntimeError(
                 "Action is not of type list. Don't know what to do with it")
         if action[0] == "MAP":
-            # self.main_camera.level = action[1]
-            # self.main_camera.map_tile = level_to_tile(action[1])
             with self.lock:
                 self.main_camera.set_map(action[1])
             logging.info("Initialized map")

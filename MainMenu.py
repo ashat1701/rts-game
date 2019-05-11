@@ -3,6 +3,9 @@ import tkinter as tk
 from tkinter import font as tkfont
 from tkinter import messagebox
 
+import eventlet
+eventlet.monkey_patch()
+
 import App
 
 
@@ -47,13 +50,12 @@ class Master(tk.Tk):
         from src.Client.Game import game
         server_thread = threading.Thread(target=App.start_game,
                                          args=["Singleplayer"])
-        server_thread.daemon = True
         server_thread.start()
 
         client_thread = threading.Thread(target=game.run, args=["localhost"])
         client_thread.start()
 
-        self.destroy()
+        # self.destroy()
 
     def connect(self, ip: tk.StringVar):
         from src.Client.Game import game

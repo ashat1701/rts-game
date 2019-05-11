@@ -9,5 +9,4 @@ class DamageSystem:
         if new_health > 0:
             world.set_health(receiver_id, new_health)
         else:
-            print("DAM", attacker_id, receiver_id)
             world.dead_entities.append(receiver_id)
