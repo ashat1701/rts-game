@@ -16,6 +16,10 @@ def accept_action(data):
 def on_connect():
     sio.emit('message', 'PLAYER_CONNECTED')
 
+@sio.on('disconnect')
+def on_disconnect():
+    game.running = False
+
 
 def run(ip):
     sio.connect(f"http://{ip}:{PORT}")

@@ -64,16 +64,13 @@ class Master(tk.Tk):
         self.destroy()
 
     def create_multiplayer_server(self):
-        server_thread = threading.Thread(target=run_server,
-                                         args=["Multiplayer"])
-        server_thread.daemon = True
-        server_thread.start()
-
         from src.Client.Game import game
-        client_thread = threading.Thread(target=game.run, args=["localhost"])
-        client_thread.start()
-
+        server_thread = multiprocessing.Process(target=run_server,
+                                                args=["Multiplayer"])
+        server_thread.start()
+        time.sleep(5)
         self.destroy()
+        game.run("localhost")
 
 
 class MainMenu(tk.Frame):
