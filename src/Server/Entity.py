@@ -115,7 +115,7 @@ class Projectile(MovableEntity):
         self._health = 0
 
     def accept(self, visitor):
-        visitor.visit_projectile(self)
+        return visitor.visit_projectile(self)
 
     def set_damage(self, damage):
         self._damage = damage
@@ -146,7 +146,7 @@ class RangedEnemy(Enemy):
         super().__init__()
 
     def accept(self, visitor):
-        visitor.visit_ranged_enemy(self)
+        return visitor.visit_ranged_enemy(self)
 
     def attack(self):
         pass
