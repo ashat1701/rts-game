@@ -58,5 +58,6 @@ class MainWindow(Window):
                 if self.running_game:
                     self.entities = [EntitySprite(info) for info in action]
                     with self.lock:
+                        self.main_camera.set_hp(self.entities[0].health)
                         self.main_camera.set_center(self.entities[0].position)
                         self.main_camera.set_sprites(self.entities)

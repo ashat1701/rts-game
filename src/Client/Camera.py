@@ -1,3 +1,5 @@
+from src.utility.constants import PLAYER_HEALTH
+from src.Client.HPBar import HPBar
 from itertools import chain
 from typing import Union
 
@@ -7,12 +9,15 @@ from src.Client.TileSprite import TileSprite
 from src.Client.UI.Widget import Widget
 from src.utility.utilities import Vector
 
+
 class Camera(Widget):
     def __init__(self, world_camera_position: Vector, size):
         super().__init__()
         self._box = pygame.Rect(world_camera_position, size)
         self._sprites = []
         self._tiles = []
+        self.hpbar = HPBar(PLAYER_HEALTH, PLAYER_HEALTH)
+        self.add_child(self.hpbar, Vector(0, -100))
 
     @property
     def size(self):
@@ -43,6 +48,9 @@ class Camera(Widget):
         for i, row in enumerate(tile_map):
             for j, tile_type in enumerate(row):
                 self._tiles.append(TileSprite(tile_type, j, i))
+
+    def set_hp(self, cur_hp):
+        self.hpbar.hp = cur_hp
 
     def is_visible(self, sprite):
         if sprite.box is None:

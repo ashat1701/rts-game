@@ -7,6 +7,7 @@ from src.utility.utilities import Vector
 from src.Client.Sprite import Sprite
 from src.utility.constants import PIXEL_SCALE, MAP_SCALE
 from src.Client.Animation import Animation, parse_descriptions
+from src.Client.HPBar import HPBar
 
 
 class EntitySpriteManager:
@@ -91,13 +92,18 @@ class EntitySprite(Sprite):
                                               self.frame)
 
     @property
+    def health(self):
+        return self.info[4][0]
+
+    @property
     def offset(self):
         return EntitySpriteManager.get_offset(self.type, self.animation_name)
 
     def draw(self, surface: pygame.Surface, abs_position: Vector):
-        super().draw(surface, abs_position)
         if self.debug:
             pygame.draw.rect(surface, (255, 255, 255),
                              (
-                             abs_position, (PIXEL_SCALE / 2, PIXEL_SCALE / 2)))
+                                 abs_position, (PIXEL_SCALE / 2, PIXEL_SCALE / 2)))
         surface.blit(self.sprite, abs_position - self.offset)
+
+        super().draw(surface, abs_position)

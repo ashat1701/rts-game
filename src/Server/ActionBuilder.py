@@ -1,6 +1,7 @@
 class ActionBuilder:
     def __init__(self):
-        self._action = {'position': None, 'type': None, 'animation_name': None, 'frame': None}
+        self._action = {'position': None, 'type': None, 'animation_name': None, 'frame': None,
+                        'hp': None}
 
     def set_position(self, left_top_corner):
         self._action['position'] = left_top_corner
@@ -17,3 +18,7 @@ class ActionBuilder:
 
     def get_action(self):
         return tuple(self._action.values())
+
+    def set_hp(self, curr_hp, max_hp):
+        self._action['hp'] = (curr_hp, max_hp)
+        return self

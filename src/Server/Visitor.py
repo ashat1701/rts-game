@@ -1,10 +1,13 @@
 from .ActionBuilder import ActionBuilder
+from src.Server.WorldState import world
+from src.utility.constants import PLAYER_HEALTH
 
 
 class Visitor:
     def visit_player(self, entity):
-        return ActionBuilder().set_position(
+        return (ActionBuilder().set_position(
             entity.get_box().topleft).set_type("player" + str(entity.get_id() + 1))
+            .set_hp(world.get_health(entity.get_id()), PLAYER_HEALTH))
 
     def visit_melee_enemy(self, entity):
         return ActionBuilder().set_position(entity.get_box().topleft).set_type(
