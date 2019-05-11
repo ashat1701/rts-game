@@ -18,7 +18,7 @@ class Game:
         main_window.main_camera.set_map(level_map)
         self.active_window = main_window
 
-    def run(self):
+    def run(self, ip):
         pygame.init()
         self.screen = pygame.display.set_mode((1000, 1000))
 
