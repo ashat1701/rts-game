@@ -23,10 +23,10 @@ class Game:
         self.running = True
         self.clock = pygame.time.Clock()
 
-    def run(self):
+    def run(self, ip):
         from src.Client.SIOServer import sio, run
         self.active_window.set_sio(sio)
-        run()
+        run(ip)
 
         while self.running:
             self.clock.tick(40)

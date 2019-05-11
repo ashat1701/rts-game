@@ -43,7 +43,6 @@ class Master(tk.Tk):
             self.destroy()
 
     def show_frame(self, page_name):
-        """Show a frame for the given page name"""
         frame = self.frames[page_name]
         frame.tkraise()
 
@@ -55,7 +54,7 @@ class Master(tk.Tk):
 
         time.sleep(5)
         self.destroy()
-        game.run()
+        game.run("localhost")
 
     def connect(self, ip: tk.StringVar):
         from src.Client.Game import game
