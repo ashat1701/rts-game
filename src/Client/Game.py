@@ -34,10 +34,9 @@ class Game:
         from src.Client.TextWindow import WaitWindow
         self.active_window = WaitWindow()
 
-
         from src.Client.SIOServer import sio, run
         self.active_window.set_sio(sio)
-        run()
+        run(ip)
 
         while self.running:
             self.clock.tick(30)

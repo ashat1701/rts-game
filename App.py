@@ -8,6 +8,7 @@ from src.Server import Logic
 from src.Server.Server import Server
 from src.Server.Visitor import Visitor
 from src.Server.WorldState import world
+import src.Server.Server
 
 
 player1_connected = False
@@ -36,6 +37,8 @@ class App:
         self.server.send_obj_to_player(entities_to_draw, player_id)
 
     def update(self):
+        if src.Server.Server.player_disconnected:
+            exit()
         for dead_id in world.dead_entities:
             self.logic.animation_system.remove_entity(dead_id)
             world.delete_entity(dead_id)

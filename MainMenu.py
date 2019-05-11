@@ -43,7 +43,6 @@ class Master(tk.Tk):
             self.destroy()
 
     def show_frame(self, page_name):
-        """Show a frame for the given page name"""
         frame = self.frames[page_name]
         frame.tkraise()
 
@@ -55,26 +54,21 @@ class Master(tk.Tk):
 
         time.sleep(5)
         self.destroy()
-        game.run()
+        game.run("localhost")
 
     def connect(self, ip: tk.StringVar):
         from src.Client.Game import game
-        client_thread = threading.Thread(target=game.run, args=[ip.get()])
-        client_thread.run()
-
         self.destroy()
+        game.run(ip.get())
 
     def create_multiplayer_server(self):
-        server_thread = threading.Thread(target=run_server,
-                                         args=["Multiplayer"])
-        server_thread.daemon = True
-        server_thread.start()
-
         from src.Client.Game import game
-        client_thread = threading.Thread(target=game.run, args=["localhost"])
-        client_thread.start()
-
+        server_thread = multiprocessing.Process(target=run_server,
+                                                args=["Multiplayer"])
+        server_thread.start()
+        time.sleep(5)
         self.destroy()
+        game.run("localhost")
 
 
 class MainMenu(tk.Frame):
