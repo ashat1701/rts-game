@@ -3,6 +3,7 @@ import logging
 
 from src.Client.Camera import Camera
 from src.Client.EntitySprite import EntitySprite
+from src.Client.TextWidget import TextWidget
 from src.Client.UI.Window import Window
 from src.utility.utilities import Vector
 from src.utility.constants import MOVE_UPDATE
@@ -17,9 +18,13 @@ class MainWindow(Window):
         self.lock = Lock()
         self.main_camera = Camera(Vector(0, 0), size)
         self.add_child(self.main_camera, Vector(0, 0))
+        self.spectate = False
         pygame.time.set_timer(pygame.USEREVENT, MOVE_UPDATE)
 
     def accept_event(self, event):
+        if self.spectate:
+            return
+
         if event.type == pygame.USEREVENT:
             state = pygame.key.get_pressed()
             direction = Vector(0, 0)
@@ -38,12 +43,22 @@ class MainWindow(Window):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
             self.sio.emit('message', "ATTACK")
 
+    def enable_spectate(self):
+        spectate_text = TextWidget('Spectating')
+        self.add_child(spectate_text, Vector(0, 900))
+
+        self.spectate = True
+
     def accept_action(self, action):
         if not isinstance(action, list):
             raise RuntimeError(
                 "Action is not of type list. Don't know what to do with it")
-        self.entities = [EntitySprite(info) for info in action]
-        with self.lock:
-            self.main_camera.set_hp(self.entities[0].health)
-            self.main_camera.set_center(self.entities[0].position)
-            self.main_camera.set_sprites(self.entities)
+
+        if action[0] == ['SPECTATE']:
+            self.spectate = True
+        else:
+            self.entities = [EntitySprite(info) for info in action]
+            with self.lock:
+                self.main_camera.set_hp(self.entities[0].health)
+                self.main_camera.set_center(self.entities[0].position)
+                self.main_camera.set_sprites(self.entities)
