@@ -73,7 +73,7 @@ class App:
             self.update()
 
 
-def start_game(game_mode="Multiplayer"):
+def start_game(game_mode="Singleplayer"):
     server = Server()
     server.start()
 
