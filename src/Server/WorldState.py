@@ -6,7 +6,7 @@ from src.utility.constants import *
 
 class WorldState:
     def __init__(self, game_mode='Singleplayer'):
-        self.game_mode = game_mode
+        self.set_game_mode(game_mode)
         self.entity = {}
         self.movable_entities = set()
         self.enemies = set()

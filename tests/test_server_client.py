@@ -8,7 +8,6 @@ os.chdir("..")
 def f(test):
     st = time.time()
     test()
-    print(time.time() - st)
 queue = Queue()
 
 def test_map_receive():

@@ -32,7 +32,6 @@ class MeleeEnemyFactory(EnemyFactory):
         damage = self.damage
         health = generate_enemy_health(self.min_health, self.max_health)
         direction = generate_random_direction()
-        print("BOX {} health {} direction {} id {}".format(box, health, direction, current_id))
         return MeleeEnemy().set_id(current_id).set_box(box).set_damage(damage) \
             .set_health(health).set_direction(direction).set_attack_reload(
             ATTACK_RELOAD).set_velocity(ENEMY_VELOCITY)

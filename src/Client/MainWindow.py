@@ -4,7 +4,7 @@ import pygame
 
 from src.Client.Camera import Camera
 from src.Client.EntitySprite import EntitySprite
-from src.Client.TextWidget import TextWidget
+from src.Client.UI.TextWidget import TextWidget
 from src.Client.UI.Window import Window
 from src.utility.constants import MOVE_UPDATE
 from src.utility.utilities import Vector

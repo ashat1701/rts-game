@@ -8,7 +8,7 @@ from src.Server import Logic
 from src.Server.Server import Server
 from src.Server.Visitor import Visitor
 from src.Server.WorldState import world
-import src.Server.Server
+import src.Server.Server as server_module
 
 player1_connected = False
 player2_connected = False
@@ -32,16 +32,18 @@ class App:
         spectate_id = player_id
         if world.player_dead[player_id]:
             spectate_id = (player_id + 1) % 2
-        entities_to_draw.append(self.get_all_entity_information(spectate_id, visitor))
-        for visible_entity_id in self.logic.geometry_system.get_visible_entities(spectate_id):
+        entities_to_draw.append(
+            self.get_all_entity_information(spectate_id, visitor))
+        for visible_entity_id in self.logic.geometry_system.get_visible_entities(
+                spectate_id):
             if visible_entity_id != spectate_id:
                 entities_to_draw.append(
-                    self.get_all_entity_information(visible_entity_id, visitor))
+                    self.get_all_entity_information(visible_entity_id,
+                                                    visitor))
         self.server.send_obj_to_player(entities_to_draw, player_id)
 
     def update(self):
-
-        if src.Server.Server.player_disconnected:
+        if server_module.player_disconnected:
             exit()
         for dead_id in world.dead_entities:
             if dead_id in (world.get_first_player_id(), world.get_second_player_id()):
