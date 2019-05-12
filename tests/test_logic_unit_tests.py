@@ -2,7 +2,7 @@ import os
 
 from src.Server.Entity import PlayerEntity
 from src.Server.Logic import Logic
-from src.Server.WorldState import world
+from src.Server.WorldState import world, recreate_world
 from src.utility.constants import *
 
 os.chdir("..")
@@ -31,8 +31,11 @@ def test_single_enemy_spawn():
 
 
 def test_damage_deal():
-    logic.damage_system.deal_damage(0, 2)
+    recreate_world()
+    logic.spawn_system.create_player(0)
+    logic.spawn_system.create_enemy()
     enemy_start_health = world.get_health(2)
+    logic.damage_system.deal_damage(0, 2)
     player_damage = world.get_damage(0)
     if player_damage >= enemy_start_health:
         assert len(world.dead_entities) == 1
@@ -61,3 +64,4 @@ def test_player_move():
             new_position = world.get_box(0).center
             assert new_position != initial_position
             initial_position = new_position
+test_damage_deal()
