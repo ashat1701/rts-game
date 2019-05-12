@@ -41,7 +41,7 @@ class Vector(tuple):
 
 def load_sprites(files):
     import pygame
-    return [pygame.image.load(file) for file in files]
+    return [pygame.image.load(os.path.join(os.path.dirname(__file__), "../../"+file)) for file in files]
 
 
 def level_to_tile(level):
