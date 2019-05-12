@@ -35,10 +35,10 @@ def test_update_time():
         app.logic.spawn_system.create_enemy()
 
     start = time.time()
-    for i in range(100):
+    for i in range(10):
         app.update()
     delta = time.time() - start
-    assert delta / 100 < 0.05
+    assert delta / 10 < 0.1
 
 
 def test_animation_system():
