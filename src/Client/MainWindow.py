@@ -45,7 +45,7 @@ class MainWindow(Window):
 
     def enable_spectate(self):
         spectate_text = TextWidget('Spectating')
-        self.add_child(spectate_text, Vector(0, 900))
+        self.main_camera.add_child(spectate_text, Vector(0, 900))
 
         self.spectate = True
 
@@ -54,8 +54,8 @@ class MainWindow(Window):
             raise RuntimeError(
                 "Action is not of type list. Don't know what to do with it")
 
-        if action[0] == ['SPECTATE']:
-            self.spectate = True
+        if action[0] == 'SPECTATE':
+            self.enable_spectate()
         else:
             self.entities = [EntitySprite(info) for info in action]
             with self.lock:

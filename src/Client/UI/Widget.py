@@ -9,9 +9,6 @@ class Widget:
         self.children = {}
 
     def add_child(self, child, position: Vector):
-        if isinstance(position, tuple):
-            position = Vector(*position)
-
         id_ = id(child)
 
         if id_ in self.children:

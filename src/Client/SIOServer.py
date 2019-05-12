@@ -12,14 +12,17 @@ sio = socketio.Client()
 def accept_action(data):
     game.accept_action(data)
 
+
 @sio.on('connect')
 def on_connect():
     sio.emit('message', 'PLAYER_CONNECTED')
+
 
 @sio.on('disconnect')
 def on_disconnect():
     game.running = False
     exit(0)
+
 
 def run(ip):
     sio.connect(f"http://{ip}:{PORT}")

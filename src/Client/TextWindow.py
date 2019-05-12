@@ -8,8 +8,8 @@ import logging
 class WaitWindow(Window):
     def __init__(self):
         super().__init__()
-        text = TextWidget('Waiting for other players')
-        self.add_child(text, Vector(1000, 1000) / 2)
+        text = TextWidget('Waiting! Be comfy, take a cookie.')
+        self.add_child(text, Vector(500, 400))
         self.map = None
 
     def accept_action(self, action):
