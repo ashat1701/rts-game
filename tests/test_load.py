@@ -50,7 +50,7 @@ def test_animation_system():
     for i in range(int(50)):
         anim_system.get_animation_state(0)
     delta = time.time() - start
-    assert delta < 0.0001
+    assert delta < 0.0005
 
 
 def get_sprites(num):
