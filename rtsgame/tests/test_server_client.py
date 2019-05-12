@@ -1,5 +1,5 @@
 import os
-from MainMenu import run_server
+from rtsgame.MainMenu import run_server
 import multiprocessing
 from queue import Queue
 import time

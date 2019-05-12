@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='rtsgame',
-      version='0.5',
+      version='0.10',
       description='The funniest rts in the world',
       long_description=readme(),
       classifiers=[
@@ -16,26 +16,22 @@ setup(name='rtsgame',
           'Programming Language :: Python :: 3',
       ],
       url='https://github.com/ashat1701/rts-game',
+      long_description_content_type='text/markdown',
       author='Mega team',
       author_email='harmoning.moagic@ya.ru',
       license='MIT',
       packages=find_packages(),
       install_requires=[
           'pygame',
-          'eventlet'
-          'greenlet'
-          'python-engineio'
-          'requests'
-          'websocket-client'
+          'eventlet',
+          'greenlet',
+          'python-engineio',
+          'requests',
+          'websocket-client',
           'python-socketio'
       ],
-      package_data={
-          '': ["*.json", "*.png", "*.jpg"]
-      },
-      test_suite='nose.collector',
-      tests_require=['nose', 'nose-cover3'],
       entry_points={
-          'console_scripts': ['rtsgame=rtsgame.MainMenu:main'],
+          'console_scripts': ['rtsgamestart=rtsgame.MainMenu:main'],
       },
       include_package_data=True,
       zip_safe=False)

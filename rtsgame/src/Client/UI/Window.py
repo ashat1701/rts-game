@@ -1,7 +1,7 @@
 import pygame
 
-from src.Client.UI.Widget import Widget
-from src.utility.utilities import Vector
+from rtsgame.src.Client.UI.Widget import Widget
+from rtsgame.src.utility.utilities import Vector
 
 
 class Window(Widget):

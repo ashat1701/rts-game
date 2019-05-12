@@ -1,9 +1,9 @@
 import os
 
-from src.Server.Entity import PlayerEntity
-from src.Server.Logic import Logic
-from src.Server.WorldState import world
-from src.utility.constants import *
+from rtsgame.src.Server.Entity import PlayerEntity
+from rtsgame.src.Server.Logic import Logic
+from rtsgame.src.Server.WorldState import world
+from rtsgame.src.utility.constants import *
 
 os.chdir("..")
 

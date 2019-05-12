@@ -1,7 +1,6 @@
 import os
-
-from src.Server.Logic import Logic
-from src.Server.WorldState import WorldState, world
+from rtsgame.src.Server.Logic import Logic
+from rtsgame.src.Server.WorldState import WorldState, world
 
 os.chdir("..")
 

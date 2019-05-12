@@ -1,5 +1,5 @@
 import pygame
-
+import os
 from rtsgame.src.utility.utilities import join_paths, Vector
 
 
@@ -10,8 +10,8 @@ class Animation:
         if offset is not None:
             offset = Vector(*offset)
         self.offset = offset
-
-        images = [pygame.image.load(f) for f in filenames]
+        dirname = os.path.dirname(__file__)
+        images = [pygame.image.load(os.path.join(dirname, "../../"+f)) for f in filenames]
         self.images = [transforms(img).convert_alpha() for img in images]
 
     def __getitem__(self, item: int) -> pygame.Surface:

@@ -1,8 +1,8 @@
 from pygame import Rect
 
-from src.Server.Entity import PlayerEntity, MeleeEnemy, RangedEnemy, Projectile
-from src.Server.Visitor import Visitor
-from src.Server.WorldState import world
+from rtsgame.src.Server.Entity import PlayerEntity, MeleeEnemy, RangedEnemy, Projectile
+from rtsgame.src.Server.Visitor import Visitor
+from rtsgame.src.Server.WorldState import world
 
 visitor = Visitor()
 
