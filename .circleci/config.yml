@@ -37,6 +37,7 @@ jobs:
         - run: sudo pip3 install -r requirements.txt
         - run: sudo pip install -U pytest
         - run: mkdir reports
+        - run: cd tests
         - run: for i in *; do pytest -v --junitxml=reports/junit.xml "$i"; done
         - store_test_results:
             path: reports
