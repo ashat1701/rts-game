@@ -42,7 +42,7 @@ def test_spawn_and_delete_stress(benchmark):
 
 def create_map():
     from src.Server.Map import Map
-    map = Map(height=200, width=200, random_connections=10, max_rooms=20, min_room_len=10, max_room_len=10)
+    map = Map(height=100, width=100, random_connections=10, max_rooms=20, min_room_len=10, max_room_len=10)
 
 def test_map_create_time_stress(benchmark):
     benchmark(create_map)
