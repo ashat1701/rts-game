@@ -1,4 +1,5 @@
 import json
+import os
 from random import randint
 
 from pygame import Rect
@@ -38,8 +39,8 @@ class MeleeEnemyFactory(EnemyFactory):
             ATTACK_RELOAD).set_velocity(ENEMY_VELOCITY)
 
     def load_difficulty_from_file(self, name):
-
-        obj = json.load(open("src/utility/difficulties/{}.json".format(name)))
+        dirname = os.path.dirname(__file__)
+        obj = json.load(open(os.path.join(dirname, "../../src/utility/difficulties/{}.json".format(name))))
         self.box_width = obj["enemies"][0]["box_width"]
         self.box_height = obj["enemies"][0]["box_height"]
         self.min_health = obj["enemies"][0]["min_health"]

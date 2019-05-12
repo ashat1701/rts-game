@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='rtsgame',
-      version='0.10',
+      version='0.11',
       description='The funniest rts in the world',
       long_description=readme(),
       classifiers=[
