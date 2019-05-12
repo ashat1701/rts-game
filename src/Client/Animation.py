@@ -12,7 +12,7 @@ class Animation:
         self.offset = offset
 
         images = [pygame.image.load(f) for f in filenames]
-        self.images = [transforms(img).convert_alpha() for img in images]
+        self.images = [transforms(img) for img in images]
 
     def __getitem__(self, item: int) -> pygame.Surface:
         return self.images[item]

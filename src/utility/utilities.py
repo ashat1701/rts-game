@@ -41,6 +41,7 @@ class Vector(tuple):
 
 def load_sprites(files):
     import pygame
+    import os
     return [pygame.image.load(file) for file in files]
 
 

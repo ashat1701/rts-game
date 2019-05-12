@@ -23,11 +23,11 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((1000, 1000))
 
-        EntitySpriteManager.load_entity_config('/src/utility/animations/'
+        EntitySpriteManager.load_entity_config('src/utility/animations/'
                                                'melee_animations.json')
-        EntitySpriteManager.load_entity_config('/src/utility/animations/'
+        EntitySpriteManager.load_entity_config('src/utility/animations/'
                                                'player1_animations.json')
-        EntitySpriteManager.load_entity_config('/src/utility/animations/'
+        EntitySpriteManager.load_entity_config('src/utility/animations/'
                                                'player2_animations.json')
         self.clock = pygame.time.Clock()
 
@@ -45,6 +45,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 else:
+                    # Press logger
                     self.active_window.accept_event(event)
 
             self.active_window.draw(self.screen)

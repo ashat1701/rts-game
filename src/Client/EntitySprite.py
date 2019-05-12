@@ -51,8 +51,7 @@ class EntitySpriteManager:
     @classmethod
     def load_entity_config(cls, filename):
 
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                               "../.." + filename)) as file:
+        with open(filename) as file:
             config = json.load(file)
 
         all_animations = parse_descriptions(config['move'])

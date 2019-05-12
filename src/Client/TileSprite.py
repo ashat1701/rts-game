@@ -33,12 +33,12 @@ pygame.draw.rect(_surfaces[FLOOR][1], (255, 0, 0),
 pygame.draw.rect(_surfaces[STONE][1], (255, 0, 0),
                  (0, 0, PIXEL_SCALE, PIXEL_SCALE))
 
-_surfaces[WALL][0] = _surfaces[WALL][0].convert_alpha()
-_surfaces[WALL][1] = _surfaces[WALL][1].convert_alpha()
-_surfaces[FLOOR][0] = _surfaces[FLOOR][0].convert_alpha()
-_surfaces[FLOOR][1] = _surfaces[FLOOR][1].convert_alpha()
-_surfaces[STONE][0] = _surfaces[STONE][0].convert_alpha()
-_surfaces[STONE][1] = _surfaces[STONE][1].convert_alpha()
+_surfaces[WALL][0] = _surfaces[WALL][0]
+_surfaces[WALL][1] = _surfaces[WALL][1]
+_surfaces[FLOOR][0] = _surfaces[FLOOR][0]
+_surfaces[FLOOR][1] = _surfaces[FLOOR][1]
+_surfaces[STONE][0] = _surfaces[STONE][0]
+_surfaces[STONE][1] = _surfaces[STONE][1]
 
 
 class TileSprite(Sprite):
