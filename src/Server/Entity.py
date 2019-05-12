@@ -170,7 +170,7 @@ class PlayerEntity(MovableEntity):
 
     def accept(self, visitor):
         return visitor.visit_player(
-            self)  # Надо ещё передать инфу о том, какой это Player. (может их айди будут в константах?)
+            self)
 
     def set_last_attack(self, last_attack):
         self._last_attack = last_attack
