@@ -14,4 +14,5 @@ class TextWidget(Widget):
         self.text_surface = self.text_surface.convert_alpha()
 
     def draw(self, surface: pygame.Surface, abs_position: Vector):
+        print(self.text, abs_position)
         surface.blit(self.text_surface, abs_position)
