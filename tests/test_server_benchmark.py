@@ -36,7 +36,7 @@ def test_get_visible_enteties_benchmark(benchmark):
 def test_animation_system_stress(benchmark):
     logic = Logic()
     recreate_world()
-    spawn_enemies(120, logic)
+    spawn_enemies(100, logic)
     benchmark(update_animation_and_move, logic)
-    despawn_enemies(120)
+    despawn_enemies(100)
 
