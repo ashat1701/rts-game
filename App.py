@@ -50,7 +50,7 @@ class App:
                 self.server.send_obj_to_player(["SPECTATE"], dead_id)
                 world.player_dead[dead_id] = True
                 if all(world.player_dead):
-                    exit()
+                    exit(0)
             self.logic.animation_system.remove_entity(dead_id)
             world.delete_entity(dead_id)
         world.dead_entities = []
