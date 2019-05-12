@@ -31,9 +31,6 @@ def test_single_enemy_spawn():
 
 
 def test_damage_deal():
-    recreate_world()
-    logic.spawn_system.create_player(0)
-    logic.spawn_system.create_enemy()
     enemy_start_health = world.get_health(2)
     logic.damage_system.deal_damage(0, 2)
     player_damage = world.get_damage(0)
