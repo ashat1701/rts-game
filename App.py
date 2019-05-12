@@ -44,7 +44,7 @@ class App:
 
     def update(self):
         if server_module.player_disconnected:
-            exit()
+            exit(0)
         for dead_id in world.dead_entities:
             if dead_id in (world.get_first_player_id(), world.get_second_player_id()):
                 self.server.send_obj_to_player(["SPECTATE"], dead_id)
