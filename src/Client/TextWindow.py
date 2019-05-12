@@ -1,6 +1,6 @@
 import logging
 
-from src.Client.UI.TextWidget import TextWidget
+from src.Client.UI.TextWidget import TextContainer
 from src.Client.UI.Window import Window
 from src.utility.utilities import Vector
 
@@ -8,7 +8,7 @@ from src.utility.utilities import Vector
 class WaitWindow(Window):
     def __init__(self):
         super().__init__()
-        text = TextWidget('Waiting! Be comfy, take a cookie.')
+        text = TextContainer('Waiting! Be comfy, take a cookie.')
         self.add_child(text, Vector(400, 500))
         self.map = None
 

@@ -7,7 +7,8 @@ from src.Client.EntitySprite import EntitySpriteManager
 
 class Game:
     def __init__(self):
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(filename='game.log', filemode='w',
+                            level=logging.INFO)
         self.screen = None
         self.clock = None
         self.active_window = None
@@ -45,7 +46,10 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 else:
-                    # Press logger
+                    # Key logger
+                    if event.type == pygame.KEYDOWN:
+                        logging.info("Pressed key {}".format(event.unicode))
+
                     self.active_window.accept_event(event)
 
             self.active_window.draw(self.screen)

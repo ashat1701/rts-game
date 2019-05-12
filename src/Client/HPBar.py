@@ -1,10 +1,10 @@
 import pygame
 
-from src.Client.UI.Widget import Widget
+from src.Client.UI.Widget import Container
 from src.utility.utilities import Vector, load_sprites, join_paths
 
 
-class HPBar(Widget):
+class HPBar(Container):
     sprites = load_sprites(
         join_paths('src/Client/HUD/HP/Value', ['HP_Value_0.png',
                                                'HP_Value_1.png',

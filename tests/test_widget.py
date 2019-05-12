@@ -1,4 +1,4 @@
-from src.Client.UI.Widget import Widget
+from src.Client.UI.Widget import Container
 from src.utility.utilities import Vector
 
 import os
@@ -6,7 +6,7 @@ os.chdir("..")
 
 
 def test_child_draw():
-    widget = Widget()
+    widget = Container()
     widget_pos = Vector(100, 300)
 
     class FakeChild:

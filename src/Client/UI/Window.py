@@ -1,10 +1,10 @@
 import pygame
 
-from src.Client.UI.Widget import Widget
+from src.Client.UI.Widget import Container
 from src.utility.utilities import Vector
 
 
-class Window(Widget):
+class Window(Container):
     def __init__(self):
         super().__init__()
         self.sio = None
