@@ -1,5 +1,5 @@
-# RTS game (нет)
 [![CircleCI](https://circleci.com/gh/ashat1701/rts-game/tree/dev.svg?style=svg)](https://circleci.com/gh/ashat1701/rts-game/tree/dev)
+# RTS game (нет)
 Простая игра о том что нужно быть сильным и справлятся с трудностями жизни
 # Установка и запуск
 * для Debian-based дистрибутивов
