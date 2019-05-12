@@ -9,7 +9,7 @@ def spawn_enemies(count, logic):
     for i in range(count):
         logic.spawn_system.create_enemy()
         logic.animation_system.get_animation_state(i + 2)
-    assert len(world.entity) == count
+    assert len(world.entity) == count + (0 in world.entity.keys())
 
 def update_animation_and_move(logic):
     logic.move_all_entities()
@@ -35,7 +35,6 @@ def test_get_visible_enteties_benchmark(benchmark):
 
 def test_animation_system_stress(benchmark):
     logic = Logic()
-    recreate_world()
     spawn_enemies(100, logic)
     benchmark(update_animation_and_move, logic)
     despawn_enemies(100)
