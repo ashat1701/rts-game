@@ -19,3 +19,5 @@ $ rtsgamestart
 pip3 install -r requirements.txt
 python3 MainMenu.py
 ```
+# Информация
+Чиатйте в нашей [wiki](https://github.com/ashat1701/rts-game/wiki)
