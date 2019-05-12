@@ -1,0 +1,204 @@
+{
+  "entity_type": "melee",
+  "default": "idle",
+  "move": [
+    {
+      "name": "idle",
+      "folder": "./src/Client/Sprites/Enemy/",
+      "sprites": [
+        "Enemy_Idle_Special_0.png",
+        "Enemy_Idle_Special_1.png",
+        "Enemy_Idle_Special_2.png",
+        "Enemy_Idle_Special_3.png"
+      ],
+      "frame_duration": 200,
+      "flip_x": false,
+      "flip_y": false,
+      "play_once": false,
+      "direction_binds": [
+        [
+          0,
+          0
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_right",
+      "folder": "./src/Client/Sprites/Enemy/",
+      "sprites": [
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
+      ],
+      "frame_duration": 200,
+      "play_once": false,
+      "direction_binds": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_left",
+      "folder": "./src/Client/Sprites/Enemy/",
+      "sprites": [
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
+      ],
+      "frame_duration": 200,
+      "flip_x": true,
+      "play_once": false,
+      "direction_binds": [
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          1
+        ],
+        [
+          -1,
+          -1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_up",
+      "folder": "./src/Client/Sprites/Enemy/",
+      "sprites": [
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
+      ],
+      "frame_duration": 200,
+      "play_once": false,
+      "direction_binds": [
+        [
+          0,
+          -1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "walk_down",
+      "folder": "./src/Client/Sprites/Enemy/",
+      "sprites": [
+        "Enemy_Walk_Special_0.png",
+        "Enemy_Walk_Special_1.png",
+        "Enemy_Walk_Special_2.png",
+        "Enemy_Walk_Special_3.png"
+      ],
+      "frame_duration": 200,
+      "play_once": false,
+      "direction_binds": [
+        [
+          0,
+          1
+        ]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    }
+  ],
+  "attack": [
+    {
+      "name": "attack_right",
+      "folder": "./src/Client/Sprites/Enemy/",
+      "sprites": [
+        "Enemy_Attack_Special_0.png",
+        "Enemy_Attack_Special_1.png",
+        "Enemy_Attack_Special_2.png",
+        "Enemy_Attack_Special_3.png"
+      ],
+      "frame_duration": 200,
+      "play_once": true,
+      "direction_binds": [
+        [1,0],[1,1],[1,-1],[0,1],[0,-1],[0,0]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    },
+    {
+      "name": "attack_left",
+      "folder": "./src/Client/Sprites/Enemy/",
+      "sprites": [
+        "Enemy_Attack_Special_0.png",
+        "Enemy_Attack_Special_1.png",
+        "Enemy_Attack_Special_2.png",
+        "Enemy_Attack_Special_3.png"
+      ],
+      "frame_duration": 200,
+      "flip_x": true,
+      "play_once": true,
+      "direction_binds": [
+        [-1,0],[-1,1],[-1,-1]
+      ],
+      "resize": [
+        100,
+        100
+      ],
+      "offset": [
+        30,
+        48
+      ]
+    }
+  ]
+}
