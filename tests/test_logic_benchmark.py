@@ -15,7 +15,7 @@ def despawn_enemies(count):
         world.delete_entity(i + 2)
 
 def test_world_time_creation(benchmark):
-    benchmark(WorldState)
+    benchmark(recreate_world)
 
 def test_spawn_and_dead_time(benchmark):
     benchmark(spawn_and_delete_enemies, 60)
@@ -34,3 +34,12 @@ def move_entities(count):
 def test_move_entities(benchmark):
     benchmark(move_entities, count=60)
 
+def test_move_enteties_stress(benchmark):
+    benchmark(move_entities, count=120)
+
+def test_spawn_and_delete_stress(benchmark):
+    benchmark(spawn_and_delete_enemies(120))
+
+def map_create_time_stress(benchmark):
+    from src.Server.Map import Map
+    benchmark(Map(height=1000, width=100, random_connections=10))
