@@ -7,28 +7,28 @@ jobs:
     steps:
       - checkout
       - run: sudo pip3 install -r requirements.txt
-      - run: python3 -m py_compile src/Client/MainWindow.py
+      - run: python3 -m py_compile rtsgame/src/Client/MainWindow.py
   build-server:
     docker:
       - image: circleci/python:3.6.4
     steps:
       - checkout
       - run: sudo pip3 install -r requirements.txt
-      - run: python3 -m py_compile src/Server/Server.py
+      - run: python3 -m py_compile rtsgame/src/Server/Server.py
   build-app:
     docker:
       - image: circleci/python:3.6.4
     steps:
       - checkout
       - run: sudo pip3 install -r requirements.txt
-      - run: python3 -m py_compile App.py
+      - run: python3 -m py_compile rtsgame/App.py
   build-shell-client:
     docker:
       - image : circleci/python:3.6.4
     steps:
       - checkout
       - run: sudo pip3 install -r requirements.txt
-      - run: python3 -m py_compile client-shell.py
+      - run: python3 -m py_compile rtsgame/client-shell.py
   run-tests:
     docker:
         - image : circleci/python:3.6.4
@@ -37,7 +37,7 @@ jobs:
         - run: sudo pip3 install -r requirements.txt
         - run: sudo pip install -U pytest
         - run: mkdir reports
-        - run: cd tests; for i in *; do pytest -v --junitxml=../reports/junit"$i".xml "$i"; done
+        - run: cd rtsgame/tests; for i in *; do pytest -v --junitxml=../../reports/junit"$i".xml "$i"; done
         - store_test_results:
             path: reports
         - store_artifacts:
