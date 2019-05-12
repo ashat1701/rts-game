@@ -5,6 +5,7 @@ from src.Server.Logic import Logic
 os.chdir("..")
 
 def spawn_enemies(count, logic):
+    recreate_world()
     for i in range(count):
         logic.spawn_system.create_enemy()
         logic.animation_system.get_animation_state(i + 2)
