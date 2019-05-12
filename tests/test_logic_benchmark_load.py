@@ -35,10 +35,10 @@ def test_move_entities(benchmark):
     benchmark(move_entities, count=60)
 
 def test_move_enteties_stress(benchmark):
-    benchmark(move_entities, count=120)
+    benchmark(move_entities, count=100)
 
 def test_spawn_and_delete_stress(benchmark):
-    benchmark(spawn_and_delete_enemies, 120)
+    benchmark(spawn_and_delete_enemies, 100)
 
 def create_map():
     from src.Server.Map import Map
