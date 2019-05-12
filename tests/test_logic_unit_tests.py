@@ -34,7 +34,7 @@ def test_damage_deal():
     logic.damage_system.deal_damage(0, 2)
     enemy_start_health = world.get_health(2)
     player_damage = world.get_damage(0)
-    if player_damage > enemy_start_health:
+    if player_damage < enemy_start_health:
         assert len(world.dead_entities) == 1
     else:
         assert world.get_health(2) == enemy_start_health - player_damage

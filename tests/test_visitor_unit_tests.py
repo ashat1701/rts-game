@@ -15,7 +15,7 @@ world.entity[0] = player
 
 
 def test_player_accept():
-    assert player.accept(visitor).get_action() == ((0, 0), 'player1', None, None, (100, 100))
+    assert player.accept(visitor).get_action() == ((0, 0), 'player1', None, None, (50, 100))
 
 
 def test_melee_enemy_accept():
