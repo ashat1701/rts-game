@@ -4,11 +4,18 @@
 # Установка и запуск
 * для Debian-based дистрибутивов
 ```shell
-sudo apt install python3-tkinter
-sudo pip3 install -r requirements.txt
-python 3 ./MainMenu.py
+$ sudo apt install python3-tkinter
+$ sudo pip3 install -r requirements.txt
+$ python3 ./MainMenu.py
+```
+Также можно скачивать версию, собираемую в build ветке. Для этого нужно выполнить:
+```shell
+$ pip3 install rtsgame
+$ rtsgamestart
 ```
 * Для Windows
-Нужно установить пакет 
-[ActionTcl](https://www.activestate.com/products/activetcl/downloads/). Пройдите несложную регистрацию и установите TCL.
-После этого аналогично инструкции для linux.
+Выполните:
+```
+pip3 install -r requirements.txt
+python3 MainMenu.py
+```
