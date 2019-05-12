@@ -1,9 +1,10 @@
-from .WorldState import world
+import json
+from random import randint
+
 from pygame import Rect
+
 from .Entity import MeleeEnemy
 from ..utility.constants import *
-from random import randint
-import json
 
 
 class EnemyFactory:
@@ -22,18 +23,22 @@ class MeleeEnemyFactory(EnemyFactory):
         self.min_health = 10
         self.max_health = self.min_health * 2
         self.damage = 2
+        self.id = 2
 
     def generate_enemy(self):
-        current_id = len(world.entity) + 1
+        current_id = self.id
+        self.id += 1
         box = generate_box(self.box_width, self.box_height)
         damage = self.damage
         health = generate_enemy_health(self.min_health, self.max_health)
         direction = generate_random_direction()
+        print("BOX {} health {} direction {} id {}".format(box, health, direction, current_id))
         return MeleeEnemy().set_id(current_id).set_box(box).set_damage(damage) \
             .set_health(health).set_direction(direction).set_attack_reload(
             ATTACK_RELOAD).set_velocity(ENEMY_VELOCITY)
 
     def load_difficulty_from_file(self, name):
+
         obj = json.load(open("src/utility/difficulties/{}.json".format(name)))
         self.box_width = obj["enemies"][0]["box_width"]
         self.box_height = obj["enemies"][0]["box_height"]

@@ -1,8 +1,7 @@
-from src.Client.UI.Window import Window
-from src.Client.UI.Widget import Widget
 import pygame
+
+from src.Client.UI.Widget import Widget
 from src.utility.utilities import Vector
-import logging
 
 
 class TextWidget(Widget):

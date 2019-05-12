@@ -1,11 +1,8 @@
-from math import sin, cos
-from random import randint
+from math import sin, cos, inf
 
+from src.Server.Entity import PlayerEntity, Enemy
 from src.Server.WorldState import world
 from src.utility.constants import *
-from random import randint
-from math import sin, cos, inf
-from src.Server.Entity import PlayerEntity, Enemy
 
 
 class GeometrySystem:

@@ -1,18 +1,20 @@
-from .Entity import Enemy, PlayerEntity
-from .WorldState import world
-from random import randint
-from .EnemyFactory import MeleeEnemyFactory
-from ..utility.constants import *
-from .Entity import MeleeEnemy
-from pygame import Rect
-from .GeometrySystem import GeometrySystem
 import logging
+from random import randint
+
+from pygame import Rect
+
+from .EnemyFactory import MeleeEnemyFactory
+from .Entity import PlayerEntity
+from .GeometrySystem import GeometrySystem
+from .WorldState import world
+from ..utility.constants import *
 
 
 class MonsterSpawner:
     def __init__(self, difficulty):
         self._monster_factories = []
         self.difficulty = difficulty
+
     def spawn_monster(self, *args):
         size = len(self._monster_factories)
         return self._monster_factories[randint(0, size - 1)].generate_enemy()
@@ -45,9 +47,9 @@ class SpawnSystem:
 
     def create_player(self, player_id):
         player_box = generate_random_free_box(Rect(0, 0, PLAYER_HEIGHT, PLAYER_WIDTH))
-        world.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY)\
-            .set_direction((0, 0)).set_health(PLAYER_HEALTH).set_id(len(world.entity)).\
-            set_box(player_box).set_position((player_box.centerx, player_box.centery)).\
+        world.entity[player_id] = PlayerEntity().set_damage(PLAYER_START_DAMAGE).set_velocity(PLAYER_VELOCITY) \
+            .set_direction((0, 0)).set_health(PLAYER_HEALTH).set_id(len(world.entity)). \
+            set_box(player_box).set_position((player_box.centerx, player_box.centery)). \
             set_attack_reload(PLAYER_RELOAD).set_type("player" + str(player_id + 1))
         world.movable_entities.add(player_id)
 
@@ -57,7 +59,7 @@ class SpawnSystem:
 
 
 def generate_random_free_box(box):
-    while(True):
+    while (True):
         x = randint(0, MAP_SCALE * world.map.width - 1)
         y = randint(0, MAP_SCALE * world.map.height - 1)
         new_box = box.move(x, y)

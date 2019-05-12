@@ -1,8 +1,8 @@
-from src.Client.UI.Window import Window
-from src.Client.TextWidget import TextWidget
-import pygame
-from src.utility.utilities import Vector
 import logging
+
+from src.Client.TextWidget import TextWidget
+from src.Client.UI.Window import Window
+from src.utility.utilities import Vector
 
 
 class WaitWindow(Window):

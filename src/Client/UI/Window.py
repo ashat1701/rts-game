@@ -1,6 +1,7 @@
 import pygame
-from src.utility.utilities import Vector
+
 from src.Client.UI.Widget import Widget
+from src.utility.utilities import Vector
 
 
 class Window(Widget):
@@ -8,7 +9,7 @@ class Window(Widget):
         super().__init__()
         self.sio = None
 
-    def draw(self, surface: pygame.Surface, abs_position: Vector=Vector(0,0)):
+    def draw(self, surface: pygame.Surface, abs_position: Vector = Vector(0, 0)):
         super().draw(surface, abs_position)
 
     def accept_events(self, events):

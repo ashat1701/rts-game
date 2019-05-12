@@ -186,7 +186,7 @@ class Map:
         self._tile[x][y] = tile_type
 
     def get(self, x, y):
-        # Саша проверь
+        # Саша пров-=ерь
         x = int(x)
         y = int(y)
         return self._tile[x][y]

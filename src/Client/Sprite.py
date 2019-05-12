@@ -1,7 +1,9 @@
-import pygame
-from src.utility.utilities import Vector
 from abc import ABCMeta, abstractmethod
+
+import pygame
+
 from src.Client.UI.Widget import Widget
+from src.utility.utilities import Vector
 
 
 class Sprite(Widget, metaclass=ABCMeta):

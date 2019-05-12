@@ -1,6 +1,4 @@
 import os
-from .constants import MAP_SCALE
-import os
 
 from .constants import MAP_SCALE
 
@@ -44,6 +42,7 @@ class Vector(tuple):
 def load_sprites(files):
     import pygame
     return [pygame.image.load(file) for file in files]
+
 
 def level_to_tile(level):
     _tile = [[] for _ in range(len(level) * MAP_SCALE)]

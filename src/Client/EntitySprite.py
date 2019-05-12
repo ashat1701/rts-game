@@ -1,13 +1,12 @@
 import json
+import os
 
 import pygame
-import os
-from src.Client.UI.Widget import Widget
-from src.utility.utilities import Vector
+
+from src.Client.Animation import parse_descriptions
 from src.Client.Sprite import Sprite
 from src.utility.constants import PIXEL_SCALE, MAP_SCALE
-from src.Client.Animation import Animation, parse_descriptions
-from src.Client.HPBar import HPBar
+from src.utility.utilities import Vector
 
 
 class EntitySpriteManager:

@@ -6,3 +6,4 @@ requests
 websocket-client
 python-socketio
 pytest
+pytest-benchmark

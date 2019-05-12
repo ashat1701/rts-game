@@ -1,7 +1,8 @@
-import pygame
-from typing import Union
-from src.utility.utilities import Vector
 import logging
+
+import pygame
+
+from src.utility.utilities import Vector
 
 
 class Widget:

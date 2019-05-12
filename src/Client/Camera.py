@@ -1,12 +1,12 @@
-from src.utility.constants import PLAYER_HEALTH
-from src.Client.HPBar import HPBar
 from itertools import chain
 from typing import Union
 
 import pygame
 
+from src.Client.HPBar import HPBar
 from src.Client.TileSprite import TileSprite
 from src.Client.UI.Widget import Widget
+from src.utility.constants import PLAYER_HEALTH
 from src.utility.utilities import Vector
 
 
