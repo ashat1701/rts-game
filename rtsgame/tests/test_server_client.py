@@ -16,7 +16,7 @@ def test_map_receive():
                                             args=["Singleplayer"])
     server_thread.start()
     time.sleep(3)
-    from src.Client.SIOServer import sio, run
+    from rtsgame.src.Client.SIOServer import sio, run
     sio.on("message")(on_message)
     sio.on("disconnect")(on_disconnect)
     run("localhost")

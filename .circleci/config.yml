@@ -42,6 +42,17 @@ jobs:
             path: reports
         - store_artifacts:
             path: reports
+  build-all:
+    docker:
+        - image : circleci/python:3.6.4
+    steps:
+        - checkout
+        - run: sudo pip3 install setuptools
+        - run: sudo pip3 install wheel
+        - run: python3 setup.py sdist
+        - run: python3 setup.py bdist_wheel
+
+
 workflows:
     "Build All":
         jobs:
@@ -49,4 +60,5 @@ workflows:
           - build-server
           - build-app
           - build-shell-client
+          - build-all
           - run-tests
