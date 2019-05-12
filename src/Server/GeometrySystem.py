@@ -34,12 +34,10 @@ class GeometrySystem:
                 if (tx < 0 or tx >= world.map.width * MAP_SCALE) or (
                         ty < 0 or ty >= world.map.height * MAP_SCALE):
                     break
-                if world.map.level[tx][ty] == WALL:
+                if world.map._tile[tx][ty] == WALL:
                     visible_tiles.append((tx, ty))
                     break
                 visible_tiles.append((tx, ty))
-                if glare_map is not None:
-                    glare_map[tx][ty] = 1
         return visible_tiles
 
     @staticmethod

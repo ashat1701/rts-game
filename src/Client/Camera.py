@@ -5,12 +5,12 @@ import pygame
 
 from src.Client.HPBar import HPBar
 from src.Client.TileSprite import TileSprite
-from src.Client.UI.Widget import Widget
+from src.Client.UI.Widget import Container
 from src.utility.constants import PLAYER_HEALTH
 from src.utility.utilities import Vector
 
 
-class Camera(Widget):
+class Camera(Container):
     def __init__(self, world_camera_position: Vector, size):
         super().__init__()
         self._box = pygame.Rect(world_camera_position, size)

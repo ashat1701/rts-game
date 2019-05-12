@@ -2,11 +2,11 @@ from abc import ABCMeta, abstractmethod
 
 import pygame
 
-from src.Client.UI.Widget import Widget
+from src.Client.UI.Widget import Container
 from src.utility.utilities import Vector
 
 
-class Sprite(Widget, metaclass=ABCMeta):
+class Sprite(Container, metaclass=ABCMeta):
     def __init__(self):
         super().__init__()
         self.box = None

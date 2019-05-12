@@ -4,7 +4,7 @@ import pygame
 
 from src.Client.Camera import Camera
 from src.Client.EntitySprite import EntitySprite
-from src.Client.UI.TextWidget import TextWidget
+from src.Client.UI.TextWidget import TextContainer
 from src.Client.UI.Window import Window
 from src.utility.constants import MOVE_UPDATE
 from src.utility.utilities import Vector
@@ -44,7 +44,7 @@ class MainWindow(Window):
             self.sio.emit('message', "ATTACK")
 
     def enable_spectate(self):
-        spectate_text = TextWidget('Spectating')
+        spectate_text = TextContainer('Spectating')
         self.main_camera.add_child(spectate_text, Vector(0, 900))
 
         self.spectate = True

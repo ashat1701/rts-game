@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 import logging
 
 import pygame
@@ -5,7 +6,13 @@ import pygame
 from src.utility.utilities import Vector
 
 
-class Widget:
+class Widget(metaclass=ABCMeta):
+    @abstractmethod
+    def draw(self, surface, abs_position):
+        pass
+
+
+class Container(Widget):
     def __init__(self):
         self.children = {}
 
