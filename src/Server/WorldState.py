@@ -20,7 +20,10 @@ class WorldState:
         self.second_player_glare = deepcopy(self.map.level)
         self.first_player_id = 0
         self.second_player_id = 1
-        self.player_dead = [False, False]
+        if game_mode == 'Singleplayer':
+            self.player_dead = [False]
+        if game_mode == 'Multiplayer':
+            self.player_dead = [False, False]
 
     def get_game_mode(self):
         return self.game_mode

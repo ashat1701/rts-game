@@ -30,20 +30,26 @@ class App:
     def send_world_state_to_player(self, player_id):
         entities_to_draw = []
         visitor = Visitor()
-        entities_to_draw.append(self.get_all_entity_information(player_id, visitor))
-        for visible_entity_id in self.logic.geometry_system.get_visible_entities(player_id):
-            if visible_entity_id != player_id:
+        spectate_id = player_id
+        if world.player_dead[player_id]:
+            spectate_id = (player_id + 1) % 2
+        entities_to_draw.append(self.get_all_entity_information(spectate_id, visitor))
+        for visible_entity_id in self.logic.geometry_system.get_visible_entities(spectate_id):
+            if visible_entity_id != spectate_id:
                 entities_to_draw.append(
                     self.get_all_entity_information(visible_entity_id, visitor))
         self.server.send_obj_to_player(entities_to_draw, player_id)
 
     def update(self):
+
         if src.Server.Server.player_disconnected:
             exit()
         for dead_id in world.dead_entities:
             if dead_id in (world.get_first_player_id(), world.get_second_player_id()):
                 self.server.send_obj_to_player(["SPECTATE"], dead_id)
                 world.player_dead[dead_id] = True
+                if all(world.player_dead):
+                    exit()
             self.logic.animation_system.remove_entity(dead_id)
             world.delete_entity(dead_id)
         world.dead_entities = []
@@ -60,6 +66,8 @@ class App:
 
     def analyze_action(self, action):
         player_id, current_action = action
+        if world.player_dead[player_id]:
+            return
         if current_action == "PLAYER_CONNECTED":
             self.logic.spawn_system.create_player(player_id)
 
