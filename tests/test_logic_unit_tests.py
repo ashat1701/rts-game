@@ -1,8 +1,9 @@
+import os
+
+from src.Server.Entity import PlayerEntity
 from src.Server.Logic import Logic
 from src.Server.WorldState import world
 from src.utility.constants import *
-from src.Server.Entity import PlayerEntity, MeleeEnemy
-import os
 
 os.chdir("..")
 

@@ -1,13 +1,10 @@
+import logging
 import os
 from time import time
-import logging
 
 from .AnimationSystem import AnimationSystem
-from .WorldState import world
-from .Entity import Projectile, Enemy, PlayerEntity
-from time import time
-import os
 from .DamageSystem import DamageSystem
+from .Entity import Enemy
 from .Entity import Projectile
 from .GeometrySystem import GeometrySystem
 from .SpawnSystem import SpawnSystem

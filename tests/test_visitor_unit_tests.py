@@ -1,6 +1,7 @@
-from src.Server.Visitor import Visitor
-from src.Server.Entity import PlayerEntity, MeleeEnemy, RangedEnemy, Projectile
 from pygame import Rect
+
+from src.Server.Entity import PlayerEntity, MeleeEnemy, RangedEnemy, Projectile
+from src.Server.Visitor import Visitor
 
 visitor = Visitor()
 

@@ -1,11 +1,11 @@
 from copy import deepcopy
 
 from src.Server import Map
-from ..utility.constants import *
+from src.utility.constants import *
 
 
 class WorldState:
-    def __init__(self, game_mode):
+    def __init__(self, game_mode='Singleplayer'):
         self.game_mode = game_mode
         self.entity = {}
         self.movable_entities = set()
@@ -20,16 +20,16 @@ class WorldState:
         self.second_player_glare = deepcopy(self.map.level)
         self.first_player_id = 0
         self.second_player_id = 1
-        if game_mode == 'Singleplayer':
-            self.player_dead = [False]
-        if game_mode == 'Multiplayer':
-            self.player_dead = [False, False]
 
     def get_game_mode(self):
         return self.game_mode
 
     def set_game_mode(self, game_mode):
         self.game_mode = game_mode
+        if game_mode == 'Singleplayer':
+            self.player_dead = [False]
+        else:
+            self.player_dead = [False, False]
 
     def get_first_player_id(self):
         return self.first_player_id
@@ -93,4 +93,4 @@ class WorldState:
         self.projectiles.discard(entity_id)
 
 
-world = WorldState("Singleplayer")
+world = WorldState()

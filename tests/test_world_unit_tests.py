@@ -1,6 +1,8 @@
-from src.Server.WorldState import world
-from src.Server.Logic import Logic
 import os
+
+from src.Server.Logic import Logic
+from src.Server.WorldState import world
+
 os.chdir("..")
 logic = Logic()
 

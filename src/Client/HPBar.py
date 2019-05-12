@@ -1,4 +1,5 @@
 import pygame
+
 from src.Client.UI.Widget import Widget
 from src.utility.utilities import Vector, load_sprites, join_paths
 

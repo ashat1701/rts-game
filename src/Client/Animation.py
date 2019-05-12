@@ -1,6 +1,5 @@
 import pygame
-import json
-from src.utility.client_config import *
+
 from src.utility.utilities import join_paths, Vector
 
 
@@ -24,7 +23,7 @@ class Animation:
 
 def parse_descriptions(descriptions):
     animations = {
-        row['name']: Animation(join_paths(row['folder'], row['sprites'],),
+        row['name']: Animation(join_paths(row['folder'], row['sprites'], ),
                                transforms=get_transforms(row),
                                offset=row['offset'])
         for row in descriptions}

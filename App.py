@@ -10,7 +10,6 @@ from src.Server.Visitor import Visitor
 from src.Server.WorldState import world
 import src.Server.Server
 
-
 player1_connected = False
 player2_connected = False
 
@@ -63,6 +62,9 @@ class App:
         self.send_world_state_to_player(world.get_first_player_id())
         if world.get_game_mode() == "Multiplayer":
             self.send_world_state_to_player(world.get_second_player_id())
+
+        if len(world.enemies) < 15:
+            self.logic.spawn_system.create_enemy()
 
     def analyze_action(self, action):
         player_id, current_action = action
@@ -117,9 +119,7 @@ def start_game(game_mode="Singleplayer"):
     logging.info("MAP_RECEIVED_ON_SERVER")
     for i in range(len(connected_players)):
         server.action_queue.get()
-    for i in range(10):
-        app.logic.spawn_system.create_enemy()
-        app.logic.spawn_system.create_enemy()
+    for i in range(15):
         app.logic.spawn_system.create_enemy()
     server.send_obj_all_players(["START_GAME"])
     app.run()

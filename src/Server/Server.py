@@ -1,13 +1,11 @@
 import logging
-import pickle
 import queue
-import socket
-import time
-import threading
-import socketio
-import eventlet
-from src.utility.constants import PORT
 from threading import Thread
+
+import eventlet
+import socketio
+
+from src.utility.constants import PORT
 
 player_disconnected = False
 

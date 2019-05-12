@@ -1,13 +1,13 @@
+from threading import Lock
+
 import pygame
-import logging
 
 from src.Client.Camera import Camera
 from src.Client.EntitySprite import EntitySprite
 from src.Client.TextWidget import TextWidget
 from src.Client.UI.Window import Window
-from src.utility.utilities import Vector
 from src.utility.constants import MOVE_UPDATE
-from threading import Lock
+from src.utility.utilities import Vector
 
 
 class MainWindow(Window):

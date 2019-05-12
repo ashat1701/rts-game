@@ -1,6 +1,5 @@
 import pygame
 
-from src.Client.UI.Widget import Widget
 from src.Client.Sprite import Sprite
 from src.utility.constants import WALL, STONE, FLOOR, PIXEL_SCALE
 from src.utility.utilities import Vector
