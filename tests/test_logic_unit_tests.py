@@ -61,4 +61,3 @@ def test_player_move():
             new_position = world.get_box(0).center
             assert new_position != initial_position
             initial_position = new_position
-test_damage_deal()
