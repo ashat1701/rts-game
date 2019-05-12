@@ -94,3 +94,7 @@ class WorldState:
 
 
 world = WorldState()
+
+def recreate_world():
+    global world
+    world = WorldState()

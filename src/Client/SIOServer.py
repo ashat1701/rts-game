@@ -6,7 +6,7 @@ from src.Client.Game import game
 from src.utility.constants import PORT
 
 sio = socketio.Client()
-
+sio_thread = None
 
 @sio.on('message')
 def accept_action(data):
@@ -25,6 +25,7 @@ def on_disconnect():
 
 
 def run(ip):
+    global sio_thread
     sio.connect(f"http://{ip}:{PORT}")
 
     sio_thread = Thread(target=sio.wait)
