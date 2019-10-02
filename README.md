@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/ashat1701/rts-game/tree/master.svg?style=svg)](https://circleci.com/gh/ashat1701/rts-game/tree/master)
 # RTS game (нет)
 Простая игра о том что нужно быть сильным и справлятся с трудностями жизни
 # Установка и запуск
