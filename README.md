@@ -21,4 +21,4 @@ python3 MainMenu.py
 # Информация
 Чиатйте в нашей [wiki](https://github.com/ashat1701/rts-game/wiki)
  
-![Screenshot](https://i.ibb.co/1vyXQj4/Screenshot-from-2020-10-02-19-18-22.png)
+![Screenshot](https://i.ibb.co/PmXWj0V/Screenshot-from-2020-10-02-19-18-22.png)
